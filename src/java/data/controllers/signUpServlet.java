@@ -4,6 +4,8 @@
  */
 package data.controllers;
 
+import data.driver.MySqlDriver;
+import java.sql.Connection;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import data.utils.Base64Utils;
 
 /**
  *
@@ -75,12 +78,24 @@ public class signUpServlet extends HttpServlet {
         String address = request.getParameter("address");
         String phoneNumber = request.getParameter("phoneNumber");
         String fullName = request.getParameter("fullName");
-        String pictureProfile = request.getParameter("pictureProfile");
-        System.err.println(email);
-        System.err.println(address);
-        System.err.println(phoneNumber);
-        System.err.println(fullName);
-        System.err.println(pictureProfile);
+        String pictureProfileBase64 = request.getParameter("pictureProfileBase64");
+        
+        System.err.println("Email: " + email);
+        System.err.println("Address: " + address);
+        System.err.println("Phone Number: " + phoneNumber);
+        System.err.println("Full Name: " + fullName);
+        System.err.println("Picture Profile Base64: " + (pictureProfileBase64 != null ? pictureProfileBase64.substring(0, Math.min(50, pictureProfileBase64.length())) + "..." : "null"));
+                // Xử lý base64 string ở đây
+        if (pictureProfileBase64 != null && !pictureProfileBase64.isEmpty()) {
+            // Có thể lưu vào database hoặc xử lý theo nhu cầu
+            System.err.println("Base64 length: " + pictureProfileBase64.length());
+            
+            // Ví dụ: Chuyển đổi base64 thành byte array
+            byte[] imageBytes = Base64Utils.decode(pictureProfileBase64);
+            if (imageBytes != null) {
+                System.err.println("Image bytes length: " + imageBytes.length);
+            }
+        }
     }
 
     /**
