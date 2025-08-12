@@ -1,0 +1,476 @@
+:root {
+    --radius: 0.65rem;
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.141 0.005 285.823);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.141 0.005 285.823);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.141 0.005 285.823);
+    --primary: oklch(0.723 0.219 149.579);
+    --primary-foreground: oklch(0.982 0.018 155.826);
+    --secondary: oklch(0.967 0.001 286.375);
+    --secondary-foreground: oklch(0.21 0.006 285.885);
+    --muted: oklch(0.967 0.001 286.375);
+    --muted-foreground: oklch(0.552 0.016 285.938);
+    --accent: oklch(0.967 0.001 286.375);
+    --accent-foreground: oklch(0.21 0.006 285.885);
+    --destructive: oklch(0.577 0.245 27.325);
+    --destructive-foreground: oklch(0.982 0.018 155.826);
+    --border: oklch(0.92 0.004 286.32);
+    --input: oklch(0.92 0.004 286.32);
+    --ring: oklch(0.723 0.219 149.579);
+    --chart-1: oklch(0.646 0.222 41.116);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+    --sidebar: oklch(0.985 0 0);
+    --sidebar-foreground: oklch(0.141 0.005 285.823);
+    --sidebar-primary: oklch(0.723 0.219 149.579);
+    --sidebar-primary-foreground: oklch(0.982 0.018 155.826);
+    --sidebar-accent: oklch(0.967 0.001 286.375);
+    --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+    --sidebar-border: oklch(0.92 0.004 286.32);
+    --sidebar-ring: oklch(0.723 0.219 149.579);
+}
+
+/* === Background color classes === */
+.bg-background { background-color: var(--background); }
+.bg-foreground { background-color: var(--foreground); }
+.bg-card { background-color: var(--card); }
+.bg-popover { background-color: var(--popover); }
+.bg-primary { background-color: var(--primary); }
+.bg-secondary { background-color: var(--secondary); }
+.bg-muted { background-color: var(--muted); }
+.bg-accent { background-color: var(--accent); }
+.bg-destructive { background-color: var(--destructive); }
+.bg-border { background-color: var(--border); }
+.bg-input { background-color: var(--input); }
+.bg-ring { background-color: var(--ring); }
+.bg-sidebar { background-color: var(--sidebar); }
+.bg-sidebar-primary { background-color: var(--sidebar-primary); }
+.bg-sidebar-accent { background-color: var(--sidebar-accent); }
+
+/* === Text color classes === */
+.text-background { color: var(--background); }
+.text-foreground { color: var(--foreground); }
+.text-card { color: var(--card); }
+.text-card-foreground { color: var(--card-foreground); }
+.text-popover { color: var(--popover); }
+.text-popover-foreground { color: var(--popover-foreground); }
+.text-primary { color: var(--primary); }
+.text-primary-foreground { color: var(--primary-foreground); }
+.text-secondary { color: var(--secondary); }
+.text-secondary-foreground { color: var(--secondary-foreground); }
+.text-muted { color: var(--muted); }
+.text-muted-foreground { color: var(--muted-foreground); }
+.text-accent { color: var(--accent); }
+.text-accent-foreground { color: var(--accent-foreground); }
+.text-destructive { color: var(--destructive); }
+.text-destructive-foreground { color: var(--destructive-foreground); }
+.text-border { color: var(--border); }
+.text-input { color: var(--input); }
+.text-ring { color: var(--ring); }
+.text-sidebar { color: var(--sidebar); }
+.text-sidebar-foreground { color: var(--sidebar-foreground); }
+.text-sidebar-primary { color: var(--sidebar-primary); }
+.text-sidebar-primary-foreground { color: var(--sidebar-primary-foreground); }
+.text-sidebar-accent { color: var(--sidebar-accent); }
+.text-sidebar-accent-foreground { color: var(--sidebar-accent-foreground); }
+
+/* === Border color classes === */
+.border { border-color: var(--border); }
+.border-background { border-color: var(--background); }
+.border-foreground { border-color: var(--foreground); }
+.border-card { border-color: var(--card); }
+.border-card-foreground { border-color: var(--card-foreground); }
+.border-popover { border-color: var(--popover); }
+.border-popover-foreground { border-color: var(--popover-foreground); }
+.border-primary { border-color: var(--primary); }
+.border-primary-foreground { border-color: var(--primary-foreground); }
+.border-secondary { border-color: var(--secondary); }
+.border-secondary-foreground { border-color: var(--secondary-foreground); }
+.border-muted { border-color: var(--muted); }
+.border-muted-foreground { border-color: var(--muted-foreground); }
+.border-accent { border-color: var(--accent); }
+.border-accent-foreground { border-color: var(--accent-foreground); }
+.border-destructive { border-color: var(--destructive); }
+.border-destructive-foreground { border-color: var(--destructive-foreground); }
+.border-input { border-color: var(--input); }
+.border-ring { border-color: var(--ring); }
+.border-sidebar { border-color: var(--sidebar-border); }
+.border-sidebar-primary { border-color: var(--sidebar-primary); }
+.border-sidebar-accent { border-color: var(--sidebar-accent); }
+
+/* === Ring color classes === */
+.ring-background { box-shadow: 0 0 0 3px var(--background); }
+.ring-foreground { box-shadow: 0 0 0 3px var(--foreground); }
+.ring-card { box-shadow: 0 0 0 3px var(--card); }
+.ring-popover { box-shadow: 0 0 0 3px var(--popover); }
+.ring-primary { box-shadow: 0 0 0 3px var(--primary); }
+.ring-secondary { box-shadow: 0 0 0 3px var(--secondary); }
+.ring-muted { box-shadow: 0 0 0 3px var(--muted); }
+.ring-accent { box-shadow: 0 0 0 3px var(--accent); }
+.ring-destructive { box-shadow: 0 0 0 3px var(--destructive); }
+.ring-border { box-shadow: 0 0 0 3px var(--border); }
+.ring-input { box-shadow: 0 0 0 3px var(--input); }
+.ring { box-shadow: 0 0 0 3px var(--ring); }
+.ring-sidebar { box-shadow: 0 0 0 3px var(--sidebar-ring); }
+.ring-sidebar-primary { box-shadow: 0 0 0 3px var(--sidebar-primary); }
+.ring-sidebar-accent { box-shadow: 0 0 0 3px var(--sidebar-accent); }
+
+/* === Fill color classes (for SVG) === */
+.fill-background { fill: var(--background); }
+.fill-foreground { fill: var(--foreground); }
+.fill-card { fill: var(--card); }
+.fill-popover { fill: var(--popover); }
+.fill-primary { fill: var(--primary); }
+.fill-secondary { fill: var(--secondary); }
+.fill-muted { fill: var(--muted); }
+.fill-accent { fill: var(--accent); }
+.fill-destructive { fill: var(--destructive); }
+.fill-border { fill: var(--border); }
+.fill-input { fill: var(--input); }
+.fill-ring { fill: var(--ring); }
+.fill-sidebar { fill: var(--sidebar); }
+.fill-sidebar-primary { fill: var(--sidebar-primary); }
+.fill-sidebar-accent { fill: var(--sidebar-accent); }
+
+/* === Stroke color classes (for SVG) === */
+.stroke-background { stroke: var(--background); }
+.stroke-foreground { stroke: var(--foreground); }
+.stroke-card { stroke: var(--card); }
+.stroke-popover { stroke: var(--popover); }
+.stroke-primary { stroke: var(--primary); }
+.stroke-secondary { stroke: var(--secondary); }
+.stroke-muted { stroke: var(--muted); }
+.stroke-accent { stroke: var(--accent); }
+.stroke-destructive { stroke: var(--destructive); }
+.stroke-border { stroke: var(--border); }
+.stroke-input { stroke: var(--input); }
+.stroke-ring { stroke: var(--ring); }
+.stroke-sidebar { stroke: var(--sidebar); }
+.stroke-sidebar-primary { stroke: var(--sidebar-primary); }
+.stroke-sidebar-accent { stroke: var(--sidebar-accent); }
+
+/* === Chart background helpers === */
+.bg-chart-1 { background-color: var(--chart-1); }
+.bg-chart-2 { background-color: var(--chart-2); }
+.bg-chart-3 { background-color: var(--chart-3); }
+.bg-chart-4 { background-color: var(--chart-4); }
+.bg-chart-5 { background-color: var(--chart-5); }
+
+/* === Chart text helpers === */
+.text-chart-1 { color: var(--chart-1); }
+.text-chart-2 { color: var(--chart-2); }
+.text-chart-3 { color: var(--chart-3); }
+.text-chart-4 { color: var(--chart-4); }
+.text-chart-5 { color: var(--chart-5); }
+
+/* === Chart border helpers === */
+.border-chart-1 { border-color: var(--chart-1); }
+.border-chart-2 { border-color: var(--chart-2); }
+.border-chart-3 { border-color: var(--chart-3); }
+.border-chart-4 { border-color: var(--chart-4); }
+.border-chart-5 { border-color: var(--chart-5); }
+
+/* === Chart fill helpers === */
+.fill-chart-1 { fill: var(--chart-1); }
+.fill-chart-2 { fill: var(--chart-2); }
+.fill-chart-3 { fill: var(--chart-3); }
+.fill-chart-4 { fill: var(--chart-4); }
+.fill-chart-5 { fill: var(--chart-5); }
+
+/* === Chart stroke helpers === */
+.stroke-chart-1 { stroke: var(--chart-1); }
+.stroke-chart-2 { stroke: var(--chart-2); }
+.stroke-chart-3 { stroke: var(--chart-3); }
+.stroke-chart-4 { stroke: var(--chart-4); }
+.stroke-chart-5 { stroke: var(--chart-5); }
+
+/* === Outline color classes === */
+.outline-background { outline-color: var(--background); }
+.outline-foreground { outline-color: var(--foreground); }
+.outline-primary { outline-color: var(--primary); }
+.outline-secondary { outline-color: var(--secondary); }
+.outline-muted { outline-color: var(--muted); }
+.outline-accent { outline-color: var(--accent); }
+.outline-destructive { outline-color: var(--destructive); }
+.outline-border { outline-color: var(--border); }
+.outline-ring { outline-color: var(--ring); }
+
+/* === Caret color classes === */
+.caret-background { caret-color: var(--background); }
+.caret-foreground { caret-color: var(--foreground); }
+.caret-primary { caret-color: var(--primary); }
+.caret-secondary { caret-color: var(--secondary); }
+.caret-muted { caret-color: var(--muted); }
+.caret-accent { caret-color: var(--accent); }
+.caret-destructive { caret-color: var(--destructive); }
+.caret-ring { caret-color: var(--ring); }
+
+/* === Radius === */
+.rounded { border-radius: var(--radius); }
+.rounded-sm { border-radius: calc(var(--radius) - 2px); }
+.rounded-md { border-radius: calc(var(--radius) - 1px); }
+.rounded-lg { border-radius: var(--radius); }
+.rounded-xl { border-radius: calc(var(--radius) + 2px); }
+.rounded-2xl { border-radius: calc(var(--radius) + 4px); }
+
+/* === Placeholder color classes === */
+.placeholder-background::placeholder { color: var(--background); }
+.placeholder-foreground::placeholder { color: var(--foreground); }
+.placeholder-primary::placeholder { color: var(--primary); }
+.placeholder-secondary::placeholder { color: var(--secondary); }
+.placeholder-muted::placeholder { color: var(--muted); }
+.placeholder-muted-foreground::placeholder { color: var(--muted-foreground); }
+.placeholder-accent::placeholder { color: var(--accent); }
+.placeholder-destructive::placeholder { color: var(--destructive); }
+
+/* === Selection color classes === */
+.selection-background::selection { background-color: var(--background); }
+.selection-primary::selection { background-color: var(--primary); }
+.selection-secondary::selection { background-color: var(--secondary); }
+.selection-muted::selection { background-color: var(--muted); }
+.selection-accent::selection { background-color: var(--accent); }
+.selection-destructive::selection { background-color: var(--destructive); }
+
+/* Thin (100) */
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_18pt-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_18pt-ThinItalic.ttf') format('truetype');
+    font-weight: 100;
+    font-style: italic;
+}
+
+/* Extra Light (200) */
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_18pt-ExtraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_18pt-ExtraLightItalic.ttf') format('truetype');
+    font-weight: 200;
+    font-style: italic;
+}
+
+/* Light (300) */
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_18pt-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_18pt-LightItalic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+/* Regular (400) */
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_18pt-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_18pt-Italic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+}
+
+/* Medium (500) */
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_18pt-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_18pt-MediumItalic.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+/* SemiBold (600) */
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_18pt-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_18pt-SemiBoldItalic.ttf') format('truetype');
+    font-weight: 600;
+    font-style: italic;
+}
+
+/* Bold (700) */
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_18pt-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_18pt-BoldItalic.ttf') format('truetype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+/* ExtraBold (800) */
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_18pt-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_18pt-ExtraBoldItalic.ttf') format('truetype');
+    font-weight: 800;
+    font-style: italic;
+}
+
+/* Black (900) */
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_18pt-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_18pt-BlackItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+}
+
+.font-thin {
+    font-family: 'Inter', sans-serif;
+    font-weight: 100;
+    font-style: normal;
+}
+.font-thin-italic {
+    font-family: 'Inter', sans-serif;
+    font-weight: 100;
+    font-style: italic;
+}
+
+.font-extralight {
+    font-family: 'Inter', sans-serif;
+    font-weight: 200;
+    font-style: normal;
+}
+.font-extralight-italic {
+    font-family: 'Inter', sans-serif;
+    font-weight: 200;
+    font-style: italic;
+}
+
+.font-light {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+.font-light-italic {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-style: italic;
+}
+
+.font-regular {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.font-regular-italic {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.font-medium {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+.font-medium-italic {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-style: italic;
+}
+
+.font-semibold {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-style: normal;
+}
+.font-semibold-italic {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.font-bold {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+.font-bold-italic {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+}
+
+.font-extrabold {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-style: normal;
+}
+.font-extrabold-italic {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-style: italic;
+}
+
+.font-black {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-style: normal;
+}
+.font-black-italic {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-style: italic;
+}
+
+*, html, body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
