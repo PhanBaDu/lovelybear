@@ -10,6 +10,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author PC
@@ -19,15 +22,14 @@ public class UserImplementation implements UserDao {
     
     @Override
     public User createUser(String email, String sodienthoai, String fullName, String pictureProfile, String address, String password) {
-        // b1: kiem tra email / sdt ton tai chua
-        String sql = "SELECT 1 FROM users WHERE email = ? OR sodienthoai = ? LIMIT 1";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
+        // Kiểm tra email và số điện thoại đã tồn tại chưa
+        String checkSql = "SELECT email, sodienthoai FROM users WHERE email = ? OR sodienthoai = ?";
+        try (PreparedStatement ps = con.prepareStatement(checkSql)) {
             ps.setString(1, email);
             ps.setString(2, sodienthoai);
 
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                // Có thông tin trùng lặp
+            while (rs.next()) {
                 String existingEmail = rs.getString("email");
                 String existingSdt = rs.getString("sodienthoai");
 
@@ -41,10 +43,12 @@ public class UserImplementation implements UserDao {
                 }
             }
         } catch (SQLException e) {
+            System.err.println("Lỗi khi kiểm tra user tồn tại: " + e.getMessage());
             e.printStackTrace();
+            return null;
         }
         
-        // b2: 
+        // Tạo user mới
         String insertSql = "INSERT INTO users (email, sodienthoai, fullName, pictureProfile, address, password) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement insertPs = con.prepareStatement(insertSql)) {
             insertPs.setString(1, email);
@@ -69,5 +73,50 @@ public class UserImplementation implements UserDao {
             e.printStackTrace();
             return null;
         }
+    }
+    
+    // Thêm method để kiểm tra user tồn tại và trả về thông tin chi tiết
+    public Map<String, Object> checkUserExists(String email, String phoneNumber) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("exists", false);
+        result.put("emailExists", false);
+        result.put("phoneExists", false);
+        result.put("message", "");
+        
+        String checkSql = "SELECT email, sodienthoai FROM users WHERE email = ? OR sodienthoai = ?";
+        try (PreparedStatement ps = con.prepareStatement(checkSql)) {
+            ps.setString(1, email);
+            ps.setString(2, phoneNumber);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String existingEmail = rs.getString("email");
+                String existingSdt = rs.getString("sodienthoai");
+
+                if (email.equals(existingEmail)) {
+                    result.put("emailExists", true);
+                    result.put("exists", true);
+                }
+                if (phoneNumber.equals(existingSdt)) {
+                    result.put("phoneExists", true);
+                    result.put("exists", true);
+                }
+            }
+            
+            // Tạo message lỗi
+            if ((Boolean) result.get("emailExists") && (Boolean) result.get("phoneExists")) {
+                result.put("message", "Email và số điện thoại đã tồn tại trong hệ thống");
+            } else if ((Boolean) result.get("emailExists")) {
+                result.put("message", "Email đã tồn tại trong hệ thống");
+            } else if ((Boolean) result.get("phoneExists")) {
+                result.put("message", "Số điện thoại đã tồn tại trong hệ thống");
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi kiểm tra user tồn tại: " + e.getMessage());
+            result.put("error", "Lỗi hệ thống khi kiểm tra thông tin");
+        }
+        
+        return result;
     }
 }
