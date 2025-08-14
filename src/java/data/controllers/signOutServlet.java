@@ -4,9 +4,6 @@
  */
 package data.controllers;
 
-import data.dao.Database;
-import data.models.User;
-import data.utils.Base64Utils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,8 +16,8 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author PC
  */
-@WebServlet(name = "signUpServlet", urlPatterns = {"/signup"})
-public class signUpServlet extends HttpServlet {
+@WebServlet(name = "signOutServlet", urlPatterns = {"/signout"})
+public class signOutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +36,10 @@ public class signUpServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet signUpServlet</title>");
+            out.println("<title>Servlet signOutServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet signUpServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet signOutServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,7 +57,8 @@ public class signUpServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("./views/signup.jsp").include(request, response);
+        request.getSession().invalidate();
+        response.sendRedirect(request.getContextPath());
     }
 
     /**
@@ -74,29 +72,7 @@ public class signUpServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String address = request.getParameter("address");
-        String phoneNumber = request.getParameter("phoneNumber");
-        String fullName = request.getParameter("fullName");
-        String pictureProfileBase64 = request.getParameter("pictureProfileBase64");
-        
-        if (pictureProfileBase64 != null && !pictureProfileBase64.isEmpty()) {
-            byte[] imageBytes = Base64Utils.decode(pictureProfileBase64);
-            if (imageBytes != null) {
-                System.err.println("Image bytes length: " + imageBytes.length);
-            }
-        }
-        
-        // ---
-        User user = Database.getUserDao().createUser(email, phoneNumber, fullName, pictureProfileBase64, address, password);
-        if (user == null) {
-            request.getSession().setAttribute("login_err", "You infomation login is incorrect");
-            response.sendRedirect("signup");
-        } else {
-            request.getSession().setAttribute("user", user);
-            response.sendRedirect(request.getContextPath());
-        }
+        processRequest(request, response);
     }
 
     /**
