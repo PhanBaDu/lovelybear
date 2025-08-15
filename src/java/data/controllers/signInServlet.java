@@ -4,6 +4,8 @@
  */
 package data.controllers;
 
+import data.dao.Database;
+import data.models.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -57,6 +60,11 @@ public class signInServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Kiểm tra nếu đã đăng nhập thì chuyển hướng về trang chủ
+        if (request.getSession().getAttribute("user") != null) {
+            response.sendRedirect(request.getContextPath() + "/");
+            return;
+        }
         request.getRequestDispatcher("./views/signin.jsp").include(request, response);
     }
 
@@ -68,10 +76,71 @@ public class signInServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        // Kiểm tra nếu đã đăng nhập thì chuyển hướng về trang chủ
+        if (request.getSession().getAttribute("user") != null) {
+            response.sendRedirect(request.getContextPath() + "/");
+            return;
+        }
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        // Validation cơ bản
+        if (email == null || email.trim().isEmpty()) {
+            // Lưu error vào session thay vì request
+            HttpSession session = request.getSession();
+            session.setAttribute("errorMessage", "Email không được để trống");
+            session.setAttribute("email", email);
+            response.sendRedirect(request.getContextPath() + "/signin");
+            return;
+        }
+
+        if (password == null || password.trim().isEmpty()) {
+            HttpSession session = request.getSession();
+            session.setAttribute("errorMessage", "Mật khẩu không được để trống");
+            session.setAttribute("email", email);
+            response.sendRedirect(request.getContextPath() + "/signin");
+            return;
+        }
+
+        // Kiểm tra email có tồn tại không
+        boolean emailExists = Database.getUserDao().checkEmailExists(email.trim());
+        if (!emailExists) {
+            HttpSession session = request.getSession();
+            session.setAttribute("errorMessage", "Email không tồn tại trong hệ thống");
+            session.setAttribute("email", email);
+            response.sendRedirect(request.getContextPath() + "/signin");
+            return;
+        }
+
+        // Thực hiện đăng nhập
+        User user = Database.getUserDao().signIn(email.trim(), password);
+        if (user != null) {
+            // Đăng nhập thành công
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+
+            // Clear any previous error messages
+            session.removeAttribute("errorMessage");
+            session.removeAttribute("email");
+
+            // Redirect theo role
+            if (user.isAdmin()) {
+                response.sendRedirect(request.getContextPath() + "/admin");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/");
+            }
+        } else {
+            // Email tồn tại nhưng mật khẩu sai
+            HttpSession session = request.getSession();
+            session.setAttribute("errorMessage", "Mật khẩu không đúng");
+            session.setAttribute("email", email);
+            response.sendRedirect(request.getContextPath() + "/signin");
+        }
     }
 
     /**

@@ -57,13 +57,7 @@ public class signOutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Lưu thông báo đăng xuất thành công
-        request.getSession().setAttribute("logout_success", "Đăng xuất thành công!");
-        
-        // Xóa session
         request.getSession().invalidate();
-        
-        // Redirect về trang chủ
         response.sendRedirect(request.getContextPath());
     }
 
@@ -78,7 +72,7 @@ public class signOutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+        processRequest(request, response);
     }
 
     /**
