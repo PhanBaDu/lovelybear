@@ -4,6 +4,7 @@
  */
 package data.controllers;
 
+import data.models.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -11,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
@@ -57,6 +59,17 @@ public class adminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession session = request.getSession(false); // lấy session nếu có, không tạo mới
+        User user = (session != null) ? (User) session.getAttribute("user") : null;
+
+        // Kiểm tra: nếu chưa đăng nhập hoặc không phải ADMIN thì redirect về trang chủ
+        if (user == null || !"ADMIN".equals(user.getRole())) {
+            response.sendRedirect(request.getContextPath() + "/");
+            return;
+        }
+
+        // Nếu là ADMIN, forward đến trang admin
         request.getRequestDispatcher("./views/admin.jsp").include(request, response);
     }
 
