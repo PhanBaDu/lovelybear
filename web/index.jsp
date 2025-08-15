@@ -37,7 +37,7 @@
                                         mainImageUrl = images.get(0).getImageUrl();
                                     }
                         %>
-                            <div class="border rounded-lg overflow-hidden h-96 bg-card hover:shadow-xl transition-shadow">
+                            <a href="product?id=<%= product.getId() %>" class="block border rounded-lg overflow-hidden h-96 bg-card hover:shadow-xl transition-shadow">
                                 <div class="h-[70%] w-full overflow-hidden">
                                     <% if (mainImageUrl != null && !mainImageUrl.isEmpty()) { %>
                                         <img class="h-full w-full object-cover hover:scale-105 transition-transform duration-300" 
@@ -83,7 +83,7 @@
                                         </button>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         <% 
                                 }
                             } else {

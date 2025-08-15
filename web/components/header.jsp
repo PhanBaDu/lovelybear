@@ -8,17 +8,7 @@
             <img class="w-56" src="./public/assets/images/logo/logo-primary.svg" alt="Logo"/>
         </a>
     </div>
-    
-    <!-- Navigation Section -->
-    <div class="flex items-center gap-6">
-        <a href="${pageContext.request.contextPath}" class="text-sm font-medium text-foreground hover:text-primary transition-colors">
-            Trang chủ
-        </a>
-        <a href="${pageContext.request.contextPath}/products" class="text-sm font-medium text-foreground hover:text-primary transition-colors">
-            Sản phẩm
-        </a>
-    </div>
-    
+
     <!-- Search Section -->
     <div class="flex-1 relative">
         <input 
