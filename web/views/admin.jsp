@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.net.URLDecoder"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,6 +16,48 @@
                 <div class="max-w-4xl mx-auto">
                     <div class="bg-card rounded-lg shadow-lg p-6">
                         <h1 class="text-2xl font-bold text-foreground mb-6">Thêm Sản Phẩm Mới</h1>
+                        
+                        <!-- Hiển thị message từ URL parameters -->
+                        <% 
+                        String successMessage = request.getParameter("success");
+                        String errorMessage = request.getParameter("error");
+                        %>
+                        
+                        <% if (successMessage != null && !successMessage.trim().isEmpty()) { %>
+                            <div id="successMessage" class="mb-6 p-4 bg-green-50 border border-green-200 rounded-md">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span class="text-green-800 font-medium"><%= java.net.URLDecoder.decode(successMessage, "UTF-8") %></span>
+                                    </div>
+                                    <button onclick="closeMessage('successMessage')" class="text-green-400 hover:text-green-600">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        <% } %>
+                        
+                        <% if (errorMessage != null && !errorMessage.trim().isEmpty()) { %>
+                            <div id="errorMessage" class="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <svg class="w-5 h-5 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <span class="text-red-800 font-medium"><%= java.net.URLDecoder.decode(errorMessage, "UTF-8") %></span>
+                                    </div>
+                                    <button onclick="closeMessage('errorMessage')" class="text-red-400 hover:text-red-600">
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        <% } %>
                         
                         <!-- Đổi enctype từ multipart/form-data thành application/x-www-form-urlencoded -->
                         <form method="post" action="add-product" enctype="application/x-www-form-urlencoded" class="space-y-6">
@@ -482,6 +525,34 @@
                 });
                 
                 return imageData;
+            }
+            
+            // Hàm đóng message
+            window.closeMessage = function(messageId) {
+                const messageElement = document.getElementById(messageId);
+                if (messageElement) {
+                    messageElement.style.transition = 'opacity 0.3s ease-out';
+                    messageElement.style.opacity = '0';
+                    setTimeout(() => {
+                        messageElement.remove();
+                    }, 300);
+                }
+            };
+            
+            // Tự động ẩn success message sau 5 giây
+            const successMessage = document.getElementById('successMessage');
+            if (successMessage) {
+                setTimeout(() => {
+                    closeMessage('successMessage');
+                }, 5000);
+            }
+            
+            // Tự động ẩn error message sau 8 giây
+            const errorMessage = document.getElementById('errorMessage');
+            if (errorMessage) {
+                setTimeout(() => {
+                    closeMessage('errorMessage');
+                }, 8000);
             }
         </script>
     </body>
