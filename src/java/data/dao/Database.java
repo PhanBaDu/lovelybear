@@ -5,6 +5,8 @@
 package data.dao;
 
 import data.implementations.UserImplementation;
+import data.implementations.ProductImplementation;
+import data.implementations.ProductImageImplementation;
 
 /**
  *
@@ -13,5 +15,13 @@ import data.implementations.UserImplementation;
 public class Database {
     public static UserDao getUserDao() {
         return new UserImplementation();
+    }
+    
+    public static ProductDao getProductDao() {
+        return new ProductImplementation();
+    }
+    
+    public static ProductImageDao getProductImageDao() {
+        return new ProductImageImplementation();
     }
 }
