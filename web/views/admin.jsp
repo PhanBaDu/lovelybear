@@ -60,7 +60,7 @@
                         <% } %>
                         
                         <!-- Đổi enctype từ multipart/form-data thành application/x-www-form-urlencoded -->
-                        <form method="post" action="add-product" enctype="application/x-www-form-urlencoded" class="space-y-6">
+                        <form method="post" action="add-product" enctype="multipart/form-data" class="space-y-6">
                             
                             <!-- Tên sản phẩm -->
                             <div class="flex flex-col gap-2">
@@ -121,7 +121,7 @@
 
                                 <!-- Upload area -->
                                 <label
-                                    for="productImages"
+                                    for="image"
                                     id="uploadLabel"
                                     class="w-full h-44 flex flex-col justify-center items-center text-sm font-medium text-center rounded-md border-2 border-input border-dashed cursor-pointer bg-background hover:bg-muted/50 transition-all group"
                                 >
@@ -151,18 +151,16 @@
                                     </p>
                                 </label>
 
-                                <!-- Hidden file input - Loại bỏ required để không conflict với base64 -->
+                                <!-- File input cho nhiều ảnh -->
                                 <input
-                                    name="productImages"
-                                    id="productImages"
+                                    name="image"
+                                    id="image"
                                     type="file"
                                     multiple
                                     accept=".jpg,.jpeg,.png,.gif,.webp,image/*"
                                     class="hidden"
+                                    required
                                 />
-
-                                <!-- Hidden inputs for base64 images -->
-                                <div id="base64Container"></div>
                             </div>
 
                             <!-- Submit button -->
@@ -191,13 +189,12 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                const fileInput = document.getElementById("productImages");
+                const fileInput = document.getElementById("image");
                 const uploadLabel = document.getElementById("uploadLabel");
                 const imagePreviewContainer = document.getElementById("imagePreviewContainer");
-                const base64Container = document.getElementById("base64Container");
                 const submitButton = document.getElementById("submitButton");
                 
-                let selectedFiles = new Map(); // Sử dụng Map thay vì array để dễ quản lý
+                let selectedFiles = new Map(); // Sử dụng Map để lưu nhiều file
 
                 // Lắng nghe sự kiện thay đổi file
                 fileInput.addEventListener("change", function (event) {
@@ -205,8 +202,6 @@
                     
                     if (files.length > 0) {
                         processFiles(files);
-                        // Clear input ngay sau khi xử lý
-                        fileInput.value = '';
                     }
                 });
 
@@ -294,9 +289,6 @@
                         // Thêm preview vào container
                         imagePreviewContainer.appendChild(previewDiv);
                         imagePreviewContainer.classList.remove("hidden");
-
-                        // Tạo hidden inputs
-                        createHiddenInputs(e.target.result, file, uniqueId);
                     };
 
                     reader.onerror = function (error) {
@@ -305,36 +297,6 @@
                     };
 
                     reader.readAsDataURL(file);
-                }
-
-                function createHiddenInputs(dataUrl, file, uniqueId) {
-                    const base64String = dataUrl.split(",")[1];
-                    
-                    // Base64 input
-                    const hiddenInput = document.createElement("input");
-                    hiddenInput.type = "hidden";
-                    hiddenInput.name = `imageBase64_${uniqueId}`;
-                    hiddenInput.value = base64String;
-                    hiddenInput.setAttribute('data-image-id', uniqueId);
-                    base64Container.appendChild(hiddenInput);
-                    
-                    // MIME type input
-                    const mimeInput = document.createElement("input");
-                    mimeInput.type = "hidden";
-                    mimeInput.name = `imageMimeType_${uniqueId}`;
-                    mimeInput.value = file.type;
-                    mimeInput.setAttribute('data-image-id', uniqueId);
-                    base64Container.appendChild(mimeInput);
-                    
-                    // Filename input
-                    const filenameInput = document.createElement("input");
-                    filenameInput.type = "hidden";
-                    filenameInput.name = `imageFileName_${uniqueId}`;
-                    filenameInput.value = file.name;
-                    filenameInput.setAttribute('data-image-id', uniqueId);
-                    base64Container.appendChild(filenameInput);
-
-                    console.log('Created hidden inputs for:', uniqueId, file.name);
                 }
 
                 function updateUploadLabel() {
@@ -350,27 +312,16 @@
 
                 // Hàm xóa ảnh
                 window.removeImage = function(uniqueId) {
-                    console.log('Removing image with ID:', uniqueId);
-                    
                     // Xóa file khỏi Map
                     if (selectedFiles.has(uniqueId)) {
                         selectedFiles.delete(uniqueId);
-                        console.log('File removed from Map. Remaining files:', selectedFiles.size);
                     }
                     
                     // Xóa preview element
                     const previewElement = imagePreviewContainer.querySelector('[data-image-id="' + uniqueId + '"]');
                     if (previewElement) {
                         previewElement.remove();
-                        console.log('Preview element removed');
                     }
-                    
-                    // Xóa tất cả hidden inputs
-                    const hiddenInputs = base64Container.querySelectorAll('[data-image-id="' + uniqueId + '"]');
-                    console.log('Found hidden inputs to remove:', hiddenInputs.length);
-                    hiddenInputs.forEach(input => {
-                        input.remove();
-                    });
                     
                     updateUploadLabel();
                 };
@@ -435,21 +386,8 @@
                         return;
                     }
                     
-                    // Kiểm tra images - FIX: Kiểm tra trực tiếp hidden inputs thay vì function
-                    const base64Inputs = base64Container.querySelectorAll('input[name^="imageBase64_"]');
-                    console.log('Base64 inputs found:', base64Inputs.length);
-                    console.log('Selected files in Map:', selectedFiles.size);
-                    
-                    // Debug: In ra tất cả hidden inputs
-                    const allHiddenInputs = base64Container.querySelectorAll('input[type="hidden"]');
-                    console.log('Total hidden inputs:', allHiddenInputs.length);
-                    
-                    allHiddenInputs.forEach((input, index) => {
-                        console.log(`Hidden input ${index}:`, input.name, '=', input.value ? input.value.substring(0, 30) + '...' : 'EMPTY');
-                    });
-                    
-                    // FIX: Thay đổi điều kiện kiểm tra
-                    if (base64Inputs.length === 0 && selectedFiles.size === 0) {
+                    // Kiểm tra image - Kiểm tra có ít nhất 1 ảnh
+                    if (selectedFiles.size === 0) {
                         e.preventDefault();
                         alert('Vui lòng chọn ít nhất một hình ảnh sản phẩm');
                         return;
@@ -476,20 +414,13 @@
                     
                     // Clear preview container
                     const imagePreviewContainer = document.getElementById("imagePreviewContainer");
-                    imagePreviewContainer.innerHTML = "";
                     imagePreviewContainer.classList.add("hidden");
+                    imagePreviewContainer.innerHTML = ""; // Clear any existing preview
                     
-                    // Clear hidden inputs
-                    document.getElementById("base64Container").innerHTML = "";
+                    // Clear selectedFiles
+                    selectedFiles.clear();
+                    document.getElementById("image").value = ""; // Clear file input
                     
-                    // Reset upload label
-                    document.getElementById("uploadLabel").querySelector("p").textContent = "Click để chọn nhiều ảnh";
-                    
-                    // Clear selectedFiles Map
-                    if (typeof selectedFiles !== 'undefined') {
-                        selectedFiles.clear();
-                    }
-
                     // Re-enable submit button
                     const submitButton = document.getElementById("submitButton");
                     submitButton.disabled = false;
@@ -499,32 +430,9 @@
 
             // Hàm lấy tất cả base64 strings
             function getAllBase64Data() {
-                const base64Inputs = document.querySelectorAll('input[name^="imageBase64_"]');
-                const mimeInputs = document.querySelectorAll('input[name^="imageMimeType_"]');
-                const nameInputs = document.querySelectorAll('input[name^="imageFileName_"]');
-                
-                const imageData = [];
-                const processedIds = new Set();
-                
-                base64Inputs.forEach(input => {
-                    const imageId = input.getAttribute('data-image-id');
-                    if (processedIds.has(imageId)) return;
-                    
-                    const mimeInput = document.querySelector('input[name="imageMimeType_' + imageId + '"]');
-                    const nameInput = document.querySelector('input[name="imageFileName_' + imageId + '"]');
-                    
-                    if (input.value && mimeInput && nameInput) {
-                        imageData.push({
-                            base64: input.value,
-                            mimeType: mimeInput.value,
-                            fileName: nameInput.value,
-                            dataUrl: 'data:' + mimeInput.value + ';base64,' + input.value
-                        });
-                        processedIds.add(imageId);
-                    }
-                });
-                
-                return imageData;
+                // This function is no longer needed as we are not using multipart/form-data
+                // and the image is handled directly.
+                return [];
             }
             
             // Hàm đóng message

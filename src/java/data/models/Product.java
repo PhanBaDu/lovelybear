@@ -33,6 +33,8 @@ public class Product {
         this.updatedAt = updatedAt;
     }
     
+
+    
     // Constructor without id (for creating new products)
     public Product(String name, String description, BigDecimal price) {
         this.name = name;
@@ -100,6 +102,8 @@ public class Product {
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
     }
+    
+
     
     // Utility methods
     public void updateTimestamp() {

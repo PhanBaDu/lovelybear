@@ -173,8 +173,8 @@ public class addProductServlet extends HttpServlet {
             System.out.println("Tạo sản phẩm thành công với ID: " + newProduct.getId());
             
             // Xử lý hình ảnh sản phẩm
-            List<ProductImage> createdImages = new ArrayList<>();
             ProductImageDao imageDao = Database.getProductImageDao();
+            List<ProductImage> createdImages = new ArrayList<>();
             
             // Xử lý file upload - kiểm tra content type trước
             String contentType = request.getContentType();
@@ -198,8 +198,8 @@ public class addProductServlet extends HttpServlet {
                             System.out.println("  Content Type: " + partContentType);
                             System.out.println("  File Size: " + filePart.getSize() + " bytes");
                             
-                            // Tạo URL hình ảnh từ file upload
-                            String imageUrl = createImageUrlFromFile(fileName);
+                            // Lưu file và tạo URL hình ảnh
+                            String imageUrl = saveUploadedFile(filePart, fileName);
                             
                             if (imageUrl != null) {
                                 // Tạo ProductImage trong database
@@ -212,7 +212,7 @@ public class addProductServlet extends HttpServlet {
                                     System.err.println("  Lỗi: Không thể tạo hình ảnh trong database");
                                 }
                             } else {
-                                System.err.println("  Lỗi: Không thể xử lý file hình ảnh");
+                                System.err.println("  Lỗi: Không thể lưu file hình ảnh");
                             }
                         }
                     }
@@ -272,19 +272,47 @@ public class addProductServlet extends HttpServlet {
     }
     
     /**
-     * Tạo URL hình ảnh từ file upload
+     * Lưu file upload và trả về URL
      */
-    private String createImageUrlFromFile(String fileName) {
+    private String saveUploadedFile(Part filePart, String fileName) {
         try {
-            if (fileName != null && !fileName.trim().isEmpty()) {
-                // Loại bỏ ký tự đặc biệt và khoảng trắng
-                String safeFileName = fileName.replaceAll("[^a-zA-Z0-9.-]", "_");
-                return "/uploads/products/" + System.currentTimeMillis() + "_" + safeFileName;
-            } else {
-                return "/uploads/products/" + System.currentTimeMillis() + ".jpg";
+            if (fileName == null || fileName.trim().isEmpty()) {
+                fileName = "image_" + System.currentTimeMillis() + ".jpg";
             }
+            
+            // Tạo thư mục uploads nếu chưa tồn tại
+            String uploadPath = getServletContext().getRealPath("/uploads/products");
+            java.io.File uploadDir = new java.io.File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+            
+            // Tạo tên file an toàn theo format: upload/pro/name_ảnh
+            String safeFileName = fileName.replaceAll("[^a-zA-Z0-9.-]", "_");
+            String finalFileName = "upload_pro_" + System.currentTimeMillis() + "_" + safeFileName;
+            String filePath = uploadPath + java.io.File.separator + finalFileName;
+            
+            // Lưu file
+            try (java.io.InputStream input = filePart.getInputStream();
+                 java.io.FileOutputStream output = new java.io.FileOutputStream(filePath)) {
+                
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = input.read(buffer)) > 0) {
+                    output.write(buffer, 0, length);
+                }
+            }
+            
+            // Trả về URL tương đối
+            String imageUrl = "/uploads/products/" + finalFileName;
+            System.out.println("File đã được lưu: " + filePath);
+            System.out.println("URL hình ảnh: " + imageUrl);
+            
+            return imageUrl;
+            
         } catch (Exception e) {
-            System.err.println("Lỗi khi xử lý file hình ảnh: " + e.getMessage());
+            System.err.println("Lỗi khi lưu file: " + e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }

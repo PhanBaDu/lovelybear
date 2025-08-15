@@ -13,6 +13,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -132,6 +134,36 @@ public class ProductImplementation implements ProductDao {
             System.err.println("Lỗi khi lấy sản phẩm: " + e.getMessage());
             e.printStackTrace();
             return null;
+        }
+    }
+    
+    @Override
+    public List<Product> getAllProducts() {
+        String sql = "SELECT id, name, description, price, created_at, updated_at FROM products ORDER BY created_at DESC";
+        List<Product> products = new ArrayList<>();
+        
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int productId = rs.getInt("id");
+                String name = rs.getString("name");
+                String description = rs.getString("description");
+                BigDecimal price = rs.getBigDecimal("price");
+                Timestamp createdAt = rs.getTimestamp("created_at");
+                Timestamp updatedAt = rs.getTimestamp("updated_at");
+
+                Product product = new Product(productId, name, description, price, createdAt, updatedAt);
+                products.add(product);
+            }
+            
+            System.out.println("Lấy " + products.size() + " sản phẩm thành công");
+            return products;
+            
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi lấy danh sách sản phẩm: " + e.getMessage());
+            e.printStackTrace();
+            return new ArrayList<>();
         }
     }
     

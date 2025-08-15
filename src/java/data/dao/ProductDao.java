@@ -5,6 +5,7 @@
 package data.dao;
 
 import data.models.Product;
+import java.util.List;
 
 /**
  *
@@ -13,6 +14,7 @@ import data.models.Product;
 public interface ProductDao {
     public Product createProduct(String name, String description, String price);
     public Product getProductById(int id);
+    public List<Product> getAllProducts();
     public boolean updateProduct(Product product);
     public boolean deleteProduct(int id);
 }
