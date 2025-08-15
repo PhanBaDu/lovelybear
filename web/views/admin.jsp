@@ -16,7 +16,8 @@
                     <div class="bg-card rounded-lg shadow-lg p-6">
                         <h1 class="text-2xl font-bold text-foreground mb-6">Thêm Sản Phẩm Mới</h1>
                         
-                        <form method="post" action="add-product" enctype="multipart/form-data" class="space-y-6">
+                        <!-- Đổi enctype từ multipart/form-data thành application/x-www-form-urlencoded -->
+                        <form method="post" action="add-product" enctype="application/x-www-form-urlencoded" class="space-y-6">
                             
                             <!-- Tên sản phẩm -->
                             <div class="flex flex-col gap-2">
@@ -55,7 +56,7 @@
                                 <input
                                     name="price"
                                     id="price"
-                                    type="number"
+                                    type="text"
                                     min="0"
                                     step="1000"
                                     placeholder="0"
@@ -107,7 +108,7 @@
                                     </p>
                                 </label>
 
-                                <!-- Hidden file input -->
+                                <!-- Hidden file input - Loại bỏ required để không conflict với base64 -->
                                 <input
                                     name="productImages"
                                     id="productImages"
@@ -115,7 +116,6 @@
                                     multiple
                                     accept=".jpg,.jpeg,.png,.gif,.webp,image/*"
                                     class="hidden"
-                                    required
                                 />
 
                                 <!-- Hidden inputs for base64 images -->
@@ -126,6 +126,7 @@
                             <div class="flex gap-4 pt-6">
                                 <button
                                     type="submit"
+                                    id="submitButton"
                                     class="flex-1 px-6 py-3 bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring transition-all"
                                 >
                                     Thêm Sản Phẩm
@@ -151,6 +152,7 @@
                 const uploadLabel = document.getElementById("uploadLabel");
                 const imagePreviewContainer = document.getElementById("imagePreviewContainer");
                 const base64Container = document.getElementById("base64Container");
+                const submitButton = document.getElementById("submitButton");
                 
                 let selectedFiles = new Map(); // Sử dụng Map thay vì array để dễ quản lý
 
@@ -288,6 +290,8 @@
                     filenameInput.value = file.name;
                     filenameInput.setAttribute('data-image-id', uniqueId);
                     base64Container.appendChild(filenameInput);
+
+                    console.log('Created hidden inputs for:', uniqueId, file.name);
                 }
 
                 function updateUploadLabel() {
@@ -364,6 +368,61 @@
                         e.target.value = parseInt(value).toLocaleString('vi-VN');
                     }
                 });
+
+                // Form submit validation - FIXED
+                document.querySelector('form').addEventListener('submit', function(e) {
+                    console.log('=== FORM SUBMIT DEBUG ===');
+                    
+                    // Kiểm tra basic fields
+                    const productName = document.getElementById('productName').value.trim();
+                    const price = document.getElementById('price').value.trim();
+                    
+                    console.log('Product Name:', productName);
+                    console.log('Price:', price);
+                    
+                    if (!productName) {
+                        e.preventDefault();
+                        alert('Vui lòng nhập tên sản phẩm');
+                        return;
+                    }
+                    
+                    if (!price) {
+                        e.preventDefault();
+                        alert('Vui lòng nhập giá sản phẩm');
+                        return;
+                    }
+                    
+                    // Kiểm tra images - FIX: Kiểm tra trực tiếp hidden inputs thay vì function
+                    const base64Inputs = base64Container.querySelectorAll('input[name^="imageBase64_"]');
+                    console.log('Base64 inputs found:', base64Inputs.length);
+                    console.log('Selected files in Map:', selectedFiles.size);
+                    
+                    // Debug: In ra tất cả hidden inputs
+                    const allHiddenInputs = base64Container.querySelectorAll('input[type="hidden"]');
+                    console.log('Total hidden inputs:', allHiddenInputs.length);
+                    
+                    allHiddenInputs.forEach((input, index) => {
+                        console.log(`Hidden input ${index}:`, input.name, '=', input.value ? input.value.substring(0, 30) + '...' : 'EMPTY');
+                    });
+                    
+                    // FIX: Thay đổi điều kiện kiểm tra
+                    if (base64Inputs.length === 0 && selectedFiles.size === 0) {
+                        e.preventDefault();
+                        alert('Vui lòng chọn ít nhất một hình ảnh sản phẩm');
+                        return;
+                    }
+                    
+                    console.log('Form validation passed, submitting...');
+                    
+                    // Disable submit button để tránh double submit
+                    submitButton.disabled = true;
+                    submitButton.textContent = 'Đang xử lý...';
+                    
+                    // Wait a bit to see console logs
+                    setTimeout(() => {
+                        console.log('Form should submit now...');
+                    }, 100);
+                });
             });
 
             // Hàm reset form
@@ -387,6 +446,11 @@
                     if (typeof selectedFiles !== 'undefined') {
                         selectedFiles.clear();
                     }
+
+                    // Re-enable submit button
+                    const submitButton = document.getElementById("submitButton");
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Thêm Sản Phẩm';
                 }
             }
 
@@ -419,19 +483,6 @@
                 
                 return imageData;
             }
-
-            // Form submit validation
-            document.querySelector('form').addEventListener('submit', function(e) {
-                const imageData = getAllBase64Data();
-                
-                if (imageData.length === 0) {
-                    e.preventDefault();
-                    alert('Vui lòng chọn ít nhất một hình ảnh sản phẩm');
-                    return;
-                }
-                
-                console.log('Form submitted with', imageData.length, 'images');
-            });
         </script>
     </body>
 </html>
