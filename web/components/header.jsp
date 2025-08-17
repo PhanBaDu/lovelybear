@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!--SET GLOBAL max_allowed_packet=16777216;-->
-<div class="fixed top-0 bg-background left-0 right-0 p-4 w-full border-b border-muted flex items-center justify-between gap-4">
+<div class="fixed z-50 top-0 bg-background left-0 right-0 p-4 w-full border-b border-muted flex items-center justify-between gap-4">
     <!-- Logo Section -->
     <div class="flex-1">
         <a href="${pageContext.request.contextPath}">

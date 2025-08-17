@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<div class="p-4 w-full border-b border-muted flex items-center justify-between gap-4 fixed bg-background">
+<div class="p-4 w-full border-b border-muted flex items-center justify-between gap-4 fixed bg-background z-50">
     <div class="flex-1">
         <a href="${pageContext.request.contextPath}">
             <img class="w-56" src="./public/assets/images/logo/logo-primary.svg" alt="Logo"/>

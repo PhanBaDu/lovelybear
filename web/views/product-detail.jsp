@@ -12,7 +12,7 @@
         <title><%= ((Product)request.getAttribute("product")).getName() %></title>
     </head>
     <body class="bg-light-gray">
-        <div class="flex flex-col min-h-screen">
+        <div class="flex flex-col min-h-screen bg-muted">
             <jsp:include page="../components/header.jsp" />
             
             <div class="pt-24 pb-32">
@@ -26,7 +26,7 @@
                     }
                     %>
                     
-                    <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="bg-white rounded-xl p-5">
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
                             <!-- Left Column - Product Images -->
                             <div class="space-y-6">
@@ -63,39 +63,6 @@
                                     <% } %>
                                 </div>
                                 <% } %>
-                                
-                                <!-- Social Sharing -->
-                                <div class="pt-6 border-t border-gray-200">
-                                    <div class="flex items-center space-x-4">
-                                        <span class="text-sm text-gray-600">Chia sẻ:</span>
-                                        <div class="flex space-x-3">
-                                            <button class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white hover:bg-blue-600 transition-colors">
-                                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                                                </svg>
-                                            </button>
-                                            <button class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white hover:bg-blue-700 transition-colors">
-                                                <span class="text-xs font-bold">f</span>
-                                            </button>
-                                            <button class="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white hover:bg-red-700 transition-colors">
-                                                <span class="text-xs font-bold">P</span>
-                                            </button>
-                                            <button class="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center text-white hover:bg-blue-500 transition-colors">
-                                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                        <div class="flex items-center space-x-2 ml-4">
-                                            <button class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white hover:bg-red-600 transition-colors">
-                                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                                                </svg>
-                                            </button>
-                                            <span class="text-sm text-gray-600">0</span>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             
                             <!-- Right Column - Product Details -->

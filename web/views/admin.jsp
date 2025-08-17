@@ -10,11 +10,11 @@
         <title>Trang quản lý sản phẩm</title>
     </head>
     <body>
-        <div class="flex flex-col min-h-screen justify-between">
+        <div class="flex flex-col min-h-screen items-center justify-between">
             <jsp:include page="../components/features/admin/header.jsp" />
-            <div class="pt-24 px-5 w-full pb-32">
+            <div class="pt-32 px-5 w-full pb-32 bg-muted">
                 <div class="max-w-4xl mx-auto">
-                    <div class="bg-card rounded-lg shadow-lg p-6">
+                    <div class="bg-card p-5 rounded-xl">
                         <h1 class="text-2xl font-bold text-foreground mb-6">Thêm Sản Phẩm Mới</h1>
                         
                         <!-- Hiển thị message từ URL parameters -->
@@ -85,10 +85,9 @@
                                 <textarea
                                     name="description"
                                     id="description"
-                                    rows="4"
+                                    rows="6"
                                     placeholder="Nhập mô tả chi tiết về sản phẩm..."
-                                    class="w-full px-3 py-2 text-sm bg-background border border-input rounded-md placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all resize-none"
-                                ></textarea>
+                                    class="w-full px-3 py-2 text-sm bg-background border-input placeholder:text-muted-foreground  flex field-sizing-content min-h-16 w-full rounded-md border bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none md:text-sm"                                ></textarea>
                             </div>
 
                             <!-- Giá sản phẩm -->
@@ -168,14 +167,14 @@
                                 <button
                                     type="submit"
                                     id="submitButton"
-                                    class="flex-1 px-6 py-3 bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring transition-all"
+                                    class="flex-1 text-sm px-6 py-3 cursor-pointer bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring transition-all"
                                 >
                                     Thêm Sản Phẩm
                                 </button>
                                 <button
                                     type="button"
                                     onclick="resetForm()"
-                                    class="px-6 py-3 bg-secondary text-secondary-foreground rounded-md font-medium hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-ring transition-all"
+                                    class="text-sm px-6 cursor-pointer py-3 bg-secondary text-secondary-foreground rounded-md font-medium hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-ring transition-all"
                                 >
                                     Làm Mới
                                 </button>

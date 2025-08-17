@@ -17,7 +17,7 @@
     <body> 
         <div class="flex flex-col min-h-screen justify-between">
             <jsp:include page="./components/header.jsp" />
-            <div class="pt-24 px-5 w-full pb-32">
+            <div class="pt-24 px-5 w-full pb-32 bg-muted">
                 <div class="max-w-6xl mx-auto">
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         <% 
@@ -37,7 +37,7 @@
                                         mainImageUrl = images.get(0).getImageUrl();
                                     }
                         %>
-                            <a href="product?id=<%= product.getId() %>" class="block border rounded-lg overflow-hidden h-96 bg-card hover:shadow-xl transition-shadow">
+                            <a href="product?id=<%= product.getId() %>" class="block rounded-lg overflow-hidden h-96 bg-card hover:shadow-xl transition-shadow">
                                 <div class="h-[70%] w-full overflow-hidden">
                                     <% if (mainImageUrl != null && !mainImageUrl.isEmpty()) { %>
                                         <img class="h-full w-full object-cover hover:scale-105 transition-transform duration-300" 
@@ -79,7 +79,6 @@
                                                 <path d="M3.103 6.034h17.794"/>
                                                 <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/>
                                             </svg>
-                                            Thêm vào giỏ
                                         </button>
                                     </div>
                                 </div>
@@ -89,17 +88,8 @@
                             } else {
                         %>
                             <div class="col-span-full text-center py-12">
-                                <svg class="w-16 h-16 text-muted-foreground mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2v12a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
-                                </svg>
+                                <svg class="w-16 h-16 text-muted-foreground mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-database-icon lucide-database"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
                                 <h3 class="text-lg font-medium text-foreground mb-2">Chưa có sản phẩm nào</h3>
-                                <p class="text-muted-foreground">Hãy thêm sản phẩm đầu tiên để bắt đầu.</p>
-                                <a href="admin" class="inline-flex items-center justify-center gap-2 mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                    </svg>
-                                    Thêm sản phẩm
-                                </a>
                             </div>
                         <% 
                             }
