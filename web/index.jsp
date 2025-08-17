@@ -13,6 +13,12 @@
         <title>Trang Chủ</title>
         <link rel="stylesheet" href="./public/assets/styles/globals.css">
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <style>
+        /* Thêm vào head của trang */
+        .flex.justify-end {
+            justify-content: flex-end !important;
+        }
+        </style>
     </head>
     <body> 
         <div class="flex flex-col min-h-screen justify-between bg-muted">

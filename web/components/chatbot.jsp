@@ -8,9 +8,9 @@
 
 <!-- Popup Chatbot -->
 <div id="modal-chatbot" 
-    class="modal fixed bottom-20 w-[500px] h-[500px] left-5 bg-white rounded-lg shadow-lg hidden flex-col justify-between z-40">
+    class="modal fixed bottom-20 w-[600px] h-[700px] left-5 bg-white rounded-lg shadow-lg hidden flex-col justify-between z-40">
     <!-- Header -->
-    <div class="bg-primary text-white px-4 py-2 flex justify-between items-center rounded-t-lg">
+    <div class="bg-primary text-white px-4 py-4 flex justify-between items-center rounded-t-lg">
         <span class="font-semibold text-sm flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-brain-cog-icon lucide-brain-cog"><path d="m10.852 14.772-.383.923"/><path d="m10.852 9.228-.383-.923"/><path d="m13.148 14.772.382.924"/><path d="m13.531 8.305-.383.923"/><path d="m14.772 10.852.923-.383"/><path d="m14.772 13.148.923.383"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 0 0-5.63-1.446 3 3 0 0 0-.368 1.571 4 4 0 0 0-2.525 5.771"/><path d="M17.998 5.125a4 4 0 0 1 2.525 5.771"/><path d="M19.505 10.294a4 4 0 0 1-1.5 7.706"/><path d="M4.032 17.483A4 4 0 0 0 11.464 20c.18-.311.892-.311 1.072 0a4 4 0 0 0 7.432-2.516"/><path d="M4.5 10.291A4 4 0 0 0 6 18"/><path d="M6.002 5.125a3 3 0 0 0 .4 1.375"/><path d="m9.228 10.852-.923-.383"/><path d="m9.228 13.148-.923.383"/><circle cx="12" cy="12" r="3"/></svg>
              Hỗ trợ trực tuyến
@@ -26,7 +26,7 @@
     </div>
 
     <!-- Nội dung chat -->
-    <div id="chat-body" class="flex flex-col gap-2 p-4 overflow-y-auto h-96 text-sm">
+    <div id="chat-body" class="flex flex-col gap-2 p-4 overflow-y-auto h-full text-sm">
         <!-- Tin nhắn sẽ được load từ localStorage -->
     </div>
 
@@ -120,6 +120,7 @@
             if (this.chatInput) {
                 this.chatInput.focus();
             }
+            this.scrollToBottom();
         }
 
         closeModal() {
@@ -148,24 +149,30 @@
             if (!this.chatBody) return;
 
             const msgDiv = document.createElement("div");
-            msgDiv.className = `flex ${message.isUser ? 'justify-end' : 'justify-start'} mb-2`;
+            // Sử dụng style trực tiếp thay vì class
+            msgDiv.style.display = 'flex';
+            msgDiv.style.width = '100%';
+            msgDiv.style.marginBottom = '0.5rem';
+            msgDiv.style.justifyContent = message.isUser ? 'flex-end' : 'flex-start';
             msgDiv.setAttribute('data-message-id', message.id);
 
             const contentDiv = document.createElement("div");
-            contentDiv.className = `px-3 py-2 rounded-lg max-w-[75%] ${
+            contentDiv.className = `px-3 py-2 rounded-lg max-w-[75%] break-words ${
                 message.isUser 
-                    ? 'bg-blue-500 text-white' 
-                    : 'bg-gray-200 text-gray-800'
+                    ? 'bg-primary text-white rounded-tr-none' 
+                    : 'bg-gray-200 text-gray-800 rounded-tl-none'
             }`;
 
-            // Thêm nội dung tin nhắn
+            // Nội dung tin nhắn
             const textDiv = document.createElement("div");
             textDiv.textContent = message.content;
+            textDiv.style.textAlign = message.isUser ? 'right' : 'left'; // Thêm căn lề text
             contentDiv.appendChild(textDiv);
 
-            // Thêm timestamp
+            // Timestamp
             const timeSpan = document.createElement("span");
             timeSpan.className = "text-xs opacity-70 block mt-1";
+            timeSpan.style.textAlign = message.isUser ? 'right' : 'left'; // Căn lề timestamp
             timeSpan.textContent = message.timestamp;
             contentDiv.appendChild(timeSpan);
 
