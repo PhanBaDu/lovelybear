@@ -13,12 +13,6 @@
         <title>Trang Chủ</title>
         <link rel="stylesheet" href="./public/assets/styles/globals.css">
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-        <style>
-        /* Thêm vào head của trang */
-        .flex.justify-end {
-            justify-content: flex-end !important;
-        }
-        </style>
     </head>
     <body> 
         <div class="flex flex-col min-h-screen justify-between bg-muted">
@@ -44,42 +38,48 @@
                                         mainImageUrl = images.get(0).getImageUrl();
                                     }
                         %>
-                            <a href="product?id=<%= product.getId() %>" class="block rounded-lg overflow-hidden h-96 bg-card hover:shadow-xl transition-shadow">
+                            <div class="block rounded-lg overflow-hidden h-96 bg-card hover:shadow-xl transition-shadow">
+                                <!-- Phần hình ảnh - có thể click -->
                                 <div class="h-[70%] w-full overflow-hidden">
                                     <% if (mainImageUrl != null && !mainImageUrl.isEmpty()) { %>
-                                        <img class="h-full w-full object-cover hover:scale-105 transition-transform duration-300" 
-                                             src="<%= request.getContextPath() + mainImageUrl %>" 
-                                             alt="<%= product.getName() %>" />
+                                        <a href="product?id=<%= product.getId() %>" class="block h-full w-full">
+                                            <img class="h-full w-full object-cover hover:scale-105 transition-transform duration-300" 
+                                                src="<%= request.getContextPath() + mainImageUrl %>" 
+                                                alt="<%= product.getName() %>" />
+                                        </a>
                                     <% } else { %>
-                                        <div class="h-full w-full bg-muted flex items-center justify-center">
-                                            <svg class="w-16 h-16 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                            </svg>
-                                        </div>
+                                        <a href="product?id=<%= product.getId() %>" class="block h-full w-full">
+                                            <div class="h-full w-full bg-muted flex items-center justify-center">
+                                                <svg class="w-16 h-16 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                </svg>
+                                            </div>
+                                        </a>
                                     <% } %>
                                 </div>
+
                                 <div class="h-[30%] p-4 flex flex-col justify-between gap-2">
+                                    <!-- Tên sản phẩm - có thể click -->
                                     <div class="overflow-hidden">
-                                        <h3 class="text-sm font-medium text-foreground line-clamp-2">
+                                        <a href="product?id=<%= product.getId() %>" class="text-sm line-clamp-2">
                                             <%= product.getName() %>
-                                        </h3>
-                                        <% if (product.getDescription() != null && !product.getDescription().isEmpty()) { %>
-                                            <p class="text-xs text-muted-foreground line-clamp-1 mt-1">
-                                                <%= product.getDescription() %>
-                                            </p>
-                                        <% } %>
+                                        </a>
                                     </div>
+
                                     <div class="flex items-center justify-between">
-                                        <div class="flex items-center gap-1">
+                                        <!-- Giá tiền - có thể click -->
+                                        <a href="product?id=<%= product.getId() %>" class="flex items-center gap-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff2056" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                 <rect width="20" height="12" x="2" y="6" rx="2"/>
                                                 <circle cx="12" cy="12" r="2"/>
                                                 <path d="M6 12h.01M18 12h.01"/>
                                             </svg>
                                             <span class="text-primary font-semibold text-base">
-                                                <%= String.format("%,.0f", product.getPrice()) %>đ
+                                                <%= String.format("%,.0f", product.getPrice()) %>.000đ
                                             </span>
-                                        </div>
+                                        </a>
+
+                                        <!-- Nút thêm vào giỏ - KHÔNG có link -->
                                         <button class="bg-primary text-white shadow-xs hover:bg-primary/90 focus-visible:ring-primary/20 dark:focus-visible:ring-primary/40 dark:bg-primary/60 add button inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[6px] text-xs px-3 py-2 cursor-pointer transition-colors">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                 <path d="M16 10a4 4 0 0 1-8 0"/>
@@ -89,7 +89,7 @@
                                         </button>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
                         <% 
                                 }
                             } else {
