@@ -1,12 +1,12 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ * Servlet xử lý đăng ký tài khoản user
+ * Hỗ trợ upload ảnh profile từ base64
  */
 package data.controllers;
 
 import data.dao.Database;
 import data.models.User;
-import data.utils.Base64Utils;
+import data.utils.ImageUtils;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,46 +16,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- *
+ * Servlet xử lý đăng ký tài khoản
  * @author PC
  */
 @WebServlet(name = "signUpServlet", urlPatterns = {"/signup"})
 public class signUpServlet extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet signUpServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet signUpServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Xử lý request GET - hiển thị form đăng ký
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -65,9 +33,13 @@ public class signUpServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/");
             return;
         }
+        // Hiển thị trang đăng ký
         request.getRequestDispatcher("./views/signup.jsp").include(request, response);
     }
 
+    /**
+     * Xử lý request POST - xử lý đăng ký tài khoản
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -77,38 +49,45 @@ public class signUpServlet extends HttpServlet {
             return;
         }
 
+        // Lấy thông tin từ form
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String address = request.getParameter("address");
         String phoneNumber = request.getParameter("phoneNumber");
         String fullName = request.getParameter("fullName");
         String pictureProfileBase64 = request.getParameter("pictureProfileBase64");
+        String originalFileName = request.getParameter("originalFileName");
 
+        // Khởi tạo ImageUtils nếu chưa được khởi tạo
+        String realPath = getServletContext().getRealPath("/");
+        if (realPath != null) {
+            ImageUtils.initializePaths(realPath);
+        }
+        
+        // Xử lý lưu ảnh profile
+        String pictureProfilePath = null;
         if (pictureProfileBase64 != null && !pictureProfileBase64.isEmpty()) {
-            byte[] imageBytes = Base64Utils.decode(pictureProfileBase64);
-            if (imageBytes != null) {
-                System.err.println("Image bytes length: " + imageBytes.length);
+            pictureProfilePath = ImageUtils.saveUserImage(pictureProfileBase64, originalFileName);
+            if (pictureProfilePath == null) {
+                System.err.println("Lỗi khi lưu ảnh user");
             }
         }
 
-        User user = Database.getUserDao().createUser(email, phoneNumber, fullName, pictureProfileBase64, address, password);
+        // Tạo user mới
+        User user = Database.getUserDao().createUser(email, phoneNumber, fullName, pictureProfilePath, address, password);
         if (user == null) {
-            request.getSession().setAttribute("login_err", "You infomation login is incorrect");
+            // Đăng ký thất bại
+            request.getSession().setAttribute("login_err", "Thông tin đăng ký không chính xác");
             response.sendRedirect("signup");
         } else {
+            // Đăng ký thành công - đăng nhập luôn
             request.getSession().setAttribute("user", user);
             response.sendRedirect(request.getContextPath());
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Servlet xử lý đăng ký tài khoản";
+    }
 }

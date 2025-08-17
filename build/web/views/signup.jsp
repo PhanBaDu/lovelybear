@@ -153,6 +153,11 @@
                     name="pictureProfileBase64"
                     id="pictureProfileBase64"
                 />
+                <input
+                    type="hidden"
+                    name="originalFileName"
+                    id="originalFileName"
+                />
             </div>
 
             <!-- Submit Button -->
@@ -172,6 +177,9 @@
         </form>
     </div>
 
+    <!-- Include image upload JavaScript -->
+    <script src="${pageContext.request.contextPath}/public/assets/js/image-upload.js"></script>
+    
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const fileInput = document.getElementById("pictureProfile");
@@ -185,51 +193,61 @@
           "pictureProfileBase64"
         );
 
+        // Sử dụng ImageUploader class từ image-upload.js
+        imageUploader.handleImageSelect = function(file, callback) {
+          // Kiểm tra loại file
+          const validTypes = [
+            "image/jpeg",
+            "image/jpg",
+            "image/png",
+            "image/gif",
+            "image/webp",
+          ];
+          if (!validTypes.includes(file.type)) {
+            alert("Vui lòng chọn file ảnh hợp lệ (JPG, PNG, GIF, WebP)");
+            return;
+          }
+
+          // Kiểm tra kích thước file (tối đa 5MB)
+          const maxSize = 5 * 1024 * 1024; // 5MB
+          if (file.size > maxSize) {
+            alert("File ảnh quá lớn. Vui lòng chọn file nhỏ hơn 5MB");
+            return;
+          }
+
+          // Sử dụng FileReader để đọc file
+          const reader = new FileReader();
+
+          reader.onload = function (e) {
+            // Hiển thị ảnh preview
+            imagePreview.src = e.target.result;
+            imagePreviewContainer.classList.remove("hidden");
+            uploadLabel.classList.add("hidden");
+
+            // Lưu base64 string vào hidden input
+            const base64String = e.target.result.split(",")[1]; // Lấy phần base64 sau dấu phẩy
+            pictureProfileBase64Input.value = base64String;
+            
+            // Lưu tên file gốc
+            const originalFileNameInput = document.getElementById("originalFileName");
+            if (originalFileNameInput) {
+              originalFileNameInput.value = file.name;
+            }
+          };
+
+          reader.onerror = function () {
+            alert("Có lỗi xảy ra khi đọc file ảnh");
+          };
+
+          // Đọc file dưới dạng data URL
+          reader.readAsDataURL(file);
+        };
+
         // Lắng nghe sự kiện thay đổi file
         fileInput.addEventListener("change", function (event) {
           const file = event.target.files[0];
-
           if (file) {
-            // Kiểm tra loại file
-            const validTypes = [
-              "image/jpeg",
-              "image/jpg",
-              "image/png",
-              "image/gif",
-              "image/webp",
-            ];
-            if (!validTypes.includes(file.type)) {
-              alert("Vui lòng chọn file ảnh hợp lệ (JPG, PNG, GIF, WebP)");
-              return;
-            }
-
-            // Kiểm tra kích thước file (ví dụ: tối đa 5MB)
-            const maxSize = 5 * 1024 * 1024; // 5MB
-            if (file.size > maxSize) {
-              alert("File ảnh quá lớn. Vui lòng chọn file nhỏ hơn 5MB");
-              return;
-            }
-
-            // Sử dụng FileReader để đọc file
-            const reader = new FileReader();
-
-            reader.onload = function (e) {
-              // Hiển thị ảnh preview
-              imagePreview.src = e.target.result;
-              imagePreviewContainer.classList.remove("hidden");
-              uploadLabel.classList.add("hidden");
-
-              // Lưu base64 string vào hidden input
-              const base64String = e.target.result.split(",")[1]; // Lấy phần base64 sau dấu phẩy
-              pictureProfileBase64Input.value = base64String;
-            };
-
-            reader.onerror = function () {
-              alert("Có lỗi xảy ra khi đọc file ảnh");
-            };
-
-            // Đọc file dưới dạng data URL
-            reader.readAsDataURL(file);
+            imageUploader.handleImageSelect(file);
           }
         });
 
@@ -243,6 +261,12 @@
           // Reset input file và base64
           fileInput.value = "";
           pictureProfileBase64Input.value = "";
+          
+          // Xóa tên file gốc
+          const originalFileNameInput = document.getElementById("originalFileName");
+          if (originalFileNameInput) {
+            originalFileNameInput.value = "";
+          }
         });
 
         // Xử lý drag & drop (tùy chọn)

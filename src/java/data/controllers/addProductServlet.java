@@ -1,6 +1,6 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ * Servlet xử lý thêm sản phẩm mới
+ * Hỗ trợ upload nhiều ảnh sản phẩm từ multipart form
  */
 package data.controllers;
 
@@ -13,8 +13,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import java.util.Enumeration;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
@@ -24,9 +22,10 @@ import data.dao.ProductDao;
 import data.dao.ProductImageDao;
 import data.models.Product;
 import data.models.ProductImage;
+import data.utils.ImageUtils;
 
 /**
- *
+ * Servlet xử lý thêm sản phẩm mới
  * @author PC
  */
 @WebServlet(name = "addProductServlet", urlPatterns = {"/add-product"})
@@ -37,16 +36,8 @@ import data.models.ProductImage;
 )
 public class addProductServlet extends HttpServlet {
 
-
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Xử lý request GET - hiển thị form thêm sản phẩm
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -56,69 +47,12 @@ public class addProductServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         try (PrintWriter out = response.getWriter()) {
-            // Lấy message từ session hoặc request parameters
+            // Lấy message từ request parameters
             String successMessage = request.getParameter("success");
             String errorMessage = request.getParameter("error");
             
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Thêm sản phẩm mới</title>");
-            out.println("<meta charset='UTF-8'>");
-            out.println("<style>");
-            out.println("body { font-family: Arial, sans-serif; margin: 20px; }");
-            out.println(".message { padding: 10px; margin: 10px 0; border-radius: 5px; }");
-            out.println(".success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }");
-            out.println(".error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }");
-            out.println(".form-group { margin-bottom: 15px; }");
-            out.println("label { display: block; margin-bottom: 5px; font-weight: bold; }");
-            out.println("input[type='text'], textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }");
-            out.println("button { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }");
-            out.println("button:hover { background-color: #0056b3; }");
-            out.println("</style>");
-            out.println("</head>");
-            out.println("<body>");
-            
-            out.println("<h1>Thêm sản phẩm mới</h1>");
-            
-            // Hiển thị message nếu có
-            if (successMessage != null && !successMessage.trim().isEmpty()) {
-                out.println("<div class='message success'>" + successMessage + "</div>");
-            }
-            if (errorMessage != null && !errorMessage.trim().isEmpty()) {
-                out.println("<div class='message error'>" + errorMessage + "</div>");
-            }
-            
-            // Form thêm sản phẩm
-            out.println("<form action='" + request.getContextPath() + "/add-product' method='POST' enctype='multipart/form-data'>");
-            out.println("<div class='form-group'>");
-            out.println("<label for='productName'>Tên sản phẩm:</label>");
-            out.println("<input type='text' id='productName' name='productName' required>");
-            out.println("</div>");
-            
-            out.println("<div class='form-group'>");
-            out.println("<label for='description'>Mô tả:</label>");
-            out.println("<textarea id='description' name='description' rows='3'></textarea>");
-            out.println("</div>");
-            
-            out.println("<div class='form-group'>");
-            out.println("<label for='price'>Giá:</label>");
-            out.println("<input type='text' id='price' name='price' required placeholder='Ví dụ: 100000'>");
-            out.println("</div>");
-            
-            out.println("<div class='form-group'>");
-            out.println("<label for='image'>Hình ảnh:</label>");
-            out.println("<input type='file' id='image' name='image' accept='image/*' multiple>");
-            out.println("</div>");
-            
-            out.println("<button type='submit'>Thêm sản phẩm</button>");
-            out.println("</form>");
-            
-            out.println("<br>");
-            out.println("<a href='" + request.getContextPath() + "/admin'>← Quay lại trang Admin</a>");
-            
-            out.println("</body>");
-            out.println("</html>");
+            // Hiển thị HTML form
+            renderAddProductForm(out, successMessage, errorMessage, request.getContextPath());
         }
     }
 
@@ -280,35 +214,26 @@ public class addProductServlet extends HttpServlet {
                 fileName = "image_" + System.currentTimeMillis() + ".jpg";
             }
             
-            // Tạo thư mục uploads nếu chưa tồn tại
-            String uploadPath = getServletContext().getRealPath("/uploads/products");
-            java.io.File uploadDir = new java.io.File(uploadPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
+            // Khởi tạo ImageUtils nếu chưa được khởi tạo
+            String realPath = getServletContext().getRealPath("/");
+            if (realPath != null) {
+                ImageUtils.initializePaths(realPath);
             }
             
-            // Tạo tên file an toàn theo format: upload/pro/name_ảnh
-            String safeFileName = fileName.replaceAll("[^a-zA-Z0-9.-]", "_");
-            String finalFileName = "upload_pro_" + System.currentTimeMillis() + "_" + safeFileName;
-            String filePath = uploadPath + java.io.File.separator + finalFileName;
+            // Chuyển đổi Part thành base64 để sử dụng ImageUtils
+            byte[] fileBytes = filePart.getInputStream().readAllBytes();
+            String base64Data = java.util.Base64.getEncoder().encodeToString(fileBytes);
             
-            // Lưu file
-            try (java.io.InputStream input = filePart.getInputStream();
-                 java.io.FileOutputStream output = new java.io.FileOutputStream(filePath)) {
-                
-                byte[] buffer = new byte[1024];
-                int length;
-                while ((length = input.read(buffer)) > 0) {
-                    output.write(buffer, 0, length);
-                }
+            // Sử dụng ImageUtils để lưu file
+            String imageUrl = ImageUtils.saveProductImage(base64Data, fileName);
+            
+            if (imageUrl != null) {
+                System.out.println("File đã được lưu bằng ImageUtils: " + imageUrl);
+                return imageUrl;
+            } else {
+                System.err.println("Lỗi: ImageUtils.saveProductImage() trả về null");
+                return null;
             }
-            
-            // Trả về URL tương đối
-            String imageUrl = "/uploads/products/" + finalFileName;
-            System.out.println("File đã được lưu: " + filePath);
-            System.out.println("URL hình ảnh: " + imageUrl);
-            
-            return imageUrl;
             
         } catch (Exception e) {
             System.err.println("Lỗi khi lưu file: " + e.getMessage());
@@ -369,6 +294,71 @@ public class addProductServlet extends HttpServlet {
             // Fallback: redirect về admin không có error message
             response.sendRedirect(request.getContextPath() + "/admin");
         }
+    }
+
+    /**
+     * Hiển thị HTML form thêm sản phẩm
+     */
+    private void renderAddProductForm(PrintWriter out, String successMessage, String errorMessage, String contextPath) {
+        out.println("<!DOCTYPE html>");
+        out.println("<html>");
+        out.println("<head>");
+        out.println("<title>Thêm sản phẩm mới</title>");
+        out.println("<meta charset='UTF-8'>");
+        out.println("<style>");
+        out.println("body { font-family: Arial, sans-serif; margin: 20px; }");
+        out.println(".message { padding: 10px; margin: 10px 0; border-radius: 5px; }");
+        out.println(".success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }");
+        out.println(".error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }");
+        out.println(".form-group { margin-bottom: 15px; }");
+        out.println("label { display: block; margin-bottom: 5px; font-weight: bold; }");
+        out.println("input[type='text'], textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }");
+        out.println("button { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }");
+        out.println("button:hover { background-color: #0056b3; }");
+        out.println("</style>");
+        out.println("</head>");
+        out.println("<body>");
+        
+        out.println("<h1>Thêm sản phẩm mới</h1>");
+        
+        // Hiển thị message nếu có
+        if (successMessage != null && !successMessage.trim().isEmpty()) {
+            out.println("<div class='message success'>" + successMessage + "</div>");
+        }
+        if (errorMessage != null && !errorMessage.trim().isEmpty()) {
+            out.println("<div class='message error'>" + errorMessage + "</div>");
+        }
+        
+        // Form thêm sản phẩm
+        out.println("<form action='" + contextPath + "/add-product' method='POST' enctype='multipart/form-data'>");
+        out.println("<div class='form-group'>");
+        out.println("<label for='productName'>Tên sản phẩm:</label>");
+        out.println("<input type='text' id='productName' name='productName' required>");
+        out.println("</div>");
+        
+        out.println("<div class='form-group'>");
+        out.println("<label for='description'>Mô tả:</label>");
+        out.println("<textarea id='description' name='description' rows='3'></textarea>");
+        out.println("</div>");
+        
+        out.println("<div class='form-group'>");
+        out.println("<label for='price'>Giá:</label>");
+        out.println("<input type='text' id='price' name='price' required placeholder='Ví dụ: 100000'>");
+        out.println("</div>");
+        
+        out.println("<div class='form-group'>");
+        out.println("<label for='image'>Hình ảnh:</label>");
+        out.println("<input type='file' id='image' name='image' accept='image/*' multiple>");
+        out.println("</div>");
+        
+        out.println("<button type='submit'>Thêm sản phẩm</button>");
+        out.println("</form>");
+        
+        out.println("<br>");
+        out.println("<a href='" + contextPath + "/admin'>← Quay lại trang Admin</a>");
+        
+        out.println("</body>");
+        out.println("</html>");
     }
 
     /**

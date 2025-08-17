@@ -51,7 +51,7 @@
                             <c:when test="${not empty user.pictureProfile}">
                                 <!-- Có ảnh đại diện -->
                                 <img 
-                                    src="data:image/jpeg;base64,${user.pictureProfile}" 
+                                    src="${pageContext.request.contextPath}${user.pictureProfile}" 
                                     alt="${user.fullName}" 
                                     class="w-10 h-10 rounded-lg object-cover"
                                 />

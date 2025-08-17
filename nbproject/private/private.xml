@@ -5,6 +5,8 @@
         <group>
             <file>file:/C:/Users/PC/Desktop/decor/web/views/admin.jsp</file>
             <file>file:/C:/Users/PC/Desktop/decor/src/java/data/controllers/addProductServlet.java</file>
+            <file>file:/C:/Users/PC/Desktop/decor/src/java/data/controllers/adminServlet.java</file>
+            <file>file:/C:/Users/PC/Desktop/decor/web/index.jsp</file>
         </group>
     </open-files>
 </project-private>
