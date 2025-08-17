@@ -24,4 +24,8 @@ public class Database {
     public static ProductImageDao getProductImageDao() {
         return new ProductImageImplementation();
     }
+    
+    public static CartDao getCartDao() {
+        return new data.implementations.CartImplementation();
+    }
 }
