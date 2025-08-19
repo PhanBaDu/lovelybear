@@ -4,8 +4,8 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Cột 1: Về chúng tôi -->
             <div class="space-y-4">
-                <h3 class="text-xl font-bold text-background">Công ty LovelyBear</h3>
-                <p class="text-background text-sm leading-relaxed">
+                <h3 class="text-base font-bold text-background">Công ty LovelyBear</h3>
+                <p class="text-background leading-relaxed text-xs">
                     Chúng tôi là công ty hàng đầu trong lĩnh vực công nghệ, 
                     mang đến những giải pháp tốt nhất cho khách hàng.
                 </p>
@@ -30,49 +30,49 @@
 
             <!-- Cột 2: Dịch vụ -->
             <div class="space-y-4">
-                <h3 class="text-lg font-semibold text-background">Dịch vụ</h3>
+                <h3 class="text-sm font-semibold text-background">Dịch vụ</h3>
                 <ul class="space-y-2">
-                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-sm">Phát triển Web</a></li>
-                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-sm">Ứng dụng Mobile</a></li>
-                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-sm">Digital Marketing</a></li>
-                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-sm">Tư vấn IT</a></li>
-                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-sm">Cloud Services</a></li>
+                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-xs">Phát triển Web</a></li>
+                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-xs">Ứng dụng Mobile</a></li>
+                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-xs">Digital Marketing</a></li>
+                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-xs">Tư vấn IT</a></li>
+                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-xs">Cloud Services</a></li>
                 </ul>
             </div>
 
             <!-- Cột 3: Liên kết -->
             <div class="space-y-4">
-                <h3 class="text-lg font-semibold text-background">Liên kết</h3>
+                <h3 class="text-sm font-semibold text-background">Liên kết</h3>
                 <ul class="space-y-2">
-                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-sm">Về chúng tôi</a></li>
-                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-sm">Dự án</a></li>
-                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-sm">Tin tức</a></li>
-                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-sm">Careers</a></li>
-                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-sm">Liên hệ</a></li>
+                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-xs">Về chúng tôi</a></li>
+                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-xs">Dự án</a></li>
+                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-xs">Tin tức</a></li>
+                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-xs">Careers</a></li>
+                    <li><a href="#" class="text-background hover:text-white transition-colors duration-300 text-xs">Liên hệ</a></li>
                 </ul>
             </div>
 
             <!-- Cột 4: Thông tin liên hệ -->
             <div class="space-y-4">
-                <h3 class="text-lg font-semibold text-background">Liên hệ</h3>
+                <h3 class="text-sm font-semibold text-background">Liên hệ</h3>
                 <div class="space-y-3">
                     <div class="flex items-center space-x-3">
                         <svg class="w-5 h-5 text-background" fill="#fff" viewBox="0 0 24 24">
                             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                         </svg>
-                        <span class="text-background text-sm">123 Đường ABC, Quận 1, TP.HCM</span>
+                        <span class="text-background text-xs">123 Đường ABC, Quận 1, TP.HCM</span>
                     </div>
                     <div class="flex items-center space-x-3">
                         <svg class="w-5 h-5 text-blue-400" fill="#fff" viewBox="0 0 24 24">
                             <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
                         </svg>
-                        <span class="text-background text-sm">+84 123 456 789</span>
+                        <span class="text-background text-xs">+84 123 456 789</span>
                     </div>
                     <div class="flex items-center space-x-3">
                         <svg class="w-5 h-5 text-background" fill="#fff" viewBox="0 0 24 24">
                             <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
                         </svg>
-                        <span class="text-background text-sm">info@company.com</span>
+                        <span class="text-background text-xs">info@company.com</span>
                     </div>
                 </div>
             </div>
@@ -82,13 +82,13 @@
     <!-- Bottom bar -->
     <div class="max-w-6xl mx-auto px-4 py-4">
         <div class="flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0">
-            <div class="text-background text-sm">
+            <div class="text-background text-xs">
                 © 2024 Công ty LovelyBear. Tất cả các quyền được bảo lưu.
             </div>
             <div class="flex space-x-6">
-                <a href="#" class="text-background hover:text-white transition-colors duration-300 text-sm">Chính sách bảo mật</a>
-                <a href="#" class="text-background hover:text-white transition-colors duration-300 text-sm">Điều khoản sử dụng</a>
-                <a href="#" class="text-background hover:text-white transition-colors duration-300 text-sm">Cookie Policy</a>
+                <a href="#" class="text-background hover:text-white transition-colors duration-300 text-xs">Chính sách bảo mật</a>
+                <a href="#" class="text-background hover:text-white transition-colors duration-300 text-xs">Điều khoản sử dụng</a>
+                <a href="#" class="text-background hover:text-white transition-colors duration-300 text-xs">Cookie Policy</a>
             </div>
         </div>
     </div>
