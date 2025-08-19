@@ -24,7 +24,7 @@
                         %>
                         
                         <% if (successMessage != null && !successMessage.trim().isEmpty()) { %>
-                            <div id="successMessage" class="mb-6 p-4 bg-green-50 border border-green-200 rounded-md">
+                            <div id="successMessage" class="mb-6 p-4 bg-green-50 border border-green-500 rounded-md">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center">
                                         <svg class="w-5 h-5 text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -42,7 +42,7 @@
                         <% } %>
                         
                         <% if (errorMessage != null && !errorMessage.trim().isEmpty()) { %>
-                            <div id="errorMessage" class="mb-6 p-4 bg-red-50 border border-red-200 rounded-md">
+                            <div id="errorMessage" class="mb-6 p-4 bg-red-50 border border-red-500 rounded-md">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center">
                                         <svg class="w-5 h-5 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -209,14 +209,14 @@
                         // Kiểm tra loại file
                         const validTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp"];
                         if (!validTypes.includes(file.type)) {
-                            alert(`File ${file.name} không hợp lệ. Vui lòng chọn file ảnh (JPG, PNG, GIF, WebP)`);
+                            alert('File ' + file.name + ' không hợp lệ. Vui lòng chọn file ảnh (JPG, PNG, GIF, WebP)');
                             return;
                         }
 
                         // Kiểm tra kích thước file
                         const maxSize = 5 * 1024 * 1024; // 5MB
                         if (file.size > maxSize) {
-                            alert(`File ${file.name} quá lớn. Vui lòng chọn file nhỏ hơn 5MB`);
+                            alert('File ' + file.name + ' quá lớn. Vui lòng chọn file nhỏ hơn 5MB');
                             return;
                         }
 
@@ -234,7 +234,7 @@
                         });
 
                         if (isDuplicate) {
-                            alert(`File ${file.name} đã được chọn`);
+                            alert('File ' + file.name + ' đã được chọn');
                             return;
                         }
 
@@ -291,8 +291,8 @@
                     };
 
                     reader.onerror = function (error) {
-                        console.error(`Lỗi đọc file ${file.name}:`, error);
-                        alert(`Có lỗi xảy ra khi đọc file ${file.name}`);
+                        console.error('Lỗi đọc file ' + file.name + ':', error);
+                        alert('Có lỗi xảy ra khi đọc file ' + file.name);
                     };
 
                     reader.readAsDataURL(file);

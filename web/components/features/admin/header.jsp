@@ -5,7 +5,7 @@
     <!-- Logo Section -->
     <div class="flex-1 flex items-center">
         <a href="${pageContext.request.contextPath}">
-            <img class="w-56" src="./public/assets/images/logo/logo-primary.svg" alt="Logo"/>
+            <img class="w-56" src="./public/assets/images/logo/logo.svg" alt="Logo"/>
         </a>
         <div class="flex-1 flex justify-end items-center gap-4">
             <a href="${pageContext.request.contextPath}">

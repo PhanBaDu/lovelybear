@@ -71,7 +71,7 @@ decor/
 │   │   │   ├── 📁 images/
 │   │   │   │   └── 📁 logo/
 │   │   │   │       ├── 📄 logo-decor-primary.svg
-│   │   │   │       └── 📄 logo-primary.svg
+│   │   │   │       └── 📄 logo.svg
 │   │   │   ├── 📁 icons/
 │   │   │   │   └── 📄 search.svg
 │   │   │   └── 📁 fonts/

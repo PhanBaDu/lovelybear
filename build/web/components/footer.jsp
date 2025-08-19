@@ -4,7 +4,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Cột 1: Về chúng tôi -->
             <div class="space-y-4">
-                <h3 class="text-xl font-bold text-background">Công ty ABC</h3>
+                <h3 class="text-xl font-bold text-background">Công ty LovelyBear</h3>
                 <p class="text-background text-sm leading-relaxed">
                     Chúng tôi là công ty hàng đầu trong lĩnh vực công nghệ, 
                     mang đến những giải pháp tốt nhất cho khách hàng.
@@ -83,7 +83,7 @@
     <div class="max-w-6xl mx-auto px-4 py-4">
         <div class="flex flex-col md:flex-row justify-between items-center space-y-2 md:space-y-0">
             <div class="text-background text-sm">
-                © 2024 Công ty ABC. Tất cả các quyền được bảo lưu.
+                © 2024 Công ty LovelyBear. Tất cả các quyền được bảo lưu.
             </div>
             <div class="flex space-x-6">
                 <a href="#" class="text-background hover:text-white transition-colors duration-300 text-sm">Chính sách bảo mật</a>

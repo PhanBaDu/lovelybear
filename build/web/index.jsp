@@ -78,7 +78,7 @@
                                 <div class="h-[30%] p-4 flex flex-col justify-between gap-2">
                                     <!-- Tên sản phẩm - có thể click -->
                                     <div class="overflow-hidden">
-                                        <a href="product?id=<%= product.getId() %>" class="text-sm line-clamp-2">
+                                        <a href="product?id=<%= product.getId() %>" class="text-sm line-clamp-2 text-secondary-foreground">
                                             <%= product.getName() %>
                                         </a>
                                     </div>
@@ -86,12 +86,7 @@
                                     <div class="flex items-center justify-between">
                                         <!-- Giá tiền - có thể click -->
                                         <a href="product?id=<%= product.getId() %>" class="flex items-center gap-1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff2056" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <rect width="20" height="12" x="2" y="6" rx="2"/>
-                                                <circle cx="12" cy="12" r="2"/>
-                                                <path d="M6 12h.01M18 12h.01"/>
-                                            </svg>
-                                            <span class="text-primary font-semibold text-base">
+                                            <span class="text-primary font-extrabold text-base">
                                                 <%= String.format("%,.0f", product.getPrice()) %>.000đ
                                             </span>
                                         </a>
@@ -117,11 +112,9 @@
                                         
                                         <% if (isInCart) { %>
                                             <!-- Sản phẩm đã có trong giỏ hàng -->
-                                            <button disabled class="bg-gray-400 text-white shadow-xs inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[6px] text-xs px-3 py-2 cursor-not-allowed">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                    <path d="m20 6-8.5 8.5L9 12"/>
-                                                </svg>
-                                                Đã có trong giỏ
+                                            <button disabled class="bg-[#e7000b]/10 border border-destructive text-white shadow-xs inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[6px] text-xs px-3 py-2 cursor-pointer">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="text-destructive" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                                <p class="font-medium text-xs text-destructive">Xóa khỏi giỏ</p>
                                             </button>
                                         <% } else { %>
                                             <!-- Sản phẩm chưa có trong giỏ hàng -->
@@ -131,7 +124,6 @@
                                                     <path d="M3.103 6.034h17.794"/>
                                                     <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/>
                                                 </svg>
-                                                Thêm vào giỏ
                                             </button>
                                         <% } %>
                                     </div>
@@ -141,9 +133,9 @@
                                 }
                             } else {
                         %>
-                            <div class="col-span-full text-center py-12">
-                                <svg class="w-16 h-16 text-muted-foreground mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-database-icon lucide-database"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
-                                <h3 class="text-lg font-medium text-foreground mb-2">Chưa có sản phẩm nào</h3>
+                            <div class="col-span-full mt-32 w-full flex flex-col items-center justify-center text-center gap-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="text-muted-foreground" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-notepad-text-dashed-icon lucide-notepad-text-dashed"><path d="M8 2v4"/><path d="M12 2v4"/><path d="M16 2v4"/><path d="M16 4h2a2 2 0 0 1 2 2v2"/><path d="M20 12v2"/><path d="M20 18v2a2 2 0 0 1-2 2h-1"/><path d="M13 22h-2"/><path d="M7 22H6a2 2 0 0 1-2-2v-2"/><path d="M4 14v-2"/><path d="M4 8V6a2 2 0 0 1 2-2h2"/><path d="M8 10h6"/><path d="M8 14h8"/><path d="M8 18h5"/></svg>
+                                <h3 class="text-lg font-medium text-muted-foreground">Chưa có sản phẩm nào !</h3>
                             </div>
                         <% 
                             }
