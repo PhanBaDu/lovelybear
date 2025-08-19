@@ -56,14 +56,14 @@
                             <!-- Bảng giỏ hàng với layout giống Shopee -->
                             <div class="bg-white rounded-lg shadow-sm">
                                 <!-- Headers -->
-                                <div class="grid grid-cols-12 gap-4 p-4 border-b border-gray-200 bg-gray-50 font-medium text-sm text-gray-600">
-                                    <div class="col-span-1">
+                                <div class="grid grid-cols-12 gap-0 p-4 border-b border-gray-200 bg-gray-50 font-medium text-sm text-gray-600">
+                                    <div class="col-span-1 flex justify-center">
                                         <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)" class="rounded border-gray-300">
                                     </div>
-                                    <div class="col-span-5">Sản Phẩm</div>
-                                    <div class="col-span-2">Đơn Giá</div>
-                                    <div class="col-span-2">Số Lượng</div>
-                                    <div class="col-span-2">Số Tiền</div>
+                                    <div class="col-span-5 text-left">Sản Phẩm</div>
+                                    <div class="col-span-2 text-center">Đơn Giá</div>
+                                    <div class="col-span-2 text-center">Số Lượng</div>
+                                    <div class="col-span-2 text-center">Số Tiền</div>
                                 </div>
                                 
                                 <!-- Shop Section -->
@@ -82,8 +82,8 @@
                                         }
                                     %>
                                         <div class="p-4 border-b border-gray-100 last:border-b-0">
-                                            <div class="grid grid-cols-12 gap-4 items-center">
-                                                <div class="col-span-1">
+                                            <div class="grid grid-cols-12 gap-0 items-center">
+                                                <div class="col-span-1 flex justify-center">
                                                     <input type="checkbox" class="product-checkbox rounded border-gray-300" data-item-id="<%= item.getId() %>">
                                                 </div>
                                                 <div class="col-span-5">
@@ -104,21 +104,21 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-span-2">
-                                                    <div class="text-right">
+                                                <div class="col-span-2 flex justify-center">
+                                                    <div class="text-center">
                                                         <p class="text-gray-400 line-through text-sm">₫<%= String.format("%,.0f", item.getPrice().multiply(new BigDecimal("1.3")).doubleValue()) %></p>
                                                         <p class="text-red-500 font-medium">₫<%= String.format("%,.0f", item.getPrice()) %></p>
                                                     </div>
                                                 </div>
-                                                <div class="col-span-2">
+                                                <div class="col-span-2 flex justify-center">
                                                     <div class="flex items-center border border-gray-300 rounded-lg">
                                                         <button onclick="updateQuantity(<%= item.getId() %>, <%= item.getQuantity() - 1 %>)" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-100">-</button>
                                                         <input type="number" value="<%= item.getQuantity() %>" min="1" class="w-12 h-8 text-center border-0 focus:ring-0 text-sm" onchange="updateQuantity(<%= item.getId() %>, this.value)">
                                                         <button onclick="updateQuantity(<%= item.getId() %>, <%= item.getQuantity() + 1 %>)" class="w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-100">+</button>
                                                     </div>
                                                 </div>
-                                                <div class="col-span-2">
-                                                    <div class="text-right">
+                                                <div class="col-span-2 flex justify-center">
+                                                    <div class="text-center">
                                                         <p class="text-red-500 font-medium">₫<%= String.format("%,.0f", itemTotal) %></p>
                                                     </div>
                                                 </div>
