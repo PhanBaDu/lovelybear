@@ -39,7 +39,7 @@
                     Integer cartItemCount = (Integer) session.getAttribute("cartItemCount");
                     int __count = cartItemCount != null ? cartItemCount : 0;
                     %>
-                    <p id="cart-count-badge" class="absolute -top-2.5 -right-2.5 w-5 h-5 text-center flex items-center justify-center bg-red-500/90 border rounded-full text-[10px] font-bold text-background" style="<%= (__count > 0) ? "" : "display:none;" %>"><%= __count %></p>
+                    <p id="cart-count-badge" class="absolute -top-2.5 -right-2.5 w-5 h-5 text-center flex items-center justify-center bg-red-500/90 border border-red-500 rounded-full text-[10px] font-bold text-background" style="<%= (__count > 0) ? "" : "display:none;" %>"><%= __count %></p>
                 </a>
             </div>
         </c:if>
