@@ -34,6 +34,53 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
  
+/* Ẩn nút tăng/giảm trên Chrome, Edge, Safari */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Ẩn nút tăng/giảm trên Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+@layer base {
+    ::-webkit-scrollbar-thumb {
+        background: #0f172a; /* light mode */
+        border-radius: 4px;
+    }
+
+    html.dark ::-webkit-scrollbar-thumb {
+        background: #ffffff; /* dark mode */
+    }
+}
+
+::-webkit-scrollbar-thumb:hover {
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 4px;
+}
+
+
 /* === Background color classes === */
 .bg-background { background-color: var(--background); }
 .bg-foreground { background-color: var(--foreground); }

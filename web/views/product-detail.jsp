@@ -11,33 +11,33 @@
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
         <title><%= ((Product)request.getAttribute("product")).getName() %></title>
     </head>
-    <body class="bg-light-gray">
+    <body >
         <div class="flex flex-col min-h-screen bg-muted">
             <jsp:include page="../components/header.jsp" />
             
             <div class="pt-24 pb-32">
                 <div class="max-w-6xl mx-auto px-5">
                     <% 
-                    Product product = (Product) request.getAttribute("product");
-                    List<ProductImage> images = (List<ProductImage>) request.getAttribute("images");
-                    String mainImageUrl = null;
-                    if (images != null && !images.isEmpty()) {
-                        mainImageUrl = images.get(0).getImageUrl();
-                    }
+                        Product product = (Product) request.getAttribute("product");
+                        List<ProductImage> images = (List<ProductImage>) request.getAttribute("images");
+                        String mainImageUrl = null;
+                        if (images != null && !images.isEmpty()) {
+                            mainImageUrl = images.get(0).getImageUrl();
+                        }
                     %>
                     
-                    <div class="bg-white rounded-xl p-5">
+                    <div class="bg-background rounded-xl p-5">
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
                             <!-- Left Column - Product Images -->
                             <div class="space-y-6">
                                 <!-- Main Product Image -->
-                                <div class="relative">
+                                <div class="relative w-full">
                                     <% if (mainImageUrl != null && !mainImageUrl.isEmpty()) { %>
                                         <img 
                                             id="mainImage"
                                             src="<%= request.getContextPath() + mainImageUrl %>" 
                                             alt="<%= product.getName() %>"
-                                            class="w-full h-96 object-cover rounded-lg product-image-border"
+                                            class="w-full h-[500px] object-cover rounded-lg product-image-border"
                                         />
                                     <% } else { %>
                                         <div class="w-full h-96 bg-gray-200 rounded-lg product-image-border flex items-center justify-center">
@@ -50,9 +50,9 @@
                                 
                                 <!-- Thumbnail Images -->
                                 <% if (images != null && !images.isEmpty()) { %>
-                                <div class="flex space-x-4">
-                                    <% for (int i = 0; i < Math.min(images.size(), 3); i++) { %>
-                                        <div class="w-20 h-20 rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity">
+                                <div class="flex gap-2 overflow-x-auto p-2 scrollbar-hide bg-muted">
+                                    <% for (int i = 0; i < images.size(); i++) { %>
+                                        <div class="w-20 h-20 rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity flex-shrink-0">
                                             <img 
                                                 src="<%= request.getContextPath() + images.get(i).getImageUrl() %>" 
                                                 alt="<%= product.getName() %> - Ảnh <%= i+1 %>"
@@ -66,85 +66,69 @@
                             </div>
                             
                             <!-- Right Column - Product Details -->
-                            <div class="space-y-6">
-                                <!-- Report Link -->
-                                <div class="text-right">
-                                    <a href="#" class="text-sm text-gray-500 hover:text-gray-700">Tố cáo</a>
-                                </div>
-                                
-                                <!-- Product Title -->
-                                <h1 class="text-2xl font-semibold text-gray-800 leading-tight">
-                                    <%= product.getName() %>
-                                </h1>
-                                
-                                <!-- Rating -->
-                                <div class="text-sm text-gray-600">
-                                    Chưa Có Đánh Giá
-                                </div>
-                                
-                                <!-- Price -->
-                                <div class="text-3xl font-bold price-color">
-                                    ₫<%= String.format("%,.0f", product.getPrice()) %>
-                                </div>
-                                
-                                <!-- Shipping Information -->
-                                <div class="space-y-3">
-                                    <div class="flex items-center space-x-3">
-                                        <span class="text-sm text-gray-600">Vận Chuyển</span>
-                                        <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h4c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
-                                        </svg>
+                            <div class="flex flex-col justify-between">
+                                <div class="space-y-6">
+                                    <!-- Product Title -->
+                                    <h1 class="text-xl font-semibold leading-tight text-primary">
+                                        <%= product.getName() %>
+                                    </h1>
+                                    <!-- Price -->
+                                    <div class="text-3xl font-extrabold text-primary">
+                                        <%= String.format("%,.0f", product.getPrice()) %>.000đ
                                     </div>
-                                    <div class="text-sm text-gray-800">
-                                        Nhận từ 20 Th08 - 23 Th08, phí giao ₫0 >
-                                    </div>
-                                    <div class="text-sm text-gray-600">
-                                        Tặng Voucher ₫15.000 nếu đơn giao sau thời gian trên.
+
+                                    <!-- Shipping Information -->
+                                    <div class="space-y-3">
+                                        <div class="flex items-center space-x-3">
+                                            <span class="text-sm text-muted-foreground">Vận Chuyển và nhận hàng sau 5 ngày</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="text-muted-foreground" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-truck-icon lucide-truck"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+                                        </div>
+                                        <div class="flex items-center space-x-3">
+                                            <label class="text-sm text-gray-600">Số Lượng</label>
+                                            <div class="flex items-center space-x-0">
+                                                <button class="cursor-pointer w-10 h-10 border border-input bg-input text-gray-600 hover:bg-input transition-colors rounded-l-lg">
+                                                    -
+                                                </button>
+                                                <input type="number" value="1" min="1" class="w-12 h-10 border-t border-b text-center border-input focus:outline-none outline-none">
+                                                <button class="cursor-pointer w-10 h-10 border border-input bg-input text-gray-600 hover:bg-input transition-colors rounded-r-lg">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                
-                                <!-- Quantity Selector -->
-                                <div class="space-y-2">
-                                    <label class="text-sm text-gray-600">Số Lượng</label>
-                                    <div class="flex items-center space-x-0">
-                                        <button class="w-10 h-10 border border-gray-300 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors rounded-l-lg">
-                                            -
-                                        </button>
-                                        <input type="number" value="1" min="1" class="w-16 h-10 border-t border-b border-gray-300 text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
-                                        <button class="w-10 h-10 border border-gray-300 bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors rounded-r-lg">
-                                            +
-                                        </button>
-                                    </div>
-                                </div>
-                                
                                 <!-- Action Buttons -->
-                                <div class="space-y-4 pt-4">
-                                    <button class="w-full py-3 px-6 bg-primary text-white font-medium rounded-lg border hover:bg-opacity-90 transition-all flex items-center justify-center space-x-2">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 10a4 4 0 0 1-8 0"/>
-                                            <path d="M3.103 6.034h17.794"/>
-                                            <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/>
-                                        </svg>
-                                        <span>Thêm Vào Giỏ Hàng</span>
-                                    </button>
-                                    
-                                    <button class="w-full py-3 px-6 bg-primary text-white font-medium rounded-lg transition-all">
-                                        Mua Ngay
-                                    </button>
-                                </div>
-                                
-                                <!-- Product Description -->
-                                <% if (product.getDescription() != null && !product.getDescription().isEmpty()) { %>
-                                <div class="pt-6 border-t border-gray-200">
-                                    <h3 class="text-lg font-semibold text-gray-800 mb-3">Mô tả sản phẩm</h3>
-                                    <div class="text-gray-600 leading-relaxed">
-                                        <%= product.getDescription() %>
+                                <div class="flex gap-4">
+                                    <div class="w-full">
+                                        <button class="cursor-pointer w-full py-2 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 10a4 4 0 0 1-8 0"/>
+                                                <path d="M3.103 6.034h17.794"/>
+                                                <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/>
+                                            </svg>
+                                            <span>Thêm Vào Giỏ Hàng</span>
+                                        </button>
+                                    </div>
+                                    <div class="w-full">
+                                        <button class="cursor-pointer w-full py-2 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive">
+                                            Mua Ngay
+                                        </button>
                                     </div>
                                 </div>
-                                <% } %>
                             </div>
                         </div>
                     </div>
+                                    
+                    <div class="bg-background rounded-xl p-5 mt-5">
+                        <h1 class="bg-muted w-full p-4 rounded-lg">Mô tả sản phẩm</h1>
+                        <div class="mt-4">
+                            <% if (product.getDescription() != null && !product.getDescription().isEmpty()) { %>
+                                <span class="text-secondary-foreground leading-relaxed text-sm">
+                                    <%= product.getDescription() %>
+                                </span>
+                            <% } %>
+                        </div>
+                    </div>                
                 </div>
             </div>
             
