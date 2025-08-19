@@ -50,7 +50,7 @@
                                 
                                 <!-- Thumbnail Images -->
                                 <% if (images != null && !images.isEmpty()) { %>
-                                <div class="flex gap-2 overflow-x-auto p-2 scrollbar-hide bg-muted">
+                                <div class="flex gap-2 overflow-x-auto p-2 scrollbar-hide bg-muted rounded-lg">
                                     <% for (int i = 0; i < images.size(); i++) { %>
                                         <div class="w-20 h-20 rounded-lg overflow-hidden cursor-pointer hover:opacity-80 transition-opacity flex-shrink-0">
                                             <img 
@@ -100,17 +100,43 @@
                                 <!-- Action Buttons -->
                                 <div class="flex gap-4">
                                     <div class="w-full">
-                                        <button class="cursor-pointer w-full py-2 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50">
-                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 10a4 4 0 0 1-8 0"/>
-                                                <path d="M3.103 6.034h17.794"/>
-                                                <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/>
-                                            </svg>
-                                            <span>Thêm Vào Giỏ Hàng</span>
-                                        </button>
+                                        <% 
+                                        // Kiểm tra xem sản phẩm đã có trong giỏ hàng chưa
+                                        boolean isInCart = false;
+                                        if (session.getAttribute("user") != null) {
+                                            data.models.User user = (data.models.User) session.getAttribute("user");
+                                            data.dao.CartDao cartDao = new data.implementations.CartImplementation();
+                                            data.models.Cart cart = cartDao.getCartByUserEmail(user.getEmail());
+                                            if (cart != null) {
+                                                data.models.CartItem cartItem = cartDao.getCartItemByProduct(cart.getId(), product.getId());
+                                                isInCart = (cartItem != null);
+                                            }
+                                        }
+                                        %>
+                                        
+                                        <% if (!isInCart) { %>
+                                            <!-- Button thêm vào giỏ hàng -->
+                                            <button onclick="addToCart(<%= product.getId() %>)" class="cursor-pointer w-full py-2 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground">
+                                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-4 h-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 10a4 4 0 0 1-8 0"/>
+                                                    <path d="M3.103 6.034h17.794"/>
+                                                    <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/>
+                                                </svg>
+                                                <span>Thêm Vào Giỏ Hàng</span>
+                                            </button>
+                                        <% } else { %>
+                                            <!-- Button đã có trong giỏ hàng -->
+                                            <button disabled class="cursor-not-allowed w-full py-2 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all border bg-muted text-muted-foreground">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M4.929 4.929 19.07 19.071"/>
+                                                    <circle cx="12" cy="12" r="10"/>
+                                                </svg>
+                                                <span>Đã Có Trong Giỏ Hàng</span>
+                                            </button>
+                                        <% } %>
                                     </div>
                                     <div class="w-full">
-                                        <button class="cursor-pointer w-full py-2 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive">
+                                        <button class="cursor-pointer w-full py-2 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all">
                                             Mua Ngay
                                         </button>
                                     </div>
@@ -140,6 +166,72 @@
                 const mainImage = document.getElementById('mainImage');
                 if (mainImage) {
                     mainImage.src = imageUrl;
+                }
+            }
+            
+            async function addToCart(productId) {
+                try {
+                    const quantityInput = document.querySelector('input[type="number"]');
+                    const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
+                    
+                    const res = await fetch('<%= request.getContextPath() %>/add-to-cart', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams({ productId: String(productId), quantity: String(quantity) })
+                    });
+                    
+                    const data = await res.json();
+                    
+                    if (data.requiresLogin) { 
+                        window.location.href = data.redirect; 
+                        return; 
+                    }
+                    
+                    if (!data.success) { 
+                        console.error(data.message || 'Failed to add'); 
+                        alert('Có lỗi xảy ra: ' + (data.message || 'Không thể thêm vào giỏ hàng'));
+                        return; 
+                    }
+                    
+                    // Thay đổi button thành "Đã Có Trong Giỏ Hàng"
+                    const addButton = document.querySelector('button[onclick*="addToCart"]');
+                    if (addButton) {
+                        addButton.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4.929 4.929 19.07 19.071"/>
+                                <circle cx="12" cy="12" r="10"/>
+                            </svg>
+                            <span>Đã Có Trong Giỏ Hàng</span>
+                        `;
+                        addButton.disabled = true;
+                        addButton.onclick = null; // Bỏ onclick để không thể click lại
+                        addButton.className = addButton.className
+                            .replace('cursor-pointer', 'cursor-not-allowed')
+                            .replace('bg-background', 'bg-muted')
+                            .replace('hover:bg-accent', '')
+                            .replace('hover:text-accent-foreground', '');
+                    }
+                    
+                    // Cập nhật số lượng giỏ hàng ở header
+                    if (data.cartItemCount !== undefined) {
+                        const cartBadge = document.getElementById('cart-count-badge');
+                        if (cartBadge) {
+                            if (data.cartItemCount > 0) {
+                                cartBadge.style.display = '';
+                                cartBadge.textContent = data.cartItemCount;
+                            } else {
+                                cartBadge.style.display = 'none';
+                                cartBadge.textContent = '0';
+                            }
+                        }
+                    }
+                    
+                    // Hiển thị thông báo thành công
+                    alert('Đã thêm sản phẩm vào giỏ hàng!');
+                    
+                } catch (e) { 
+                    console.error(e); 
+                    alert('Có lỗi xảy ra khi thêm vào giỏ hàng. Vui lòng thử lại.');
                 }
             }
             
