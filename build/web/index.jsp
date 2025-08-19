@@ -111,19 +111,32 @@
                                         %>
                                         
                                         <% if (isInCart) { %>
-                                            <!-- Sản phẩm đã có trong giỏ hàng -->
-                                            <button disabled class="bg-[#e7000b]/10 border border-destructive text-white shadow-xs inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[6px] text-xs px-3 py-2 cursor-pointer">
+                                            <!-- Đang ở trạng thái đã trong giỏ: hiển thị nút xóa, ẩn nút thêm -->
+                                            <button id="remove-btn-<%= product.getId() %>" onclick="removeFromCart(<%= product.getId() %>)" class="bg-[#e7000b]/10 border border-destructive text-white shadow-xs inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[6px] text-xs px-3 py-2 cursor-pointer">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="text-destructive" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                                                 <p class="font-medium text-xs text-destructive">Xóa khỏi giỏ</p>
                                             </button>
-                                        <% } else { %>
-                                            <!-- Sản phẩm chưa có trong giỏ hàng -->
-                                            <button onclick="addToCart(<%= product.getId() %>)" class="bg-primary text-white shadow-xs hover:bg-primary/90 focus-visible:ring-primary/20 dark:focus-visible:ring-primary/40 dark:bg-primary/60 add button inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[6px] text-xs px-3 py-2 cursor-pointer transition-colors">
+                                            <button id="add-btn-<%= product.getId() %>" onclick="addToCart(<%= product.getId() %>)" style="display:none" class="bg-primary text-white shadow-xs hover:bg-primary/90 focus-visible:ring-primary/20 dark:focus-visible:ring-primary/40 dark:bg-primary/60 add button items-center justify-center gap-2 whitespace-nowrap rounded-[6px] text-xs px-3 py-2 cursor-pointer transition-colors">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                     <path d="M16 10a4 4 0 0 1-8 0"/>
                                                     <path d="M3.103 6.034h17.794"/>
                                                     <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/>
                                                 </svg>
+                                                <p class="font-medium text-xs text-background">Thêm vào giỏ</p>
+                                            </button>
+                                        <% } else { %>
+                                            <!-- Chưa trong giỏ: hiển thị nút thêm, ẩn nút xóa -->
+                                            <button id="add-btn-<%= product.getId() %>" onclick="addToCart(<%= product.getId() %>)" class="border border-primary bg-primary text-white shadow-xs hover:bg-primary/90 focus-visible:ring-primary/20 dark:focus-visible:ring-primary/40 dark:bg-primary/60 add button inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[6px] text-xs px-3 py-2 cursor-pointer transition-colors">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M16 10a4 4 0 0 1-8 0"/>
+                                                    <path d="M3.103 6.034h17.794"/>
+                                                    <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/>
+                                                </svg>
+                                                <p class="font-medium text-xs text-background">Thêm vào giỏ</p>
+                                            </button>
+                                            <button id="remove-btn-<%= product.getId() %>" onclick="removeFromCart(<%= product.getId() %>)" style="display:none" class="bg-[#e7000b]/10 border border-destructive text-white shadow-xs items-center justify-center gap-2 whitespace-nowrap rounded-[6px] text-xs px-3 py-2 cursor-pointer">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="text-destructive" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                                <p class="font-medium text-xs text-destructive">Xóa khỏi giỏ</p>
                                             </button>
                                         <% } %>
                                     </div>
@@ -158,29 +171,56 @@
         </div>
         
         <script>
-        function addToCart(productId) {
-            // Tạo form để gửi request trực tiếp đến servlet
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'add-to-cart.jsp';
-            
-            // Thêm input cho productId
-            const productIdInput = document.createElement('input');
-            productIdInput.type = 'hidden';
-            productIdInput.name = 'productId';
-            productIdInput.value = productId;
-            form.appendChild(productIdInput);
-            
-            // Thêm input cho quantity (mặc định là 1)
-            const quantityInput = document.createElement('input');
-            quantityInput.type = 'hidden';
-            quantityInput.name = 'quantity';
-            quantityInput.value = 1;
-            form.appendChild(quantityInput);
-            
-            // Thêm form vào body và submit
-            document.body.appendChild(form);
-            form.submit();
+        function setCartBadge(count) {
+            const badge = document.getElementById('cart-count-badge');
+            if (!badge) return;
+            if (count > 0) {
+                badge.style.display = '';
+                badge.textContent = count;
+            } else {
+                badge.style.display = 'none';
+                badge.textContent = '0';
+            }
+        }
+
+        async function addToCart(productId) {
+            try {
+                const res = await fetch('${pageContext.request.contextPath}/add-to-cart', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ productId: String(productId), quantity: '1' })
+                });
+                const data = await res.json();
+                if (data.requiresLogin) { window.location.href = data.redirect; return; }
+                if (!data.success) { console.error(data.message || 'Failed to add'); return; }
+                setCartBadge(data.cartItemCount);
+                const addBtn = document.getElementById('add-btn-' + productId);
+                const removeBtn = document.getElementById('remove-btn-' + productId);
+                if (addBtn && removeBtn) {
+                    addBtn.style.display = 'none';
+                    removeBtn.style.display = 'inline-flex';
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        async function removeFromCart(productId) {
+            try {
+                const res = await fetch('${pageContext.request.contextPath}/remove-from-cart', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: new URLSearchParams({ productId: String(productId) })
+                });
+                const data = await res.json();
+                if (data.requiresLogin) { window.location.href = data.redirect; return; }
+                if (!data.success) { console.error(data.message || 'Failed to remove'); return; }
+                setCartBadge(data.cartItemCount);
+                const addBtn = document.getElementById('add-btn-' + productId);
+                const removeBtn = document.getElementById('remove-btn-' + productId);
+                if (addBtn && removeBtn) {
+                    removeBtn.style.display = 'none';
+                    addBtn.style.display = 'inline-flex';
+                }
+            } catch (e) { console.error(e); }
         }
         </script>
     </body>
