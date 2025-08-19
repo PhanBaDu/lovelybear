@@ -1,7 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="data.dao.CartDao" %>
-<%@ page import="data.implementations.CartImplementation" %>
 <%@ page import="data.models.Cart" %>
 <%@ page import="data.models.CartItem" %>
 <%@ page import="data.models.User" %>
@@ -18,38 +16,12 @@
     </head>
     <body> 
         <%
-        // Lấy thông tin giỏ hàng từ database
-        List<CartItem> cartItems = null;
-        int cartItemCount = 0;
-        BigDecimal totalAmount = BigDecimal.ZERO;
-        User currentUser = (User) session.getAttribute("user");
-        
-        if (currentUser != null) {
-            try {
-                CartDao cartDao = new CartImplementation();
-                Cart userCart = cartDao.getCartByUserEmail(currentUser.getEmail());
-                
-                if (userCart != null) {
-                    cartItems = cartDao.getCartItems(userCart.getId());
-                    cartItemCount = cartDao.getCartItemCount(userCart.getId());
-                    
-                    // Tính tổng tiền
-                    if (cartItems != null) {
-                        for (CartItem item : cartItems) {
-                            totalAmount = totalAmount.add(item.getPrice().multiply(new BigDecimal(item.getQuantity())));
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                System.err.println("Error loading cart: " + e.getMessage());
-            }
-        }
-        
-        // Nếu chưa đăng nhập, redirect về trang đăng nhập
-        if (currentUser == null) {
-            response.sendRedirect("../signin.jsp?message=Please login to view your cart");
-            return;
-        }
+        // Nhận dữ liệu từ Servlet đã set vào request
+        List<CartItem> cartItems = (List<CartItem>) request.getAttribute("cartItems");
+        Integer cartItemCountAttr = (Integer) request.getAttribute("cartItemCount");
+        BigDecimal totalAmountAttr = (BigDecimal) request.getAttribute("totalAmount");
+        int cartItemCount = cartItemCountAttr != null ? cartItemCountAttr : 0;
+        BigDecimal totalAmount = totalAmountAttr != null ? totalAmountAttr : BigDecimal.ZERO;
         %>
         
         <div class="flex flex-col min-h-screen justify-between bg-muted">

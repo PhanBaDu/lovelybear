@@ -16,7 +16,6 @@ import jakarta.servlet.http.Part;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Collection;
-import java.net.URLEncoder;
 import data.dao.Database;
 import data.dao.ProductDao;
 import data.dao.ProductImageDao;

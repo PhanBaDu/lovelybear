@@ -5,6 +5,9 @@
 package data.controllers;
 
 import data.dao.Database;
+import data.dao.CartDao;
+import data.implementations.CartImplementation;
+import data.models.Cart;
 import data.models.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -123,6 +126,19 @@ public class signInServlet extends HttpServlet {
             // Đăng nhập thành công
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
+
+            // Cập nhật số lượng sản phẩm trong giỏ vào session để hiển thị ở header
+            try {
+                CartDao cartDao = new CartImplementation();
+                Cart cart = cartDao.getCartByUserEmail(user.getEmail());
+                int cartItemCount = 0;
+                if (cart != null) {
+                    cartItemCount = cartDao.getCartItemCount(cart.getId());
+                }
+                session.setAttribute("cartItemCount", cartItemCount);
+            } catch (Exception e) {
+                System.err.println("Error updating cart count after signin: " + e.getMessage());
+            }
 
             // Clear any previous error messages
             session.removeAttribute("errorMessage");
