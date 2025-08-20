@@ -284,26 +284,48 @@
 
     generateBotResponse(userMessage) {
       let botResponse = "Cảm ơn bạn đã liên hệ!";
+      let shouldShowCheapButton = false;
+      let shouldShowProductButton = false;
 
       const lowerMessage = userMessage.toLowerCase();
 
+      // Kiểm tra các từ khóa liên quan đến sản phẩm giá rẻ
+      const cheapKeywords = [
+        "rẻ",
+        "giá rẻ",
+        "giá thấp",
+        "giá tốt",
+        "giá ưu đãi",
+        "khuyến mãi",
+        "giảm giá",
+        "sale",
+        "deal",
+      ];
+      const hasCheapKeyword = cheapKeywords.some((keyword) =>
+        lowerMessage.includes(keyword)
+      );
+
       if (lowerMessage.includes("sản phẩm")) {
+        if (hasCheapKeyword) {
+          botResponse =
+            "Bạn muốn tìm sản phẩm giá rẻ phải không? Tôi sẽ tìm cho bạn những sản phẩm có giá tốt nhất!";
+          shouldShowCheapButton = true;
+        } else {
+          botResponse =
+            "Chúng tôi có nhiều sản phẩm chất lượng cao. Bạn có muốn xem toàn bộ sản phẩm không?";
+          shouldShowProductButton = true;
+        }
+      } else if (hasCheapKeyword) {
         botResponse =
-          "Chúng tôi có nhiều sản phẩm chất lượng cao. Bạn có muốn xem toàn bộ sản phẩm không?";
-        // Thêm button "Xem toàn bộ sản phẩm"
-        setTimeout(() => {
-          this.addProductButton();
-        }, 100);
+          "Bạn muốn tìm sản phẩm giá rẻ phải không? Tôi sẽ tìm cho bạn những sản phẩm có giá tốt nhất!";
+        shouldShowCheapButton = true;
       } else if (
         lowerMessage.includes("gấu") &&
         (lowerMessage.includes("giá") || lowerMessage.includes("rẻ"))
       ) {
         botResponse =
-          "Bạn muốn tìm sản phẩm giá tốt nhất phải không? Tôi sẽ tìm cho bạn những sản phẩm có giá thấp nhất!";
-        // Thêm button "Tìm sản phẩm giá rẻ"
-        setTimeout(() => {
-          this.addCheapProductButton();
-        }, 100);
+          "Bạn muốn tìm sản phẩm gấu giá tốt nhất phải không? Tôi sẽ tìm cho bạn những sản phẩm có giá thấp nhất!";
+        shouldShowCheapButton = true;
       } else if (lowerMessage.includes("giá") || lowerMessage.includes("phí")) {
         botResponse =
           "Về vấn đề giá cả, tôi sẽ kết nối bạn với bộ phận tư vấn để được báo giá chi tiết nhất.";
@@ -325,6 +347,15 @@
       }
 
       this.addMessage(botResponse, false);
+
+      // Hiển thị button phù hợp sau khi gửi tin nhắn
+      setTimeout(() => {
+        if (shouldShowCheapButton) {
+          this.addCheapProductButton();
+        } else if (shouldShowProductButton) {
+          this.addProductButton();
+        }
+      }, 100);
     }
 
     addWelcomeMessage() {
@@ -333,7 +364,73 @@
           "Xin chào! Tôi có thể giúp gì cho bạn? Bạn có thể hỏi về sản phẩm, giá cả, tìm sản phẩm giá rẻ hoặc các vấn đề khác.",
           false
         );
+
+        // Thêm options cho người dùng
+        this.addOptions();
       }
+    }
+
+    // Thêm options cho người dùng
+    addOptions() {
+      if (!this.chatBody) return;
+
+      const optionsDiv = document.createElement("div");
+      optionsDiv.style.display = "flex";
+      optionsDiv.style.width = "100%";
+      optionsDiv.style.marginBottom = "0.5rem";
+      optionsDiv.style.justifyContent = "flex-start";
+      optionsDiv.style.flexWrap = "wrap";
+      optionsDiv.style.gap = "8px";
+
+      const options = [
+        {
+          text: "🛍️ Xem tất cả sản phẩm",
+          action: () => this.showProducts(),
+          color: "bg-primary",
+        },
+        {
+          text: "💰 Sản phẩm giá rẻ",
+          action: () => this.showCheapProducts(),
+          color: "bg-green-500",
+        },
+        {
+          text: "🔍 Tìm kiếm sản phẩm",
+          action: () => this.showSearchOption(),
+          color: "bg-blue-500",
+        },
+        {
+          text: "📞 Liên hệ hỗ trợ",
+          action: () => this.showContactInfo(),
+          color: "bg-purple-500",
+        },
+      ];
+
+      options.forEach((option) => {
+        const button = document.createElement("button");
+        button.className = `px-3 py-2 text-white rounded-lg hover:opacity-90 transition-all text-xs font-medium ${option.color}`;
+        button.textContent = option.text;
+        button.onclick = option.action;
+        optionsDiv.appendChild(button);
+      });
+
+      this.chatBody.appendChild(optionsDiv);
+      this.scrollToBottom();
+    }
+
+    // Hiển thị tùy chọn tìm kiếm
+    showSearchOption() {
+      this.addMessage(
+        "Bạn muốn tìm sản phẩm gì? Hãy nhập từ khóa tìm kiếm vào ô chat bên dưới.",
+        false
+      );
+    }
+
+    // Hiển thị thông tin liên hệ
+    showContactInfo() {
+      this.addMessage(
+        "📞 Liên hệ hỗ trợ:\n• Hotline: 1900-xxxx\n• Email: support@decor.com\n• Giờ làm việc: 8h-22h (Thứ 2 - Chủ nhật)",
+        false
+      );
     }
 
     clearChat() {
@@ -345,6 +442,8 @@
         this.saveChatHistory();
         this.updateMessageCount();
         this.addWelcomeMessage();
+        // Thêm lại options sau khi xóa chat
+        this.addOptions();
       }
     }
 
@@ -496,8 +595,7 @@
 
         // Lấy danh sách sản phẩm từ server
         const response = await fetch(
-          window.location.pathname.replace("/index.jsp", "") +
-            "/api/products.jsp"
+          window.location.pathname.replace("/index.jsp", "") + "/api/products"
         );
         if (!response.ok) {
           throw new Error("Không thể tải sản phẩm");
@@ -528,8 +626,7 @@
 
         // Lấy danh sách sản phẩm từ server
         const response = await fetch(
-          window.location.pathname.replace("/index.jsp", "") +
-            "/api/products.jsp"
+          window.location.pathname.replace("/index.jsp", "") + "/api/products"
         );
         if (!response.ok) {
           throw new Error("Không thể tải sản phẩm");
@@ -652,8 +749,20 @@
       subtitle.className = "text-xs text-green-600 mt-1";
       subtitle.textContent = "Được sắp xếp theo giá từ thấp đến cao";
 
+      // Thêm thông tin về khoảng giá
+      const priceRange = document.createElement("p");
+      priceRange.className = "text-xs text-green-600 mt-1";
+      const minPrice =
+        cheapProducts[0].formattedPrice ||
+        this.formatPrice(cheapProducts[0].price) + "đ";
+      const maxPrice =
+        cheapProducts[cheapProducts.length - 1].formattedPrice ||
+        this.formatPrice(cheapProducts[cheapProducts.length - 1].price) + "đ";
+      priceRange.textContent = `Khoảng giá: ${minPrice} - ${maxPrice}`;
+
       headerDiv.appendChild(title);
       headerDiv.appendChild(subtitle);
+      headerDiv.appendChild(priceRange);
       productsContainer.appendChild(headerDiv);
 
       // Danh sách sản phẩm giá rẻ
@@ -700,7 +809,8 @@
       // Giá
       const price = document.createElement("div");
       price.className = "text-xs font-bold text-primary";
-      price.textContent = this.formatPrice(product.price) + "đ";
+      price.textContent =
+        product.formattedPrice || this.formatPrice(product.price) + "đ";
 
       card.appendChild(image);
       card.appendChild(name);
@@ -749,7 +859,8 @@
 
       const price = document.createElement("div");
       price.className = "text-lg font-bold text-green-600";
-      price.textContent = this.formatPrice(product.price) + "đ";
+      price.textContent =
+        product.formattedPrice || this.formatPrice(product.price) + "đ";
 
       const viewButton = document.createElement("button");
       viewButton.className =
@@ -803,11 +914,11 @@
         (product.description || "Không có mô tả") +
         "</p>" +
         '<div class="text-sm font-bold text-primary mb-2">' +
-        this.formatPrice(product.price) +
-        "đ</div>" +
+        (product.formattedPrice || this.formatPrice(product.price) + "đ") +
+        "</div>" +
         "<button onclick=\"window.open('" +
         window.location.pathname.replace("/index.jsp", "") +
-        "/views/product-detail.jsp?id=" +
+        "product?id=" +
         product.id +
         "', '_blank')\" " +
         'class="px-3 py-1 bg-primary text-white text-xs rounded hover:bg-primary/90 transition-colors">' +

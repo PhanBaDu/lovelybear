@@ -7,6 +7,9 @@ package data.dao;
 import data.implementations.UserImplementation;
 import data.implementations.ProductImplementation;
 import data.implementations.ProductImageImplementation;
+import data.implementations.OrderImplementation;
+import data.implementations.OrderItemImplementation;
+import data.implementations.CartImplementation;
 
 /**
  *
@@ -26,6 +29,14 @@ public class Database {
     }
     
     public static CartDao getCartDao() {
-        return new data.implementations.CartImplementation();
+        return new CartImplementation();
+    }
+    
+    public static OrderDao getOrderDao() {
+        return new OrderImplementation();
+    }
+    
+    public static OrderItemDao getOrderItemDao() {
+        return new OrderItemImplementation();
     }
 }
