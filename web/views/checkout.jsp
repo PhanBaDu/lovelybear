@@ -13,7 +13,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/logo-title.ico">
+        <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/logo-lovely.ico">
         <title>Thanh Toán</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/public/assets/styles/globals.css">
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>

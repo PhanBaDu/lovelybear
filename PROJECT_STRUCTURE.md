@@ -76,7 +76,7 @@ decor/
 │   │   │   │   └── 📄 search.svg
 │   │   │   └── 📁 fonts/
 │   │   │       └── 📄 Inter_18pt-*.ttf  # Font Inter
-│   │   └── 📄 logo-title.ico
+│   │   └── 📄 logo-lovely.ico
 │   │
 │   ├── 📁 uploads/                      # 📸 Thư mục lưu ảnh
 │   │   ├── 📁 users/                    # Ảnh profile user

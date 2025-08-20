@@ -7,7 +7,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="icon" type="image/x-icon" href="logo-title.ico">
+        <link rel="icon" type="image/x-icon" href="logo-lovely.ico">
         <link rel="stylesheet" href="./public/assets/styles/globals.css">
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
         <title>Trang quản lý sản phẩm</title>
@@ -16,7 +16,7 @@
         <div class="flex flex-col min-h-screen items-center justify-between">
             <jsp:include page="../components/features/admin/header.jsp" />
             <div class="pt-32 px-5 w-full pb-32 bg-muted">
-                <div class="max-w-4xl mx-auto">
+                <div class="max-w-6xl mx-auto flex flex-col gap-10">
                     <div class="bg-card p-5 rounded-xl">
                         <h1 class="text-2xl font-bold text-foreground mb-6">Thêm Sản Phẩm Mới</h1>
                         
@@ -165,176 +165,164 @@
                             </div>
                         </form>
                     </div>
-                </div>
-            </div>
-                </div>
-                
-                <!-- Card 2: Hiển thị toàn bộ sản phẩm -->
-                <div class="bg-card p-5 rounded-xl mb-6">
-                    <h2 class="text-xl font-bold text-foreground mb-4">Danh Sách Sản Phẩm</h2>
-                    
-                    
-                    
-                    <%
-                    @SuppressWarnings("unchecked")
-                    List<Product> products = (List<Product>) request.getAttribute("products");
-                    
-                    if (products == null || products.isEmpty()) {
-                    %>
-                        <div class="text-center py-8">
-                            <p class="text-muted-foreground">Chưa có sản phẩm nào</p>
-                        </div>
-                    <%
-                    } else {
-                    %>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm">
-                                <thead>
-                                    <tr class="border-b border-input">
-                                        <th class="text-left py-3 px-4 font-medium text-foreground">ID</th>
-                                        <th class="text-left py-3 px-4 font-medium text-foreground">Tên Sản Phẩm</th>
-                                        <th class="text-left py-3 px-4 font-medium text-foreground">Mô Tả</th>
-                                        <th class="text-left py-3 px-4 font-medium text-foreground">Giá (VNĐ)</th>
-                                        <th class="text-left py-3 px-4 font-medium text-foreground">Thao Tác</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <%
-                                    for (Product product : products) {
-                                    %>
-                                        <tr class="border-b border-input hover:bg-muted/50">
-                                            <td class="py-3 px-4 text-foreground"><%= product.getId() %></td>
-                                            <td class="py-3 px-4 text-foreground font-medium"><%= product.getName() %></td>
-                                            <td class="py-3 px-4 text-foreground">
-                                                <div class="max-w-xs truncate" title="<%= product.getDescription() != null ? product.getDescription() : "" %>">
-                                                    <%= product.getDescription() != null ? product.getDescription() : "Không có mô tả" %>
-                                                </div>
-                                            </td>
-                                            <td class="py-3 px-4 text-foreground">
-                                                <%= String.format("%,.0f", product.getPrice()) %>k
-                                            </td>
-                                                                                         <td class="py-3 px-4">
-                                                 <button onclick="deleteProduct(<%= product.getId() %>)" 
-                                                         class="px-3 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600 transition-colors">
-                                                     Xóa
-                                                 </button>
-                                             </td>
-                                        </tr>
-                                    <%
-                                    }
-                                    %>
-                                </tbody>
-                            </table>
-                        </div>
-                    <%
-                    }
-                    %>
-                </div>
-                
-                <!-- Card 3: Hiển thị danh sách đơn hàng -->
-                <div class="bg-card p-5 rounded-xl mb-6">
-                    <h2 class="text-xl font-bold text-foreground mb-4">Danh Sách Đơn Hàng</h2>
-                    
+                    <!-- Card 2: Hiển thị toàn bộ sản phẩm -->
+                    <div class="bg-card p-5 rounded-xl mb-6">
+                        <h2 class="text-xl font-bold text-foreground mb-4">Danh Sách Sản Phẩm</h2>
+                        <%
+                        @SuppressWarnings("unchecked")
+                        List<Product> products = (List<Product>) request.getAttribute("products");
 
-                    
-                    <%
-                    @SuppressWarnings("unchecked")
-                    List<Order> orders = (List<Order>) request.getAttribute("orders");
-                    
-                    if (orders == null || orders.isEmpty()) {
-                    %>
-                        <div class="text-center py-8">
-                            <p class="text-muted-foreground">Chưa có đơn hàng nào</p>
-                        </div>
-                    <%
-                    } else {
-                    %>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm">
-                                <thead>
-                                    <tr class="border-b border-input">
-                                        <th class="text-left py-3 px-4 font-medium text-foreground">ID</th>
-                                        <th class="text-left py-3 px-4 font-medium text-foreground">Email Khách Hàng</th>
-                                        <th class="text-left py-3 px-4 font-medium text-foreground">Ngày Đặt</th>
-                                        <th class="text-left py-3 px-4 font-medium text-foreground">Số Lượng</th>
-                                        <th class="text-left py-3 px-4 font-medium text-foreground">Tổng Tiền</th>
-                                        <th class="text-left py-3 px-4 font-medium text-foreground">Trạng Thái</th>
-                                        <th class="text-left py-3 px-4 font-medium text-foreground">Thao Tác</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <%
-                                    for (Order order : orders) {
-                                        String statusColor = "";
-                                        String statusText = "";
-                                        
-                                        switch (order.getStatus()) {
-                                            case "PENDING":
-                                                statusColor = "bg-yellow-100 text-yellow-800";
-                                                statusText = "Chờ xử lý";
-                                                break;
-                                            case "CONFIRMED":
-                                                statusColor = "bg-blue-100 text-blue-800";
-                                                statusText = "Đã xác nhận";
-                                                break;
-                                            case "SHIPPING":
-                                                statusColor = "bg-purple-100 text-purple-800";
-                                                statusText = "Đang giao";
-                                                break;
-                                            case "DELIVERED":
-                                                statusColor = "bg-green-100 text-green-800";
-                                                statusText = "Đã giao";
-                                                break;
-                                            case "CANCELLED":
-                                                statusColor = "bg-red-100 text-red-800";
-                                                statusText = "Đã hủy";
-                                                break;
-                                            default:
-                                                statusColor = "bg-gray-100 text-gray-800";
-                                                statusText = order.getStatus();
-                                        }
-                                    %>
-                                        <tr class="border-b border-input hover:bg-muted/50">
-                                            <td class="py-3 px-4 text-foreground"><%= order.getId() %></td>
-                                            <td class="py-3 px-4 text-foreground"><%= order.getUserEmail() %></td>
-                                            <td class="py-3 px-4 text-foreground">
-                                                <%= new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(order.getOrderDate()) %>
-                                            </td>
-                                            <td class="py-3 px-4 text-foreground"><%= order.getTotalQuantity() %></td>
-                                            <td class="py-3 px-4 text-foreground font-medium">
-                                                <%= String.format("%,.0f", order.getTotalAmount()) %>k
-                                            </td>
-                                            <td class="py-3 px-4">
-                                                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium <%= statusColor %>">
-                                                    <%= statusText %>
-                                                </span>
-                                            </td>
-                                                                                         <td class="py-3 px-4">
-                                                 <%
-                                                 if ("PENDING".equals(order.getStatus())) {
-                                                 %>
-                                                     <button onclick="updateOrderStatus(<%= order.getId() %>, 'CONFIRMED')" 
-                                                             class="px-3 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600 transition-colors">
-                                                         Xác nhận
-                                                     </button>
-                                                 <%
-                                                 } else {
-                                                 %>
-                                                     <span class="text-sm text-gray-500">Đã xác nhận</span>
-                                                 <%
-                                                 }
-                                                 %>
-                                             </td>
+                        if (products == null || products.isEmpty()) {
+                        %>
+                            <h1 class="text-2xl font-bold text-foreground mb-6">Chưa có sản phẩm nào</h1>
+                        <%
+                        } else {
+                        %>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <thead>
+                                        <tr class="border-b border-input">
+                                            <th class="text-left py-3 px-4 font-medium text-foreground">ID</th>
+                                            <th class="text-left py-3 px-4 font-medium text-foreground">Tên Sản Phẩm</th>
+                                            <th class="text-left py-3 px-4 font-medium text-foreground">Mô Tả</th>
+                                            <th class="text-left py-3 px-4 font-medium text-foreground">Giá (VNĐ)</th>
+                                            <th class="text-left py-3 px-4 font-medium text-foreground">Thao Tác</th>
                                         </tr>
-                                    <%
-                                    }
-                                    %>
-                                </tbody>
-                            </table>
-                        </div>
-                    <%
-                    }
-                    %>
+                                    </thead>
+                                    <tbody>
+                                        <%
+                                        for (Product product : products) {
+                                        %>
+                                            <tr class="border-b border-input hover:bg-muted/50">
+                                                <td class="py-3 px-4 text-foreground"><%= product.getId() %></td>
+                                                <td class="py-3 px-4 text-foreground font-medium"><%= product.getName() %></td>
+                                                <td class="py-3 px-4 text-foreground">
+                                                    <div class="max-w-xs truncate" title="<%= product.getDescription() != null ? product.getDescription() : "" %>">
+                                                        <%= product.getDescription() != null ? product.getDescription() : "Không có mô tả" %>
+                                                    </div>
+                                                </td>
+                                                <td class="py-3 px-4 text-foreground">
+                                                    <%= String.format("%,.0f", product.getPrice()) %>k
+                                                </td>
+                                                                                             <td class="py-3 px-4">
+                                                     <button onclick="deleteProduct(<%= product.getId() %>)" 
+                                                             class="px-3 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600 transition-colors">
+                                                         Xóa
+                                                     </button>
+                                                 </td>
+                                            </tr>
+                                        <%
+                                        }
+                                        %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <%
+                        }
+                        %>
+                    </div>
+                     <!-- Card 3: Hiển thị danh sách đơn hàng -->
+                    <div class="bg-card p-5 rounded-xl mb-6">
+                        <h1 class="text-2xl font-bold text-foreground mb-6">Danh Sách Đơn Hàng</h1>
+                        <%
+                        @SuppressWarnings("unchecked")
+                        List<Order> orders = (List<Order>) request.getAttribute("orders");
+
+                        if (orders == null || orders.isEmpty()) {
+                        %>
+                            <div class="text-center py-8">
+                                <p class="text-muted-foreground">Chưa có đơn hàng nào</p>
+                            </div>
+                        <%
+                        } else {
+                        %>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <thead>
+                                        <tr class="border-b border-input">
+                                            <th class="text-left py-3 px-4 font-medium text-foreground">ID</th>
+                                            <th class="text-left py-3 px-4 font-medium text-foreground">Email Khách Hàng</th>
+                                            <th class="text-left py-3 px-4 font-medium text-foreground">Ngày Đặt</th>
+                                            <th class="text-left py-3 px-4 font-medium text-foreground">Số Lượng</th>
+                                            <th class="text-left py-3 px-4 font-medium text-foreground">Tổng Tiền</th>
+                                            <th class="text-left py-3 px-4 font-medium text-foreground">Trạng Thái</th>
+                                            <th class="text-left py-3 px-4 font-medium text-foreground">Thao Tác</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%
+                                        for (Order order : orders) {
+                                            String statusColor = "";
+                                            String statusText = "";
+
+                                            switch (order.getStatus()) {
+                                                case "PENDING":
+                                                    statusColor = "bg-yellow-100 text-yellow-800";
+                                                    statusText = "Chờ xử lý";
+                                                    break;
+                                                case "CONFIRMED":
+                                                    statusColor = "bg-blue-100 text-blue-800";
+                                                    statusText = "Đã xác nhận";
+                                                    break;
+                                                case "SHIPPING":
+                                                    statusColor = "bg-purple-100 text-purple-800";
+                                                    statusText = "Đang giao";
+                                                    break;
+                                                case "DELIVERED":
+                                                    statusColor = "bg-green-100 text-green-800";
+                                                    statusText = "Đã giao";
+                                                    break;
+                                                case "CANCELLED":
+                                                    statusColor = "bg-red-100 text-red-800";
+                                                    statusText = "Đã hủy";
+                                                    break;
+                                                default:
+                                                    statusColor = "bg-gray-100 text-gray-800";
+                                                    statusText = order.getStatus();
+                                            }
+                                        %>
+                                            <tr class="border-b border-input hover:bg-muted/50">
+                                                <td class="py-3 px-4 text-foreground"><%= order.getId() %></td>
+                                                <td class="py-3 px-4 text-foreground"><%= order.getUserEmail() %></td>
+                                                <td class="py-3 px-4 text-foreground">
+                                                    <%= new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(order.getOrderDate()) %>
+                                                </td>
+                                                <td class="py-3 px-4 text-foreground"><%= order.getTotalQuantity() %></td>
+                                                <td class="py-3 px-4 text-foreground font-medium">
+                                                    <%= String.format("%,.0f", order.getTotalAmount()) %>k
+                                                </td>
+                                                <td class="py-3 px-4">
+                                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium <%= statusColor %>">
+                                                        <%= statusText %>
+                                                    </span>
+                                                </td>
+                                                                                             <td class="py-3 px-4">
+                                                     <%
+                                                     if ("PENDING".equals(order.getStatus())) {
+                                                     %>
+                                                         <button onclick="updateOrderStatus(<%= order.getId() %>, 'CONFIRMED')" 
+                                                                 class="px-3 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600 transition-colors">
+                                                             Xác nhận
+                                                         </button>
+                                                     <%
+                                                     } else {
+                                                     %>
+                                                         <span class="text-sm text-gray-500">Đã xác nhận</span>
+                                                     <%
+                                                     }
+                                                     %>
+                                                 </td>
+                                            </tr>
+                                        <%
+                                        }
+                                        %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <%
+                        }
+                        %>
+                    </div>
                 </div>
             </div>
             <jsp:include page="../components/footer.jsp" />

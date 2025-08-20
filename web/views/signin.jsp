@@ -14,7 +14,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="icon" type="image/x-icon" href="logo-title.ico">
+        <link rel="icon" type="image/x-icon" href="logo-lovely.ico">
         <title>Đăng Nhập</title>
         <link rel="stylesheet" href="./public/assets/styles/globals.css">
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -64,12 +64,12 @@
                 <!-- Submit Button -->
                 <button
                     type="submit"
-                    class="mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring transition-all"
+                    class="mt-4 text-sm px-4 py-2 bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring transition-all"
                 >
                     Đăng nhập
                 </button>
                 <!-- Sign Up Link -->
-                <div class="text-center text-sm">
+                <div class="text-center text-xs">
                     <span class="text-muted-foreground">Chưa có tài khoản? </span>
                     <a href="signup" class="text-primary font-medium hover:underline">
                         Đăng ký ngay
