@@ -19,12 +19,12 @@
     </head>
     <body> 
         <%
-        // Nhận dữ liệu từ Servlet đã set vào request
-        List<CartItem> cartItems = (List<CartItem>) request.getAttribute("cartItems");
-        Integer cartItemCountAttr = (Integer) request.getAttribute("cartItemCount");
-        BigDecimal totalAmountAttr = (BigDecimal) request.getAttribute("totalAmount");
-        int cartItemCount = cartItemCountAttr != null ? cartItemCountAttr : 0;
-        BigDecimal totalAmount = totalAmountAttr != null ? totalAmountAttr : BigDecimal.ZERO;
+            // Nhận dữ liệu từ Servlet đã set vào request
+            List<CartItem> cartItems = (List<CartItem>) request.getAttribute("cartItems");
+            Integer cartItemCountAttr = (Integer) request.getAttribute("cartItemCount");
+            BigDecimal totalAmountAttr = (BigDecimal) request.getAttribute("totalAmount");
+            int cartItemCount = cartItemCountAttr != null ? cartItemCountAttr : 0;
+            BigDecimal totalAmount = totalAmountAttr != null ? totalAmountAttr : BigDecimal.ZERO;
         %>
         
         <div class="flex flex-col min-h-screen justify-between bg-muted">
@@ -32,7 +32,7 @@
             <jsp:include page="../components/header.jsp" />
             
             <div class="pt-24 px-5 w-full pb-32">
-                <div class="w-full mx-auto bg-background rounded-lg overflow-hidden">
+                <div class="max-w-6xl mx-auto bg-background rounded-lg overflow-hidden">
                     <%
                     if (cartItems == null || cartItems.isEmpty()) {
                     %>
