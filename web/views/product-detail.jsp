@@ -136,7 +136,7 @@
                                         <% } %>
                                     </div>
                                     <div class="w-full">
-                                        <button class="cursor-pointer w-full py-2 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all">
+                                        <button onclick="buyNow(<%= product.getId() %>)" class="cursor-pointer w-full py-2 bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all">
                                             Mua Ngay
                                         </button>
                                     </div>
@@ -232,6 +232,41 @@
                 } catch (e) { 
                     console.error(e); 
                     alert('Có lỗi xảy ra khi thêm vào giỏ hàng. Vui lòng thử lại.');
+                }
+            }
+            
+            async function buyNow(productId) {
+                try {
+                    const quantityInput = document.querySelector('input[type="number"]');
+                    const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
+                    
+                    const res = await fetch('<%= request.getContextPath() %>/buy-now', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams({ productId: String(productId), quantity: String(quantity) })
+                    });
+                    
+                    const data = await res.json();
+                    
+                    if (data.requiresLogin) { 
+                        window.location.href = data.redirect; 
+                        return; 
+                    }
+                    
+                    if (!data.success) { 
+                        console.error(data.message || 'Failed to buy now'); 
+                        alert('Có lỗi xảy ra: ' + (data.message || 'Không thể mua hàng'));
+                        return; 
+                    }
+                    
+                    // Chuyển hướng đến trang thành công
+                    if (data.redirect) {
+                        window.location.href = data.redirect;
+                    }
+                    
+                } catch (e) { 
+                    console.error(e); 
+                    alert('Có lỗi xảy ra khi mua hàng. Vui lòng thử lại.');
                 }
             }
             
