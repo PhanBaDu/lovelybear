@@ -69,7 +69,7 @@
                             <div class="flex flex-col justify-between">
                                 <div class="space-y-6">
                                     <!-- Product Title -->
-                                    <h1 class="text-xl font-semibold leading-tight text-primary">
+                                    <h1 class="text-xl font-semibold leading-tight text-foreground">
                                         <%= product.getName() %>
                                     </h1>
                                     <!-- Price -->
