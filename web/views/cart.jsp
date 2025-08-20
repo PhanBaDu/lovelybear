@@ -70,7 +70,10 @@
                                         <!-- Cart Item -->
                                         <div class="flex items-center gap-4 p-4 border border-gray-200 rounded-lg hover:border-gray-300 transition-colors">
                                             <!-- Checkbox -->
-                                            <input type="checkbox" class="product-checkbox rounded border-gray-300" data-item-id="<%= item.getId() %>">
+                                            <input type="checkbox" class="product-checkbox rounded border-gray-300" 
+                                                   data-item-id="<%= item.getId() %>"
+                                                   data-price="<%= item.getPrice() %>"
+                                                   data-quantity="<%= item.getQuantity() %>">
                                             
                                             <!-- Product Image -->
                                             <div class="w-20 h-20 flex-shrink-0">
@@ -85,7 +88,7 @@
                                             
                                             <!-- Price -->
                                             <div class="text-center">
-                                                <p class="text-sm font-medium text-gray-900">₫<%= String.format("%,.0f", item.getPrice()) %></p>
+                                                <p class="text-sm font-medium text-gray-900"><%= String.format("%,.0f", item.getPrice()) %>k</p>
                                                 <p class="text-xs text-gray-500">Đơn giá</p>
                                             </div>
                                             
@@ -112,7 +115,7 @@
                                             
                                             <!-- Total Price -->
                                             <div class="text-center">
-                                                <p class="text-sm font-semibold text-red-500">₫<%= String.format("%,.0f", itemTotal) %></p>
+                                                <p class="text-sm font-semibold text-red-500"><%= String.format("%,.0f", itemTotal) %>k</p>
                                                 <p class="text-xs text-gray-500">Tổng tiền</p>
                                             </div>
                                             
@@ -132,25 +135,26 @@
                                 <!-- Total Summary -->
                                 <div class="mt-8 pt-6 border-t border-gray-200">
                                     <div class="flex items-center justify-between">
-                                        <div class="flex items-center gap-2 text-gray-600">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-                                            </svg>
-                                            <span class="text-sm">Tổng cộng (<%= cartItemCount %> sản phẩm):</span>
+                                        <div class="flex items-center gap-4">
+                                            <label class="flex items-center gap-2">
+                                                <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)" class="rounded border-gray-300">
+                                                <span class="text-sm font-medium">Chọn Tất Cả</span>
+                                            </label>
+                                            <div class="flex items-center gap-2 text-gray-600">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-bag-icon lucide-shopping-bag"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+                                                <span class="text-sm">Tổng cộng (<span id="selectedCount">0</span> sản phẩm):</span>
+                                            </div>
                                         </div>
                                         <div class="text-right">
-                                            <p class="text-2xl font-bold text-red-500">₫<%= String.format("%,.0f", totalAmount) %></p>
+                                            <span id="selectedTotal" class="text-primary font-bold">0</span>
+                                            <span class="text-primary font-bold">k</span>
                                         </div>
                                     </div>
                                     
                                     <div class="flex gap-4 mt-6">
-                                        <button onclick="clearCart()" 
-                                                class="flex-1 bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors font-medium">
-                                            Xóa tất cả
-                                        </button>
                                         <button onclick="checkout()" 
-                                                class="flex-1 bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition-colors font-medium">
-                                            Tiến hành thanh toán
+                                                class="cursor-pointer flex-1 bg-primary text-white px-6 py-2 rounded-lg transition-colors font-medium">
+                                            Tiến hành đặt hàng
                                         </button>
                                     </div>
                                 </div>
@@ -169,6 +173,13 @@
             if (quantity < 1) {
                 alert('Số lượng phải lớn hơn 0!');
                 return;
+            }
+            
+            // Update data attribute for the checkbox
+            const checkbox = document.querySelector(`[data-item-id="${itemId}"]`);
+            if (checkbox) {
+                checkbox.dataset.quantity = quantity;
+                updateSelectedTotal();
             }
             
             const form = document.createElement('form');
@@ -234,6 +245,7 @@
             productCheckboxes.forEach(cb => {
                 cb.checked = isChecked;
             });
+            updateSelectedTotal();
         }
         
         function deleteSelected() {
@@ -280,7 +292,33 @@
                     selectAllCheckbox.checked = false;
                     selectAllCheckbox.indeterminate = true;
                 }
+                
+                updateSelectedTotal();
             }
+        });
+        
+        // Function to calculate total for selected items
+        function updateSelectedTotal() {
+            const checkedCheckboxes = document.querySelectorAll('.product-checkbox:checked');
+            let selectedCount = 0;
+            let selectedTotal = 0;
+            
+            checkedCheckboxes.forEach(checkbox => {
+                const price = parseFloat(checkbox.dataset.price) || 0;
+                const quantity = parseInt(checkbox.dataset.quantity) || 0;
+                
+                selectedCount += quantity;
+                selectedTotal += price * quantity;
+            });
+            
+            // Update display
+            document.getElementById('selectedCount').textContent = selectedCount;
+            document.getElementById('selectedTotal').textContent = selectedTotal.toLocaleString('vi-VN');
+        }
+        
+        // Initialize total on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSelectedTotal();
         });
         </script>
     </body>
