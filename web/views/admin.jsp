@@ -173,12 +173,7 @@
                 <div class="bg-card p-5 rounded-xl mb-6">
                     <h2 class="text-xl font-bold text-foreground mb-4">Danh Sách Sản Phẩm</h2>
                     
-                    <!-- Debug Info -->
-                    <div class="mb-4 p-3 bg-blue-50 border border-blue-200 rounded text-sm">
-                        <p><strong>Debug Info:</strong></p>
-                        <p>Products attribute: <%= request.getAttribute("products") != null ? "NOT NULL" : "NULL" %></p>
-                        <p>Products size: <%= request.getAttribute("products") != null ? ((List<?>) request.getAttribute("products")).size() : "N/A" %></p>
-                    </div>
+                    
                     
                     <%
                     @SuppressWarnings("unchecked")
@@ -240,12 +235,7 @@
                 <div class="bg-card p-5 rounded-xl mb-6">
                     <h2 class="text-xl font-bold text-foreground mb-4">Danh Sách Đơn Hàng</h2>
                     
-                    <!-- Debug Info -->
-                    <div class="mb-4 p-3 bg-green-50 border border-green-200 rounded text-sm">
-                        <p><strong>Debug Info:</strong></p>
-                        <p>Orders attribute: <%= request.getAttribute("orders") != null ? "NOT NULL" : "NULL" %></p>
-                        <p>Orders size: <%= request.getAttribute("orders") != null ? ((List<?>) request.getAttribute("orders")).size() : "N/A" %></p>
-                    </div>
+
                     
                     <%
                     @SuppressWarnings("unchecked")
