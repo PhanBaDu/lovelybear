@@ -391,7 +391,7 @@
         {
           text: "💰 Sản phẩm giá rẻ",
           action: () => this.showCheapProducts(),
-          color: "bg-green-500",
+          color: "bg-primary",
         },
         {
           text: "🔍 Tìm kiếm sản phẩm",
@@ -578,7 +578,7 @@
 
       const button = document.createElement("button");
       button.className =
-        "px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm font-medium";
+        "px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium";
       button.textContent = "💰 Tìm sản phẩm giá rẻ";
       button.onclick = () => this.showCheapProducts();
 
@@ -732,7 +732,7 @@
 
       const productsContainer = document.createElement("div");
       productsContainer.className =
-        "bg-green-50 rounded-lg p-3 max-w-full border border-green-200";
+        "bg-primary/10 rounded-lg p-3 max-w-full border border-primary/20";
       productsContainer.style.maxHeight = "400px";
       productsContainer.style.overflowY = "auto";
 
@@ -741,17 +741,17 @@
       headerDiv.className = "mb-3";
 
       const title = document.createElement("h3");
-      title.className = "text-sm font-semibold text-green-800";
+      title.className = "text-sm font-semibold text-primary";
       title.textContent =
         "💰 Top " + cheapProducts.length + " Sản Phẩm Giá Rẻ Nhất";
 
       const subtitle = document.createElement("p");
-      subtitle.className = "text-xs text-green-600 mt-1";
+      subtitle.className = "text-xs text-primary/80 mt-1";
       subtitle.textContent = "Được sắp xếp theo giá từ thấp đến cao";
 
       // Thêm thông tin về khoảng giá
       const priceRange = document.createElement("p");
-      priceRange.className = "text-xs text-green-600 mt-1";
+      priceRange.className = "text-xs text-primary/80 mt-1";
       const minPrice =
         cheapProducts[0].formattedPrice ||
         this.formatPrice(cheapProducts[0].price) + "đ";
@@ -823,7 +823,7 @@
     createCheapProductItem(product, rank) {
       const item = document.createElement("div");
       item.className =
-        "bg-white rounded-lg p-3 border border-green-200 hover:shadow-md transition-shadow cursor-pointer";
+        "bg-white rounded-lg p-3 border border-primary/20 hover:shadow-md transition-shadow cursor-pointer";
       item.onclick = () => this.showProductDetail(product);
 
       // Container chính
@@ -833,7 +833,7 @@
       // Rank badge
       const rankBadge = document.createElement("div");
       rankBadge.className =
-        "flex-shrink-0 w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold";
+        "flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold";
       rankBadge.textContent = rank;
 
       // Ảnh sản phẩm
@@ -858,13 +858,13 @@
       name.style.overflow = "hidden";
 
       const price = document.createElement("div");
-      price.className = "text-lg font-bold text-green-600";
+      price.className = "text-lg font-bold text-primary";
       price.textContent =
         product.formattedPrice || this.formatPrice(product.price) + "đ";
 
       const viewButton = document.createElement("button");
       viewButton.className =
-        "mt-2 px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition-colors";
+        "mt-2 px-3 py-1 bg-primary text-white text-xs rounded hover:bg-primary/90 transition-colors";
       viewButton.textContent = "👁️ Xem chi tiết";
       viewButton.onclick = (e) => {
         e.stopPropagation();
