@@ -14,7 +14,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Káº¿t quáº£ tÃ¬m kiáº¿m</title>
+        <title>Kết quả tìm kiếm</title>
         <link rel="icon" type="image/x-icon" href="logo-lovely.ico">
         <link rel="stylesheet" href="./public/assets/styles/globals.css">
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -51,7 +51,7 @@
                             ProductImageDao imageDao = (ProductImageDao) request.getAttribute("imageDao");
                             
                             for (Product product : products) {
-                                // Láº¥y áº£nh cho sáº£n pháº©m
+                                // Lấy ảnh cho sản phẩm
                                 List<ProductImage> images = imageDao.getProductImagesByProductId(product.getId());
                                 String mainImageUrl = null;
                                 if (images != null && !images.isEmpty()) {
@@ -59,7 +59,7 @@
                                 }
                         %>
                             <div class="block rounded-lg overflow-hidden h-96 bg-card hover:shadow-xl transition-shadow">
-                                <!-- Pháº§n hÃ¬nh áº£nh - cÃ³ thá» click -->
+                                <!-- Phần hình ảnh - có thể click -->
                                 <div class="h-[70%] w-full overflow-hidden">
                                     <% if (mainImageUrl != null && !mainImageUrl.isEmpty()) { %>
                                         <a href="product?id=<%= product.getId() %>" class="block h-full w-full">
@@ -79,7 +79,7 @@
                                 </div>
 
                                 <div class="h-[30%] p-4 flex flex-col justify-between gap-2">
-                                    <!-- TÃªn sáº£n pháº©m - cÃ³ thá» click -->
+                                    <!-- Tên sản phẩm - có thể click -->
                                     <div class="overflow-hidden">
                                         <a href="product?id=<%= product.getId() %>" class="text-sm line-clamp-2 text-secondary-foreground">
                                             <%= product.getName() %>
@@ -87,7 +87,7 @@
                                     </div>
 
                                     <div class="flex items-center justify-between">
-                                        <!-- GiÃ¡ tiá»n - cÃ³ thá» click -->
+                                        <!-- Giá tiền - có thể click -->
                                         <a href="product?id=<%= product.getId() %>" class="flex items-center gap-1">
                                             <span class="text-primary font-extrabold text-base">
                                                 <%= String.format("%,.0f", product.getPrice()) %>.000đ
@@ -95,7 +95,7 @@
                                         </a>
 
                                         <%
-                                        // Kiá»m tra sáº£n pháº©m ÄÃ£ cÃ³ trong giá» hÃ ng chÆ°a
+                                        // Kiểm tra sản phẩm đã có trong giỏ hàng chưa
                                         boolean isInCart = false;
                                         User currentUser = (User) session.getAttribute("user");
                                         if (currentUser != null) {
@@ -107,17 +107,17 @@
                                                     isInCart = (existingItem != null);
                                                 }
                                             } catch (Exception e) {
-                                                // Náº¿u cÃ³ lá»i, máº·c Äá»nh cho phÃ©p thÃªm
+                                                // Nếu có lỗi, mặc định cho phép thêm
                                                 isInCart = false;
                                             }
                                         }
                                         %>
                                         
                                         <% if (isInCart) { %>
-                                            <!-- Äang á» tráº¡ng thÃ¡i ÄÃ£ trong giá»: hiá»n thá» nÃºt xÃ³a, áº©n nÃºt thÃªm -->
+                                            <!-- Đang ở trạng thái đã trong giỏ: hiển thị nút xóa, ẩn nút thêm -->
                                             <button id="remove-btn-<%= product.getId() %>" onclick="removeFromCart(<%= product.getId() %>)" class="bg-[#e7000b]/10 border border-destructive text-white shadow-xs inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[6px] text-xs px-3 py-2 cursor-pointer">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="text-destructive" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                                                <p class="font-medium text-xs text-destructive">XÃ³a khá»i giá»</p>
+                                                <p class="font-medium text-xs text-destructive">Xóa khỏi giỏ</p>
                                             </button>
                                             <button id="add-btn-<%= product.getId() %>" onclick="addToCart(<%= product.getId() %>)" style="display:none" class="bg-primary text-white shadow-xs hover:bg-primary/90 focus-visible:ring-primary/20 dark:focus-visible:ring-primary/40 dark:bg-primary/60 add button items-center justify-center gap-2 whitespace-nowrap rounded-[6px] text-xs px-3 py-2 cursor-pointer transition-colors">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -128,7 +128,7 @@
                                                 <p class="font-medium text-xs text-background">Thêm vào giỏ</p>
                                             </button>
                                         <% } else { %>
-                                            <!-- ChÆ°a trong giá»: hiá»n thá» nÃºt thÃªm, áº©n nÃºt xÃ³a -->
+                                            <!-- Chưa trong giỏ: hiển thị nút thêm, ẩn nút xóa -->
                                             <button id="add-btn-<%= product.getId() %>" onclick="addToCart(<%= product.getId() %>)" class="border border-primary bg-primary text-white shadow-xs hover:bg-primary/90 focus-visible:ring-primary/20 dark:focus-visible:ring-primary/40 dark:bg-primary/60 add button inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[6px] text-xs px-3 py-2 cursor-pointer transition-colors">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                     <path d="M16 10a4 4 0 0 1-8 0"/>
@@ -139,7 +139,7 @@
                                             </button>
                                             <button id="remove-btn-<%= product.getId() %>" onclick="removeFromCart(<%= product.getId() %>)" style="display:none" class="bg-[#e7000b]/10 border border-destructive text-white shadow-xs items-center justify-center gap-2 whitespace-nowrap rounded-[6px] text-xs px-3 py-2 cursor-pointer">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="text-destructive" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                                                <p class="font-medium text-xs text-destructive">XÃ³a khá»i giá»</p>
+                                                <p class="font-medium text-xs text-destructive">Xóa khỏi giỏ</p>
                                             </button>
                                         <% } %>
                                     </div>
@@ -151,22 +151,17 @@
                         %>
                             <!-- No Results Found -->
                             <div class="col-span-full text-center py-20">
-                                <div class="w-24 h-24 mx-auto mb-6 bg-muted rounded-full flex items-center justify-center">
-                                    <svg class="w-12 h-12 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                    </svg>
-                                </div>
-                                <h3 class="text-2xl font-bold text-foreground mb-3">KhÃ´ng tÃ¬m tháº¥y sáº£n pháº©m</h3>
-                                <p class="text-muted-foreground mb-8 text-lg">
+                                <h3 class="text-lg font-bold text-foreground mb-3">Không tìm thấy sản phẩm</h3>
+                                <p class="text-muted-foreground mb-8 text-sm">
                                     <% if (request.getAttribute("searchTerm") != null && !((String) request.getAttribute("searchTerm")).isEmpty()) { %>
-                                        KhÃ´ng cÃ³ sáº£n pháº©m nÃ o phÃ¹ há»£p vá»i tá»« khÃ³a "<%= request.getAttribute("searchTerm") %>"
+                                        Không có sản phẩm nào phù hợp với từ khóa "<%= request.getAttribute("searchTerm") %>"
                                     <% } else { %>
-                                        KhÃ´ng cÃ³ sáº£n pháº©m nÃ o trong há» thá»ng
+                                        Không có sản phẩm nào trong hệ thống
                                     <% } %>
                                 </p>
                                 <a href="${pageContext.request.contextPath}/" 
-                                   class="inline-flex items-center gap-3 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-semibold hover:bg-primary/90 transition-all duration-300">
-                                    Quay vá» trang chá»§
+                                   class="inline-flex items-center gap-3 bg-primary text-primary-foreground px-8 py-4 rounded-xl font-semibold hover:bg-primary/90 transition-all  text-xs duration-300">
+                                    Quay về trang chủ
                                 </a>
                             </div>
                         <%
