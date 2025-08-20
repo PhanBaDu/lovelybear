@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="data.models.Order" %>
+<%@ page import="data.constants.OrderStatus" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.math.BigDecimal" %>
@@ -14,28 +15,43 @@
     <link rel="stylesheet" href="./public/assets/styles/globals.css">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body>
-    <div class="flex flex-col min-h-screen justify-between bg-muted">
+<body class="bg-gradient-to-br from-slate-50 to-slate-100">
+    <div class="flex flex-col min-h-screen justify-between">
         <!-- Header -->
         <jsp:include page="../components/header.jsp" />
 
-        <div class="container mx-auto px-4 py-8 max-w-6xl pt-32">
+        <div class="container mx-auto px-4 py-8 max-w-6xl pt-24 pb-24">
             <!-- Page Title -->
-            <div class="mb-8">
-                <h1 class="text-2xl font-bold text-gray-900 mb-2">Đơn Hàng Của Tôi</h1>
-                <p class="text-gray-600">Theo dõi và quản lý đơn hàng của bạn</p>
+            <div class="mb-12 text-center">
+                <h1 class="text-4xl font-extrabold text-gray-900 mb-4 text-foreground">Đơn Hàng Của Tôi</h1>
+                <p class="text-sm text-muted-foreground font-medium">Theo dõi và quản lý đơn hàng của bạn</p>
             </div>
             
             <%
             String error = (String) request.getAttribute("error");
+            String success = request.getParameter("success");
+            
             if (error != null) {
             %>
-                <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-                    <div class="flex">
-                        <svg class="w-5 h-5 text-red-400 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="bg-gradient-to-r from-red-50 to-red-100 border border-red-200 rounded-xl p-6 mb-8 shadow-lg">
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-red-500 mr-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <p class="text-red-700"><%= error %></p>
+                        <p class="text-red-800 font-semibold"><%= error %></p>
+                    </div>
+                </div>
+            <%
+            }
+            
+            if ("cancelled".equals(success)) {
+            %>
+                <div class="bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-xl p-6 mb-8 shadow-lg">
+                    <div class="flex items-center">
+                        <svg class="w-6 h-6 text-green-500 mr-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        <p class="text-green-800 font-semibold">Đơn hàng đã được hủy thành công!</p>
                     </div>
                 </div>
             <%
@@ -47,17 +63,17 @@
             if (orders == null || orders.isEmpty()) {
             %>
                 <!-- Empty State -->
-                <div class="text-center py-16">
-                    <div class="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
-                        <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                <div class="text-center py-20">
+                    <div class="w-32 h-32 mx-auto mb-8 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center shadow-lg">
+                        <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
                         </svg>
                     </div>
-                    <h3 class="text-lg font-medium text-gray-900 mb-2">Chưa có đơn hàng nào</h3>
-                    <p class="text-gray-500 mb-6">Bạn chưa đặt đơn hàng nào. Hãy khám phá sản phẩm và đặt hàng ngay!</p>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">Chưa có đơn hàng nào</h3>
+                    <p class="text-gray-600 mb-8 text-lg max-w-md mx-auto">Bạn chưa đặt đơn hàng nào. Hãy khám phá sản phẩm và đặt hàng ngay!</p>
                     <a href="${pageContext.request.contextPath}/" 
-                       class="inline-flex items-center gap-2 bg-blue-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                       class="inline-flex items-center gap-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
                         </svg>
                         Mua Sắm Ngay
@@ -68,51 +84,58 @@
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             %>
                 <!-- Orders List -->
-                <div class="space-y-6">
+                <div class="space-y-2">
                     <%
                     for (Order order : orders) {
                         String statusColor = "";
                         String statusText = "";
+                        String statusBg = "";
                         
                         switch (order.getStatus()) {
-                            case "PENDING":
-                                statusColor = "bg-yellow-100 text-yellow-800";
+                            case OrderStatus.PENDING:
+                                statusColor = "text-yellow-700";
                                 statusText = "Chờ xử lý";
+                                statusBg = "bg-gradient-to-r from-yellow-100 to-yellow-200";
                                 break;
-                            case "CONFIRMED":
-                                statusColor = "bg-blue-100 text-blue-800";
+                            case OrderStatus.CONFIRMED:
+                                statusColor = "text-blue-700";
                                 statusText = "Đã xác nhận";
+                                statusBg = "bg-gradient-to-r from-blue-100 to-blue-200";
                                 break;
-                            case "SHIPPING":
-                                statusColor = "bg-purple-100 text-purple-800";
+                            case OrderStatus.SHIPPING:
+                                statusColor = "text-purple-700";
                                 statusText = "Đang giao";
+                                statusBg = "bg-gradient-to-r from-purple-100 to-purple-200";
                                 break;
-                            case "DELIVERED":
-                                statusColor = "bg-green-100 text-green-800";
+                            case OrderStatus.DELIVERED:
+                                statusColor = "text-green-700";
                                 statusText = "Đã giao";
+                                statusBg = "bg-gradient-to-r from-green-100 to-green-200";
                                 break;
-                            case "CANCELLED":
-                                statusColor = "bg-red-100 text-red-800";
+                            case OrderStatus.CANCELLED:
+                                statusColor = "text-red-700";
                                 statusText = "Đã hủy";
+                                statusBg = "bg-gradient-to-r from-red-100 to-red-200";
                                 break;
                             default:
-                                statusColor = "bg-gray-100 text-gray-800";
+                                statusColor = "text-gray-700";
                                 statusText = order.getStatus();
+                                statusBg = "bg-gradient-to-r from-gray-100 to-gray-200";
                         }
                     %>
                         <!-- Order Card -->
-                        <div class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition-shadow">
+                        <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden  shadow-lg">
                             <!-- Order Header -->
-                            <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                            <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-4 py-3 border-b border-gray-200">
                                 <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-4">
+                                    <div class="flex items-center gap-3">
                                         <div>
-                                            <h3 class="text-lg font-semibold text-gray-900">Đơn hàng #<%= order.getId() %></h3>
-                                            <p class="text-sm text-gray-500">Đặt lúc: <%= dateFormat.format(order.getOrderDate()) %></p>
+                                            <h3 class="text-base font-bold text-gray-900">Đơn hàng #<%= order.getId() %></h3>
+                                            <p class="text-xs text-gray-600 font-medium mt-0.5">Đặt lúc: <%= dateFormat.format(order.getOrderDate()) %></p>
                                         </div>
                                     </div>
-                                    <div class="flex items-center gap-3">
-                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium <%= statusColor %>">
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold <%= statusBg %> <%= statusColor %> shadow-md">
                                             <%= statusText %>
                                         </span>
                                     </div>
@@ -120,38 +143,44 @@
                             </div>
                             
                             <!-- Order Body -->
-                            <div class="px-6 py-4">
+                            <div class="px-4 py-3">
                                 <div class="flex items-center justify-between">
-                                    <div class="flex items-center gap-6">
-                                        <div class="text-center">
-                                            <p class="text-sm text-gray-500 mb-1">Số lượng</p>
-                                            <p class="text-lg font-semibold text-gray-900"><%= order.getTotalQuantity() %> sản phẩm</p>
+                                    <div class="flex items-center gap-4">
+                                        <div class="text-center bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-2">
+                                            <p class="text-xs text-gray-600 mb-1 font-semibold">Số lượng</p>
+                                            <p class="text-lg font-bold text-blue-600"><%= order.getTotalQuantity() %></p>
+                                            <p class="text-xs text-gray-500">sản phẩm</p>
                                         </div>
-                                        <div class="h-8 w-px bg-gray-200"></div>
-                                        <div class="text-center">
-                                            <p class="text-sm text-gray-500 mb-1">Tổng tiền</p>
-                                            <p class="text-lg font-semibold text-red-600"><%= String.format("%,.0f", order.getTotalAmount()) %>k</p>
+                                        <div class="h-12 w-px bg-gradient-to-b from-gray-200 to-gray-300"></div>
+                                        <div class="text-center bg-gradient-to-br from-red-50 to-red-100 rounded-lg p-2">
+                                            <p class="text-xs text-gray-600 mb-1 font-semibold">Tổng tiền</p>
+                                            <p class="text-lg font-bold text-red-600"><%= String.format("%,.0f", order.getTotalAmount()) %>k</p>
+                                            <p class="text-xs text-gray-500">VNĐ</p>
                                         </div>
                                     </div>
                                     
-                                    <div class="flex items-center gap-3">
+                                    <div class="flex items-center gap-2">
                                         <a href="${pageContext.request.contextPath}/orders?action=detail&id=<%= order.getId() %>" 
-                                           class="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                           class="inline-flex items-center gap-1 px-3 py-2 border-2 border-blue-300 rounded-lg text-xs font-semibold text-blue-700 bg-gradient-to-r from-white to-blue-50 hover:from-blue-50 hover:to-blue-100 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                             </svg>
                                             Xem chi tiết
                                         </a>
                                         
-                                        <% if ("PENDING".equals(order.getStatus())) { %>
-                                            <button onclick="cancelOrder(<%= order.getId() %>)" 
-                                                    class="inline-flex items-center gap-2 px-4 py-2 border border-red-300 rounded-lg text-sm font-medium text-red-700 bg-white hover:bg-red-50 transition-colors">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                                                </svg>
-                                                Hủy đơn
-                                            </button>
+                                        <% if (OrderStatus.PENDING.equals(order.getStatus())) { %>
+                                            <form method="post" action="${pageContext.request.contextPath}/cancel-order" style="display: inline;">
+                                                <input type="hidden" name="orderId" value="<%= order.getId() %>">
+                                                <button type="submit" 
+                                                        onclick="return confirm('Bạn có chắc muốn hủy đơn hàng này?')"
+                                                        class="inline-flex items-center gap-1 px-3 py-2 border-2 border-red-300 rounded-lg text-xs font-semibold text-red-700 bg-gradient-to-r from-white to-red-50 hover:from-red-50 hover:to-red-100 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                                    </svg>
+                                                    Hủy đơn
+                                                </button>
+                                            </form>
                                         <% } %>
                                     </div>
                                 </div>
@@ -170,13 +199,6 @@
         <jsp:include page="../components/footer.jsp" />
     </div>
     
-    <script>
-        function cancelOrder(orderId) {
-            if (confirm('Bạn có chắc muốn hủy đơn hàng này?')) {
-                // TODO: Implement cancel order functionality
-                alert('Chức năng hủy đơn hàng đang được phát triển!');
-            }
-        }
-    </script>
+
 </body>
 </html>

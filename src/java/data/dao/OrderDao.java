@@ -27,6 +27,13 @@ public interface OrderDao {
     List<Order> getOrdersByUserEmail(String userEmail);
     
     /**
+     * Lấy tất cả đơn hàng của người dùng (loại trừ đơn hàng đã hủy)
+     * @param userEmail Email của người dùng
+     * @return Danh sách đơn hàng (không bao gồm đơn hàng đã hủy)
+     */
+    List<Order> getActiveOrdersByUserEmail(String userEmail);
+    
+    /**
      * Cập nhật trạng thái đơn hàng
      * @param orderId ID của đơn hàng
      * @param status Trạng thái mới

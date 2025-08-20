@@ -1,5 +1,6 @@
 package data.models;
 
+import data.constants.OrderStatus;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
@@ -29,7 +30,7 @@ public class Order {
         this.userEmail = userEmail;
         this.totalQuantity = totalQuantity;
         this.totalAmount = totalAmount;
-        this.status = "PENDING";
+        this.status = OrderStatus.PENDING;
     }
     
     // Getters và Setters

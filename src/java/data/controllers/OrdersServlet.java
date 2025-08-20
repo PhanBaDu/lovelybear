@@ -56,7 +56,7 @@ public class OrdersServlet extends HttpServlet {
             throws ServletException, IOException {
         
         OrderDao orderDao = new OrderImplementation();
-        List<Order> orders = orderDao.getOrdersByUserEmail(user.getEmail());
+        List<Order> orders = orderDao.getActiveOrdersByUserEmail(user.getEmail());
         
         request.setAttribute("orders", orders);
         request.getRequestDispatcher("/views/orders.jsp").forward(request, response);

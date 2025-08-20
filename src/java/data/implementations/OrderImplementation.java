@@ -124,6 +124,44 @@ public class OrderImplementation implements OrderDao {
     }
     
     @Override
+    public List<Order> getActiveOrdersByUserEmail(String userEmail) {
+        List<Order> orders = new ArrayList<>();
+        String sql = "SELECT id, user_email, order_date, total_quantity, total_amount, status FROM orders WHERE user_email = ? AND status != 'CANCELLED' ORDER BY order_date DESC";
+        
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = DatabaseConnectionManager.getConnection();
+            if (conn == null) {
+                System.err.println("Không thể tạo connection database");
+                return orders;
+            }
+            
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, userEmail);
+            rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                Order order = new Order(
+                    rs.getInt("id"),
+                    rs.getString("user_email"),
+                    rs.getTimestamp("order_date"),
+                    rs.getInt("total_quantity"),
+                    rs.getBigDecimal("total_amount"),
+                    rs.getString("status")
+                );
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting active orders by user email: " + e.getMessage());
+        } finally {
+            DatabaseConnectionManager.closeAll(conn, stmt, rs);
+        }
+        return orders;
+    }
+    
+    @Override
     public boolean updateOrderStatus(int orderId, String status) {
         String sql = "UPDATE orders SET status = ? WHERE id = ?";
         
