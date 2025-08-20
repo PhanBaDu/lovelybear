@@ -81,4 +81,11 @@ public interface CartDao {
      * @return Tổng số sản phẩm
      */
     int getCartItemCount(int cartId);
+    
+    /**
+     * Lấy CartItem theo ID
+     * @param cartItemId ID của CartItem
+     * @return CartItem object hoặc null nếu không tìm thấy
+     */
+    CartItem getCartItemById(int cartItemId);
 }

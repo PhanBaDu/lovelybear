@@ -236,7 +236,26 @@
                 alert('Vui lòng chọn sản phẩm để thanh toán!');
                 return;
             }
-            alert('Chức năng thanh toán sẽ được phát triển sau!');
+            
+            // Lấy danh sách sản phẩm đã chọn
+            const selectedItemIds = Array.from(selectedItems).map(cb => cb.dataset.itemId);
+            
+            // Tạo form để gửi dữ liệu đến checkout
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '${pageContext.request.contextPath}/checkout';
+            
+            // Thêm các sản phẩm đã chọn
+            selectedItemIds.forEach(itemId => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'selectedItems';
+                input.value = itemId;
+                form.appendChild(input);
+            });
+            
+            document.body.appendChild(form);
+            form.submit();
         }
         
         function toggleSelectAll(checkbox) {

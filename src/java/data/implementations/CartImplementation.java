@@ -417,4 +417,46 @@ public class CartImplementation implements CartDao {
             DatabaseConnectionManager.closeAll(conn, stmt, null);
         }
     }
+    
+    @Override
+    public CartItem getCartItemById(int cartItemId) {
+        String sql = "SELECT ci.id, ci.cart_id, ci.product_id, ci.quantity, ci.price, p.name as product_name " +
+                     "FROM cart_items ci " +
+                     "JOIN products p ON ci.product_id = p.id " +
+                     "WHERE ci.id = ?";
+        
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = DatabaseConnectionManager.getConnection();
+            if (conn == null) {
+                System.err.println("Không thể tạo connection database");
+                return null;
+            }
+            
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, cartItemId);
+            rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                return new CartItem(
+                    rs.getInt("id"),
+                    rs.getInt("cart_id"),
+                    rs.getInt("product_id"),
+                    rs.getString("product_name"),
+                    "", // productDescription - để trống vì không có trong database
+                    rs.getBigDecimal("price"),
+                    rs.getInt("quantity"),
+                    null, // createdAt - để null vì không có trong database
+                    null  // updatedAt - để null vì không có trong database
+                );
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting cart item by ID: " + e.getMessage());
+        } finally {
+            DatabaseConnectionManager.closeAll(conn, stmt, rs);
+        }
+        return null;
+    }
 }
