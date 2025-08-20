@@ -858,14 +858,14 @@
       name.style.overflow = "hidden";
 
       const price = document.createElement("div");
-      price.className = "text-lg font-bold text-primary";
+      price.className = "text-sm font-bold text-primary";
       price.textContent =
         product.formattedPrice || this.formatPrice(product.price) + "đ";
 
       const viewButton = document.createElement("button");
       viewButton.className =
         "mt-2 px-3 py-1 bg-primary text-white text-xs rounded hover:bg-primary/90 transition-colors";
-      viewButton.textContent = "👁️ Xem chi tiết";
+      viewButton.textContent = "Xem chi tiết";
       viewButton.onclick = (e) => {
         e.stopPropagation();
         this.showProductDetail(product);

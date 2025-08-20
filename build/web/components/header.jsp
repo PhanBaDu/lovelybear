@@ -222,9 +222,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Auto-focus search input when page loads
-        searchInput.focus();
-        
         // Clear search input when clicking on it if it contains placeholder text
         searchInput.addEventListener('click', function() {
             if (this.value === this.placeholder) {
