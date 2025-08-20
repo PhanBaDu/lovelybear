@@ -168,6 +168,41 @@ public class ProductImplementation implements ProductDao {
     }
     
     @Override
+    public List<Product> searchProductsByName(String searchTerm) {
+        if (searchTerm == null || searchTerm.trim().isEmpty()) {
+            return getAllProducts();
+        }
+        
+        String sql = "SELECT id, name, description, price, created_at, updated_at FROM products WHERE name LIKE ? ORDER BY created_at DESC";
+        List<Product> products = new ArrayList<>();
+        
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, "%" + searchTerm.trim() + "%");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int productId = rs.getInt("id");
+                String name = rs.getString("name");
+                String description = rs.getString("description");
+                BigDecimal price = rs.getBigDecimal("price");
+                Timestamp createdAt = rs.getTimestamp("created_at");
+                Timestamp updatedAt = rs.getTimestamp("updated_at");
+
+                Product product = new Product(productId, name, description, price, createdAt, updatedAt);
+                products.add(product);
+            }
+            
+            System.out.println("Tìm kiếm sản phẩm với từ khóa '" + searchTerm + "' thành công, tìm thấy " + products.size() + " sản phẩm");
+            return products;
+            
+        } catch (SQLException e) {
+            System.err.println("Lỗi khi tìm kiếm sản phẩm: " + e.getMessage());
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+    
+    @Override
     public boolean updateProduct(Product product) {
         if (product == null || product.getId() <= 0) {
             System.err.println("Sản phẩm không hợp lệ để cập nhật");

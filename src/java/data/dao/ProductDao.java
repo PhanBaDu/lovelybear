@@ -15,6 +15,7 @@ public interface ProductDao {
     public Product createProduct(String name, String description, String price);
     public Product getProductById(int id);
     public List<Product> getAllProducts();
+    public List<Product> searchProductsByName(String searchTerm);
     public boolean updateProduct(Product product);
     public boolean deleteProduct(int id);
 }
