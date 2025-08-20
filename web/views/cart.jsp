@@ -153,7 +153,7 @@
                                     
                                     <div class="flex gap-4 mt-6">
                                         <button onclick="checkout()" 
-                                                class="cursor-pointer flex-1 bg-primary text-white px-6 py-2 rounded-lg transition-colors font-medium">
+                                                class="cursor-pointer flex-1 bg-primary text-background text-sm px-6 py-2 rounded-lg transition-colors font-medium">
                                             Tiến hành đặt hàng
                                         </button>
                                     </div>

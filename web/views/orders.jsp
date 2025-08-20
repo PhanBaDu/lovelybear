@@ -20,9 +20,9 @@
         <!-- Header -->
         <jsp:include page="../components/header.jsp" />
 
-        <div class="container mx-auto px-4 py-8 max-w-6xl pt-24 pb-24">
+        <div class="container mx-auto px-4 py-4 max-w-6xl pt-24 pb-24">
             <!-- Page Title -->
-            <div class="mb-12 text-center">
+            <div class="mb-5 text-center">
                 <h1 class="text-4xl font-extrabold text-gray-900 mb-4 text-foreground">Đơn Hàng Của Tôi</h1>
                 <p class="text-sm text-muted-foreground font-medium">Theo dõi và quản lý đơn hàng của bạn</p>
             </div>
@@ -46,12 +46,10 @@
             
             if ("cancelled".equals(success)) {
             %>
-                <div class="bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-xl p-6 mb-8 shadow-lg">
-                    <div class="flex items-center">
-                        <svg class="w-6 h-6 text-green-500 mr-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <p class="text-green-800 font-semibold">Đơn hàng đã được hủy thành công!</p>
+                <div class="rounded-xl p-6 mb-4 bg-background text-green-600">
+                    <div class="flex items-center justify-between">
+                        <p class="text-green-600 text-sm font-semibold">Đơn hàng đã được hủy thành công!</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-check-icon lucide-check-check"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></svg>
                     </div>
                 </div>
             <%
@@ -95,12 +93,12 @@
                             case OrderStatus.PENDING:
                                 statusColor = "text-yellow-700";
                                 statusText = "Chờ xử lý";
-                                statusBg = "bg-gradient-to-r from-yellow-100 to-yellow-200";
+                                statusBg = "bg-yellow-700/10";
                                 break;
                             case OrderStatus.CONFIRMED:
-                                statusColor = "text-blue-700";
+                                statusColor = "text-sky-500";
                                 statusText = "Đã xác nhận";
-                                statusBg = "bg-gradient-to-r from-blue-100 to-blue-200";
+                                statusBg = "bg-sky-500/10";
                                 break;
                             case OrderStatus.SHIPPING:
                                 statusColor = "text-purple-700";
@@ -124,9 +122,9 @@
                         }
                     %>
                         <!-- Order Card -->
-                        <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden  shadow-lg">
+                        <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden">
                             <!-- Order Header -->
-                            <div class="bg-gradient-to-r from-gray-50 to-gray-100 px-4 py-3 border-b border-gray-200">
+                            <div class="px-4 py-3 border-b border-gray-200">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-3">
                                         <div>
@@ -135,7 +133,7 @@
                                         </div>
                                     </div>
                                     <div class="flex items-center gap-2">
-                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold <%= statusBg %> <%= statusColor %> shadow-md">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold <%= statusBg %> <%= statusColor %> ">
                                             <%= statusText %>
                                         </span>
                                     </div>
@@ -146,26 +144,22 @@
                             <div class="px-4 py-3">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-4">
-                                        <div class="text-center bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-2">
+                                        <div class="text-center rounded-lg p-2">
                                             <p class="text-xs text-gray-600 mb-1 font-semibold">Số lượng</p>
-                                            <p class="text-lg font-bold text-blue-600"><%= order.getTotalQuantity() %></p>
-                                            <p class="text-xs text-gray-500">sản phẩm</p>
+                                            <p class="text-lg font-bold"><%= order.getTotalQuantity() %></p>
+                                            <p class="text-xs ">sản phẩm</p>
                                         </div>
                                         <div class="h-12 w-px bg-gradient-to-b from-gray-200 to-gray-300"></div>
-                                        <div class="text-center bg-gradient-to-br from-red-50 to-red-100 rounded-lg p-2">
+                                        <div class="text-center rounded-lg p-2">
                                             <p class="text-xs text-gray-600 mb-1 font-semibold">Tổng tiền</p>
-                                            <p class="text-lg font-bold text-red-600"><%= String.format("%,.0f", order.getTotalAmount()) %>k</p>
-                                            <p class="text-xs text-gray-500">VNĐ</p>
+                                            <p class="text-lg font-bold"><%= String.format("%,.0f", order.getTotalAmount()) %>k</p>
+                                            <p class="text-xs ">VNĐ</p>
                                         </div>
                                     </div>
                                     
                                     <div class="flex items-center gap-2">
                                         <a href="${pageContext.request.contextPath}/orders?action=detail&id=<%= order.getId() %>" 
-                                           class="inline-flex items-center gap-1 px-3 py-2 border-2 border-blue-300 rounded-lg text-xs font-semibold text-blue-700 bg-gradient-to-r from-white to-blue-50 hover:from-blue-50 hover:to-blue-100 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">
-                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                            </svg>
+                                           class="inline-flex items-center text-sm gap-1 px-3 py-2 border border-sky-900 text-foreground rounded-lg">
                                             Xem chi tiết
                                         </a>
                                         
@@ -174,10 +168,7 @@
                                                 <input type="hidden" name="orderId" value="<%= order.getId() %>">
                                                 <button type="submit" 
                                                         onclick="return confirm('Bạn có chắc muốn hủy đơn hàng này?')"
-                                                        class="inline-flex items-center gap-1 px-3 py-2 border-2 border-red-300 rounded-lg text-xs font-semibold text-red-700 bg-gradient-to-r from-white to-red-50 hover:from-red-50 hover:to-red-100 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">
-                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                                                    </svg>
+                                                        class="cursor-pointer inline-flex items-center text-sm gap-1 px-3 py-2 border border-destructive bg-destructive text-background rounded-lg">
                                                     Hủy đơn
                                                 </button>
                                             </form>

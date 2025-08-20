@@ -44,59 +44,51 @@
             <jsp:include page="../components/header.jsp" />
             
             <div class="pt-24 px-5 w-full pb-32">
-                <div class="max-w-4xl mx-auto">
-                    <h1 class="text-2xl font-bold text-gray-900 mb-8 text-center">Thanh Toán Đơn Hàng</h1>
-                    
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="max-w-6xl mx-auto">
+                    <div class="w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
                         <!-- Left Column - Order Summary -->
                         <div class="lg:col-span-2">
                             <!-- User Information Section -->
-                            <div class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                            <div class="bg-white rounded-lg p-6 mb-6">
                                 <div class="flex items-center gap-3 mb-4">
                                     <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
-                                        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="text-primary" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-map-pinned-icon lucide-map-pinned"><path d="M18 8c0 3.613-3.869 7.429-5.393 8.795a1 1 0 0 1-1.214 0C9.87 15.429 6 11.613 6 8a6 6 0 0 1 12 0"/><circle cx="12" cy="8" r="2"/><path d="M8.714 14h-3.71a1 1 0 0 0-.948.683l-2.004 6A1 1 0 0 0 3 22h18a1 1 0 0 0 .948-1.316l-2-6a1 1 0 0 0-.949-.684h-3.712"/></svg>
                                     </div>
-                                    <h2 class="text-lg font-semibold text-red-600">Địa Chỉ Nhận Hàng</h2>
+                                    <h2 class="text-lg font-semibold text-primary uppercase">Địa Chỉ Nhận Hàng</h2>
                                 </div>
                                 
                                 <div class="space-y-3">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Họ và tên</label>
                                         <input type="text" value="<%= user.getFullName() != null ? user.getFullName() : "Chưa cập nhật" %>" 
-                                               class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600" 
+                                               class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600 text-sm " 
                                                disabled>
                                     </div>
                                     
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Số điện thoại</label>
                                         <input type="text" value="<%= user.getSodienthoai() != null ? user.getSodienthoai() : "Chưa cập nhật" %>" 
-                                               class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600" 
+                                               class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600 text-sm " 
                                                disabled>
                                     </div>
                                     
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">Địa chỉ</label>
-                                        <textarea class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600" 
+                                        <textarea class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600 text-sm " 
                                                   rows="3" disabled><%= user.getAddress() != null ? user.getAddress() : "Chưa cập nhật" %></textarea>
                                     </div>
                                 </div>
                             </div>
                             
                             <!-- Payment Method Section -->
-                            <div class="bg-white rounded-lg shadow-sm p-6">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Phương Thức Thanh Toán</h3>
+                            <div class="bg-white rounded-lg p-6">
+                                <h3 class="text-lg font-semibold text-primary uppercase mb-4">Phương Thức Thanh Toán</h3>
                                 <div class="space-y-3">
                                     <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-gray-300">
                                         <input type="radio" name="paymentMethod" value="cod" checked 
                                                class="w-4 h-4 text-primary border-gray-300 focus:ring-primary">
                                         <div class="flex items-center gap-2">
-                                            <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
-                                            </svg>
-                                            <span class="font-medium">Thanh toán khi nhận hàng (COD)</span>
+                                            <span class="font-medium text-sm">Thanh toán khi nhận hàng (COD)</span>
                                         </div>
                                     </label>
                                 </div>
@@ -105,8 +97,8 @@
                         
                         <!-- Right Column - Order Summary -->
                         <div class="lg:col-span-1">
-                            <div class="bg-white rounded-lg shadow-sm p-6 sticky top-24">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Tóm Tắt Đơn Hàng</h3>
+                            <div class="bg-white rounded-lg p-6 sticky top-24">
+                                <h3 class="text-lg font-semibold text-primary uppercase mb-4">Tóm Tắt Đơn Hàng</h3>
                                 
                                 <!-- Selected Products -->
                                 <div class="space-y-3 mb-4">
@@ -160,10 +152,10 @@
                                         }
                                     %>
                                         <!-- Total Summary -->
-                                        <div class="border-t border-gray-200 pt-3 mt-4">
+                                        <div class="border-t border-gray-200 pt-6 pb-2 mt-4">
                                             <div class="flex justify-between text-sm font-medium">
                                                 <span>Tổng số lượng:</span>
-                                                <span><%= productsTotalQuantity %></span>
+                                                <span class="font-bold text-primary"><%= productsTotalQuantity %></span>
                                             </div>
                                         </div>
                                     <%
@@ -208,22 +200,22 @@
                                     }
                                     %>
                                     <div class="flex justify-between text-sm">
-                                        <span class="text-gray-600">Tạm tính:</span>
-                                        <span class="font-medium"><%= String.format("%,.0f", orderTotal) %>k</span>
+                                        <span>Tạm tính:</span>
+                                        <span class="font-bold text-primary"><%= String.format("%,.0f", orderTotal) %>k</span>
                                     </div>
                                     <div class="flex justify-between text-sm">
-                                        <span class="text-gray-600">Phí vận chuyển:</span>
-                                        <span class="font-medium">0đ</span>
+                                        <span>Phí vận chuyển:</span>
+                                        <span class="font-bold text-primary">0đ</span>
                                     </div>
-                                    <div class="flex justify-between text-lg font-bold text-red-600">
+                                    <div class="flex justify-between text-sm">
                                         <span>Tổng cộng:</span>
-                                        <span><%= String.format("%,.0f", orderTotal) %>k</span>
+                                        <span class="font-bold text-primary"><%= String.format("%,.0f", orderTotal) %>k</span>
                                     </div>
                                 </div>
                                 
                                 <!-- Place Order Button -->
                                 <button onclick="placeOrder()" 
-                                        class="w-full mt-6 bg-primary text-white py-3 px-6 rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                                        class="w-full mt-6 bg-primary text-white py-2 px-6 rounded-lg font-medium hover:bg-primary/90 transition-colors text-sm">
                                     Đặt Hàng
                                 </button>
                                 
