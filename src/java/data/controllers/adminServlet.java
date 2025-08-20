@@ -4,15 +4,21 @@
  */
 package data.controllers;
 
+import data.dao.OrderDao;
+import data.dao.ProductDao;
+import data.implementations.OrderImplementation;
+import data.implementations.ProductImplementation;
+import data.models.Order;
+import data.models.Product;
 import data.models.User;
-import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.List;
 
 /**
  *
@@ -60,7 +66,7 @@ public class adminServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false); // lấy session nếu có, không tạo mới
+        HttpSession session = request.getSession(false);
         User user = (session != null) ? (User) session.getAttribute("user") : null;
 
         // Kiểm tra: nếu chưa đăng nhập hoặc không phải ADMIN thì redirect về trang chủ
@@ -69,7 +75,42 @@ public class adminServlet extends HttpServlet {
             return;
         }
 
-        // Nếu là ADMIN, forward đến trang admin
+        try {
+            // Lấy danh sách sản phẩm
+            ProductDao productDao = new ProductImplementation();
+            List<Product> products = productDao.getAllProducts();
+            System.out.println("AdminServlet: Lấy được " + (products != null ? products.size() : 0) + " sản phẩm");
+            request.setAttribute("products", products);
+            
+            // Lấy danh sách đơn hàng
+            OrderDao orderDao = new OrderImplementation();
+            List<Order> orders = orderDao.getAllOrders();
+            System.out.println("AdminServlet: Lấy được " + (orders != null ? orders.size() : 0) + " đơn hàng");
+            request.setAttribute("orders", orders);
+            
+            // Tính toán thống kê
+            int totalProducts = products != null ? products.size() : 0;
+            int totalOrders = orders != null ? orders.size() : 0;
+            int pendingOrders = 0;
+            
+            if (orders != null) {
+                for (Order order : orders) {
+                    if ("PENDING".equals(order.getStatus())) {
+                        pendingOrders++;
+                    }
+                }
+            }
+            
+            request.setAttribute("totalProducts", totalProducts);
+            request.setAttribute("totalOrders", totalOrders);
+            request.setAttribute("pendingOrders", pendingOrders);
+            
+        } catch (Exception e) {
+            System.err.println("Error loading admin data: " + e.getMessage());
+            request.setAttribute("error", "Có lỗi xảy ra khi tải dữ liệu: " + e.getMessage());
+        }
+
+        // Forward đến trang admin
         request.getRequestDispatcher("./views/admin.jsp").include(request, response);
     }
 
@@ -84,7 +125,7 @@ public class adminServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doGet(request, response);
     }
 
     /**
@@ -94,7 +135,7 @@ public class adminServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Admin Servlet";
     }// </editor-fold>
 
 }

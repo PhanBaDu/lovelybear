@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/public/assets/styles/globals.css">
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     </head>
-    <body> 
+    <body>
         <%
             // Lấy thông tin user từ session
             User user = (User) session.getAttribute("user");

@@ -202,23 +202,87 @@ public class ProductImplementation implements ProductDao {
     
     @Override
     public boolean deleteProduct(int id) {
-        String sql = "DELETE FROM products WHERE id = ?";
-        try (PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, id);
-
-            int rowsAffected = ps.executeUpdate();
-
-            if (rowsAffected > 0) {
-                System.out.println("Xóa sản phẩm thành công với ID: " + id);
-                return true;
-            } else {
-                System.out.println("Không thể xóa sản phẩm với ID: " + id);
+        Connection conn = null;
+        try {
+            conn = MySqlDriver.getConnection();
+            if (conn == null) {
+                System.err.println("Không thể tạo connection database");
                 return false;
             }
+            
+            // Bắt đầu transaction
+            conn.setAutoCommit(false);
+            
+            try {
+                // 1. Xóa tất cả order_items liên quan đến sản phẩm này
+                String deleteOrderItemsSql = "DELETE FROM order_items WHERE product_id = ?";
+                try (PreparedStatement ps = conn.prepareStatement(deleteOrderItemsSql)) {
+                    ps.setInt(1, id);
+                    int orderItemsDeleted = ps.executeUpdate();
+                    System.out.println("Đã xóa " + orderItemsDeleted + " order_items cho sản phẩm ID: " + id);
+                }
+                
+                // 2. Xóa tất cả product_images liên quan
+                String deleteImagesSql = "DELETE FROM product_images WHERE product_id = ?";
+                try (PreparedStatement ps = conn.prepareStatement(deleteImagesSql)) {
+                    ps.setInt(1, id);
+                    int imagesDeleted = ps.executeUpdate();
+                    System.out.println("Đã xóa " + imagesDeleted + " product_images cho sản phẩm ID: " + id);
+                }
+                
+                // 3. Xóa tất cả cart_items liên quan
+                String deleteCartItemsSql = "DELETE FROM cart_items WHERE product_id = ?";
+                try (PreparedStatement ps = conn.prepareStatement(deleteCartItemsSql)) {
+                    ps.setInt(1, id);
+                    int cartItemsDeleted = ps.executeUpdate();
+                    System.out.println("Đã xóa " + cartItemsDeleted + " cart_items cho sản phẩm ID: " + id);
+                }
+                
+                // 4. Cuối cùng xóa sản phẩm
+                String deleteProductSql = "DELETE FROM products WHERE id = ?";
+                try (PreparedStatement ps = conn.prepareStatement(deleteProductSql)) {
+                    ps.setInt(1, id);
+                    int rowsAffected = ps.executeUpdate();
+
+                    if (rowsAffected > 0) {
+                        // Commit transaction nếu tất cả thành công
+                        conn.commit();
+                        System.out.println("Xóa sản phẩm thành công với ID: " + id);
+                        return true;
+                    } else {
+                        // Rollback nếu không tìm thấy sản phẩm
+                        conn.rollback();
+                        System.out.println("Không thể xóa sản phẩm với ID: " + id);
+                        return false;
+                    }
+                }
+                
+            } catch (SQLException e) {
+                // Rollback nếu có lỗi
+                if (conn != null) {
+                    conn.rollback();
+                }
+                throw e;
+            } finally {
+                // Reset autoCommit
+                if (conn != null) {
+                    conn.setAutoCommit(true);
+                }
+            }
+            
         } catch (SQLException e) {
             System.err.println("Lỗi khi xóa sản phẩm: " + e.getMessage());
             e.printStackTrace();
             return false;
+        } finally {
+            // Đóng connection
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    System.err.println("Lỗi khi đóng connection: " + e.getMessage());
+                }
+            }
         }
     }
 }

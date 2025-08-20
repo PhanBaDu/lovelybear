@@ -33,4 +33,5 @@ public interface OrderDao {
      * @return true nếu cập nhật thành công, false nếu thất bại
      */
     boolean updateOrderStatus(int orderId, String status);
+    List<Order> getAllOrders();
 }
