@@ -4,8 +4,8 @@ dist/
 nbproject/private/
 
 # Uploaded files (keep directory structure)
-web/uploads/products/*
-!web/uploads/products/.gitkeep
+# web/uploads/products/*
+# !web/uploads/products/.gitkeep
 
 # IDE files
 .idea/
