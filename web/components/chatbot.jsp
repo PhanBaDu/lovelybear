@@ -2,7 +2,7 @@
 
 <!-- Button mở chat -->
 <button
-  class="fixed text-background bottom-10 left-5 cursor-pointer text-secondary-foreground shadow-xs hover:bg-secondary/80 inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-all bg-primary"
+  class="fixed z-50 text-background bottom-10 left-5 cursor-pointer text-secondary-foreground shadow-xs hover:bg-secondary/80 inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-all bg-primary"
 >
   <svg
     id="chatbot"
