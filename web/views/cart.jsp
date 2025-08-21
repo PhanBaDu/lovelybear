@@ -27,7 +27,12 @@
             BigDecimal totalAmount = totalAmountAttr != null ? totalAmountAttr : BigDecimal.ZERO;
         %>
         
-        <div class="flex flex-col min-h-screen justify-between bg-muted">
+        <div class="flex flex-col min-h-screen justify-between bg-muted" style="
+        background-image: url('./public/assets/images/background.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      ">
             <jsp:include page="../components/chatbot.jsp" />
             <jsp:include page="../components/header.jsp" />
             

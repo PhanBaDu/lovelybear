@@ -13,8 +13,13 @@
     <link rel="stylesheet" href="../public/assets/styles/globals.css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
-  <body class="bg-white">
-    <div class="min-h-screen flex items-center justify-center">
+  <body class="bg-white" >
+    <div class="min-h-screen flex items-center justify-center" style="
+        background-image: url('../public/assets/images/background.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      ">
       <div class="max-w-md w-full bg-white rounded-lg p-8 text-center">
         <div class="mb-6">
           <div

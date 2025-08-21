@@ -40,7 +40,12 @@
             }
         %>
         
-        <div class="flex flex-col min-h-screen justify-between bg-muted">
+        <div class="flex flex-col min-h-screen justify-between bg-muted" style="
+        background-image: url('./public/assets/images/background.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      ">
             <jsp:include page="../components/header.jsp" />
             
             <div class="pt-24 px-5 w-full pb-32">

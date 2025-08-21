@@ -15,7 +15,12 @@
     <link rel="stylesheet" href="./public/assets/styles/globals.css">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="bg-gradient-to-br from-slate-50 to-slate-100">
+<body class="bg-gradient-to-br from-slate-50 to-slate-100"  style="
+        background-image: url('./public/assets/images/background.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      ">
     <div class="flex flex-col min-h-screen justify-between">
         <!-- Header -->
         <jsp:include page="../components/header.jsp" />
@@ -23,8 +28,8 @@
         <div class="container mx-auto px-4 py-4 max-w-6xl pt-24 pb-24">
             <!-- Page Title -->
             <div class="mb-5 text-center">
-                <h1 class="text-4xl font-extrabold text-gray-900 mb-4 text-foreground">Đơn Hàng Của Tôi</h1>
-                <p class="text-sm text-muted-foreground font-medium">Theo dõi và quản lý đơn hàng của bạn</p>
+                <h1 class="text-4xl font-extrabold text-gray-900 mb-4 text-background">Đơn Hàng Của Tôi</h1>
+                <p class="text-sm text-background font-medium">Theo dõi và quản lý đơn hàng của bạn</p>
             </div>
             
             <%

@@ -19,7 +19,12 @@
     <link rel="stylesheet" href="./public/assets/styles/globals.css">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="bg-gradient-to-br from-slate-50 to-slate-100">
+<body class="bg-gradient-to-br from-slate-50 to-slate-100" style="
+        background-image: url('./public/assets/images/background.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      ">
     <div class="flex flex-col min-h-screen justify-between pt-18">
         <!-- Header -->
         <jsp:include page="../components/header.jsp" />

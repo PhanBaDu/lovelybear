@@ -12,7 +12,12 @@
         <title><%= ((Product)request.getAttribute("product")).getName() %></title>
     </head>
     <body >
-        <div class="flex flex-col min-h-screen bg-muted">
+        <div class="flex flex-col min-h-screen bg-muted" style="
+        background-image: url('./public/assets/images/background.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      ">
             <jsp:include page="../components/header.jsp" />
             
             <div class="pt-24 pb-32">

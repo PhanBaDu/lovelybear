@@ -15,7 +15,12 @@
     <body>
         <div class="flex flex-col min-h-screen items-center justify-between">
             <jsp:include page="../components/features/admin/header.jsp" />
-            <div class="pt-32 px-5 w-full pb-32 bg-muted">
+            <div class="pt-32 px-5 w-full pb-32 bg-muted" style="
+        background-image: url('./public/assets/images/background.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      ">
                 <div class="max-w-6xl mx-auto flex flex-col gap-10">
                     <div class="bg-card p-5 rounded-xl">
                         <h1 class="text-2xl font-bold text-foreground mb-6">Thêm Sản Phẩm Mới</h1>
