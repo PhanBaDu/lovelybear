@@ -52,12 +52,13 @@
 <!-- Popup Chatbot -->
 <div
   id="modal-chatbot"
-  class="modal fixed bottom-28 w-[600px] h-[700px] left-5 bg-white rounded-lg shadow-lg hidden flex-col justify-between z-40"style="
-        background-image: url('./public/assets/images/background.png');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-      "
+  class="modal fixed bottom-28 w-[600px] h-[700px] left-5 bg-white rounded-lg shadow-lg hidden flex-col justify-between z-40"
+  style="
+    background-image: url('./public/assets/images/background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  "
 >
   <!-- Header -->
   <div
@@ -322,16 +323,42 @@
       this.addMessage(message, true);
       this.chatInput.value = "";
 
-      // Simulate bot response
-      setTimeout(() => {
-        this.generateBotResponse(message);
-      }, 1000);
+      // Kiểm tra xem có phải là tìm kiếm trực tiếp không
+      const lowerMessage = message.toLowerCase();
+      const searchKeywords = [
+        "tìm",
+        "tìm kiếm",
+        "search",
+        "kiếm",
+        "cần",
+        "muốn",
+        "mua",
+      ];
+      const isDirectSearch =
+        searchKeywords.some((keyword) => lowerMessage.includes(keyword)) &&
+        !lowerMessage.includes("sản phẩm") &&
+        !lowerMessage.includes("giá") &&
+        !lowerMessage.includes("rẻ");
+
+      if (isDirectSearch) {
+        // Nếu là tìm kiếm trực tiếp, thực hiện tìm kiếm ngay
+        setTimeout(() => {
+          this.searchProducts(message);
+        }, 500);
+      } else {
+        // Simulate bot response
+        setTimeout(() => {
+          this.generateBotResponse(message);
+        }, 1000);
+      }
     }
 
     generateBotResponse(userMessage) {
       let botResponse = "Cảm ơn bạn đã liên hệ!";
       let shouldShowCheapButton = false;
       let shouldShowProductButton = false;
+      let shouldShowTopSellingButton = false;
+      let shouldShowSearchButton = false;
 
       const lowerMessage = userMessage.toLowerCase();
 
@@ -351,11 +378,51 @@
         lowerMessage.includes(keyword)
       );
 
+      // Kiểm tra từ khóa tìm kiếm
+      const searchKeywords = [
+        "tìm",
+        "tìm kiếm",
+        "search",
+        "kiếm",
+        "cần",
+        "muốn",
+        "mua",
+        "đang tìm",
+        "đang kiếm",
+      ];
+      const hasSearchKeyword = searchKeywords.some((keyword) =>
+        lowerMessage.includes(keyword)
+      );
+
+      // Kiểm tra từ khóa top bán chạy
+      const topSellingKeywords = [
+        "bán chạy",
+        "phổ biến",
+        "nổi tiếng",
+        "hot",
+        "trend",
+        "được ưa chuộng",
+        "nhiều người mua",
+        "top",
+        "best seller",
+      ];
+      const hasTopSellingKeyword = topSellingKeywords.some((keyword) =>
+        lowerMessage.includes(keyword)
+      );
+
       if (lowerMessage.includes("sản phẩm")) {
         if (hasCheapKeyword) {
           botResponse =
             "Bạn muốn tìm sản phẩm giá rẻ phải không? Tôi sẽ tìm cho bạn những sản phẩm có giá tốt nhất!";
           shouldShowCheapButton = true;
+        } else if (hasTopSellingKeyword) {
+          botResponse =
+            "Bạn muốn xem top sản phẩm bán chạy nhất phải không? Tôi sẽ hiển thị những sản phẩm được ưa chuộng nhất!";
+          shouldShowTopSellingButton = true;
+        } else if (hasSearchKeyword) {
+          botResponse =
+            "Bạn muốn tìm kiếm sản phẩm cụ thể phải không? Hãy cho tôi biết bạn đang tìm gì!";
+          shouldShowSearchButton = true;
         } else {
           botResponse =
             "Chúng tôi có nhiều sản phẩm chất lượng cao. Bạn có muốn xem toàn bộ sản phẩm không?";
@@ -365,6 +432,14 @@
         botResponse =
           "Bạn muốn tìm sản phẩm giá rẻ phải không? Tôi sẽ tìm cho bạn những sản phẩm có giá tốt nhất!";
         shouldShowCheapButton = true;
+      } else if (hasTopSellingKeyword) {
+        botResponse =
+          "Bạn muốn xem top sản phẩm bán chạy nhất phải không? Tôi sẽ hiển thị những sản phẩm được ưa chuộng nhất!";
+        shouldShowTopSellingButton = true;
+      } else if (hasSearchKeyword) {
+        botResponse =
+          "Bạn muốn tìm kiếm sản phẩm phải không? Hãy cho tôi biết cụ thể bạn đang tìm gì!";
+        shouldShowSearchButton = true;
       } else if (
         lowerMessage.includes("gấu") &&
         (lowerMessage.includes("giá") || lowerMessage.includes("rẻ"))
@@ -400,6 +475,10 @@
           this.addCheapProductButton();
         } else if (shouldShowProductButton) {
           this.addProductButton();
+        } else if (shouldShowTopSellingButton) {
+          this.addTopSellingButton();
+        } else if (shouldShowSearchButton) {
+          this.addSearchButton();
         }
       }, 100);
     }
@@ -440,6 +519,11 @@
           color: "bg-primary",
         },
         {
+          text: "🔥 Top bán chạy",
+          action: () => this.showTopSellingProducts(),
+          color: "bg-orange-500",
+        },
+        {
           text: "🔍 Tìm kiếm sản phẩm",
           action: () => this.showSearchOption(),
           color: "bg-blue-500",
@@ -469,6 +553,510 @@
         "Bạn muốn tìm sản phẩm gì? Hãy nhập từ khóa tìm kiếm vào ô chat bên dưới.",
         false
       );
+
+      // Thêm hướng dẫn tìm kiếm
+      setTimeout(() => {
+        this.addSearchGuide();
+      }, 500);
+    }
+
+    // Thêm hướng dẫn tìm kiếm
+    addSearchGuide() {
+      if (!this.chatBody) return;
+
+      const guideDiv = document.createElement("div");
+      guideDiv.style.display = "flex";
+      guideDiv.style.width = "100%";
+      guideDiv.style.marginBottom = "0.5rem";
+      guideDiv.style.justifyContent = "flex-start";
+
+      const guideContainer = document.createElement("div");
+      guideContainer.className =
+        "bg-blue-50 rounded-lg p-3 max-w-full border border-blue-200";
+
+      guideContainer.innerHTML =
+        '<div class="text-sm text-gray-700">' +
+        '<p class="font-semibold mb-2">💡 Gợi ý từ khóa tìm kiếm:</p>' +
+        '<ul class="text-xs space-y-1">' +
+        "<li>• <strong>Phong cách:</strong> hiện đại, cổ điển, minimalist</li>" +
+        "<li>• <strong>Không gian:</strong> phòng khách, phòng ngủ, văn phòng</li>" +
+        "<li>• <strong>Màu sắc:</strong> trắng, đen, vàng, xanh</li>" +
+        "<li>• <strong>Chất liệu:</strong> gỗ, kim loại, vải, nhựa</li>" +
+        "<li>• <strong>Kích thước:</strong> nhỏ, vừa, lớn</li>" +
+        "</ul>" +
+        "</div>";
+
+      guideDiv.appendChild(guideContainer);
+      this.chatBody.appendChild(guideDiv);
+      this.scrollToBottom();
+    }
+
+    // Tìm kiếm sản phẩm theo từ khóa
+    async searchProducts(searchTerm) {
+      if (!searchTerm || searchTerm.trim() === "") {
+        this.addMessage("Vui lòng nhập từ khóa tìm kiếm!", false);
+        return;
+      }
+
+      try {
+        // Hiển thị loading
+        this.addMessage(
+          `🔍 Đang tìm kiếm sản phẩm với từ khóa: "${searchTerm}"...`,
+          false
+        );
+
+        // Lấy danh sách sản phẩm từ server
+        const response = await fetch(
+          window.location.pathname.replace("/index.jsp", "") + "/api/products"
+        );
+        if (!response.ok) {
+          throw new Error("Không thể tải sản phẩm");
+        }
+
+        const allProducts = await response.json();
+
+        // Xóa tin nhắn loading
+        this.removeLastMessage();
+
+        // Tìm kiếm sản phẩm theo từ khóa
+        const searchResults = this.filterProductsByKeyword(
+          allProducts,
+          searchTerm
+        );
+
+        if (searchResults.length === 0) {
+          this.addMessage(
+            `Không tìm thấy sản phẩm nào phù hợp với từ khóa "${searchTerm}". Hãy thử từ khóa khác hoặc xem tất cả sản phẩm!`,
+            false
+          );
+
+          // Gợi ý từ khóa tương tự
+          setTimeout(() => {
+            this.suggestSimilarKeywords(searchTerm, allProducts);
+          }, 500);
+        } else {
+          this.addMessage(
+            `🎉 Tìm thấy ${searchResults.length} sản phẩm phù hợp với từ khóa "${searchTerm}":`,
+            false
+          );
+
+          // Hiển thị kết quả tìm kiếm
+          setTimeout(() => {
+            this.displaySearchResults(searchResults, searchTerm);
+          }, 500);
+        }
+      } catch (error) {
+        console.error("Lỗi khi tìm kiếm sản phẩm:", error);
+        this.removeLastMessage();
+        this.addMessage(
+          "Xin lỗi, không thể thực hiện tìm kiếm. Vui lòng thử lại sau.",
+          false
+        );
+      }
+    }
+
+    // Lọc sản phẩm theo từ khóa
+    filterProductsByKeyword(products, keyword) {
+      const lowerKeyword = keyword.toLowerCase();
+      return products.filter((product) => {
+        // Tìm kiếm trong tên sản phẩm
+        if (product.name && product.name.toLowerCase().includes(lowerKeyword)) {
+          return true;
+        }
+        // Tìm kiếm trong mô tả
+        if (
+          product.description &&
+          product.description.toLowerCase().includes(lowerKeyword)
+        ) {
+          return true;
+        }
+        // Tìm kiếm trong danh mục (nếu có)
+        if (
+          product.category &&
+          product.category.toLowerCase().includes(lowerKeyword)
+        ) {
+          return true;
+        }
+        // Tìm kiếm theo phong cách (nếu có)
+        if (
+          product.style &&
+          product.style.toLowerCase().includes(lowerKeyword)
+        ) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    // Gợi ý từ khóa tương tự
+    suggestSimilarKeywords(searchTerm, products) {
+      if (!this.chatBody) return;
+
+      // Tạo danh sách từ khóa phổ biến
+      const commonKeywords = [
+        "gấu bông",
+        "gối trang trí",
+        "khung ảnh",
+        "bình hoa",
+        "đèn trang trí",
+        "tranh treo tường",
+        "đồng hồ",
+        "lọ hoa",
+        "bình phong",
+        "thảm trang trí",
+        "gối sofa",
+        "chăn ga",
+        "rèm cửa",
+        "bàn trang điểm",
+        "giá sách",
+      ];
+
+      // Tìm từ khóa tương tự
+      const suggestions = commonKeywords.filter(
+        (keyword) =>
+          keyword.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          searchTerm.toLowerCase().includes(keyword.toLowerCase())
+      );
+
+      if (suggestions.length > 0) {
+        const suggestionDiv = document.createElement("div");
+        suggestionDiv.style.display = "flex";
+        suggestionDiv.style.width = "100%";
+        suggestionDiv.style.marginBottom = "0.5rem";
+        suggestionDiv.style.justifyContent = "flex-start";
+
+        const suggestionContainer = document.createElement("div");
+        suggestionContainer.className =
+          "bg-yellow-50 rounded-lg p-3 max-w-full border border-yellow-200";
+
+        // Tạo HTML content một cách an toàn
+        const buttonsHtml = suggestions
+          .slice(0, 6)
+          .map((keyword) => {
+            return (
+              "<button onclick=\"chatbot.searchProducts('" +
+              keyword.replace(/'/g, "\\'") +
+              "')\" " +
+              'class="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded hover:bg-yellow-200 transition-colors">' +
+              keyword +
+              "</button>"
+            );
+          })
+          .join("");
+
+        suggestionContainer.innerHTML =
+          '<div class="text-sm text-gray-700">' +
+          '<p class="font-semibold mb-2">💡 Có thể bạn đang tìm:</p>' +
+          '<div class="flex flex-wrap gap-2">' +
+          buttonsHtml +
+          "</div>" +
+          "</div>";
+
+        suggestionDiv.appendChild(suggestionContainer);
+        this.chatBody.appendChild(suggestionDiv);
+        this.scrollToBottom();
+      }
+    }
+
+    // Hiển thị kết quả tìm kiếm
+    displaySearchResults(searchResults, searchTerm) {
+      if (!this.chatBody || !searchResults || searchResults.length === 0)
+        return;
+
+      const resultsDiv = document.createElement("div");
+      resultsDiv.style.display = "flex";
+      resultsDiv.style.width = "100%";
+      resultsDiv.style.marginBottom = "0.5rem";
+      resultsDiv.style.justifyContent = "flex-start";
+
+      const resultsContainer = document.createElement("div");
+      resultsContainer.className =
+        "bg-green-50 rounded-lg p-3 max-w-full border border-green-200";
+      resultsContainer.style.maxHeight = "400px";
+      resultsContainer.style.overflowY = "auto";
+
+      // Tiêu đề kết quả
+      const headerDiv = document.createElement("div");
+      headerDiv.className = "mb-3";
+
+      const title = document.createElement("h3");
+      title.className = "text-sm font-semibold text-green-800";
+      title.textContent = `🔍 Kết quả tìm kiếm: "${searchTerm}"`;
+
+      const subtitle = document.createElement("p");
+      subtitle.className = "text-xs text-green-700 mt-1";
+      subtitle.textContent = `Tìm thấy ${searchResults.length} sản phẩm phù hợp`;
+
+      headerDiv.appendChild(title);
+      headerDiv.appendChild(subtitle);
+      resultsContainer.appendChild(headerDiv);
+
+      // Danh sách sản phẩm tìm được
+      const productsList = document.createElement("div");
+      productsList.className = "space-y-2";
+
+      searchResults.forEach((product, index) => {
+        const productItem = this.createSearchResultItem(product, index + 1);
+        productsList.appendChild(productItem);
+      });
+
+      resultsContainer.appendChild(productsList);
+      resultsDiv.appendChild(resultsContainer);
+      this.chatBody.appendChild(resultsDiv);
+      this.scrollToBottom();
+    }
+
+    // Tạo item kết quả tìm kiếm
+    createSearchResultItem(product, rank) {
+      const item = document.createElement("div");
+      item.className =
+        "bg-white rounded-lg p-3 border border-green-200 hover:shadow-md transition-shadow cursor-pointer";
+      item.onclick = () => this.showProductDetail(product);
+
+      const mainDiv = document.createElement("div");
+      mainDiv.className = "flex items-center gap-3";
+
+      // Rank badge
+      const rankBadge = document.createElement("div");
+      rankBadge.className =
+        "flex-shrink-0 w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center text-xs font-bold";
+      rankBadge.textContent = rank;
+
+      // Ảnh sản phẩm
+      const image = document.createElement("img");
+      image.src =
+        product.imageUrl ||
+        window.location.pathname.replace("/index.jsp", "") +
+          "/public/assets/images/product-placeholder.svg";
+      image.alt = product.name;
+      image.className = "w-14 h-14 object-cover rounded-md flex-shrink-0";
+
+      // Thông tin sản phẩm
+      const infoDiv = document.createElement("div");
+      infoDiv.className = "flex-1 min-w-0";
+
+      const name = document.createElement("div");
+      name.className = "text-sm font-semibold text-gray-800 mb-1 line-clamp-2";
+      name.textContent = product.name;
+      name.style.display = "-webkit-box";
+      name.style.webkitLineClamp = "2";
+      name.style.webkitBoxOrient = "vertical";
+      name.style.overflow = "hidden";
+
+      const price = document.createElement("div");
+      price.className = "text-sm font-bold text-green-600";
+      price.textContent =
+        product.formattedPrice || this.formatPrice(product.price) + "đ";
+
+      const viewButton = document.createElement("button");
+      viewButton.className =
+        "mt-2 px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition-colors";
+      viewButton.textContent = "Xem chi tiết";
+      viewButton.onclick = (e) => {
+        e.stopPropagation();
+        this.showProductDetail(product);
+      };
+
+      infoDiv.appendChild(name);
+      infoDiv.appendChild(price);
+      infoDiv.appendChild(viewButton);
+
+      mainDiv.appendChild(rankBadge);
+      mainDiv.appendChild(image);
+      mainDiv.appendChild(infoDiv);
+
+      item.appendChild(mainDiv);
+      return item;
+    }
+
+    // Hiển thị top 5 sản phẩm bán chạy nhất
+    async showTopSellingProducts() {
+      try {
+        // Hiển thị loading
+        this.addMessage("🔥 Đang tải top 5 sản phẩm bán chạy nhất...", false);
+
+        // Lấy danh sách sản phẩm từ server
+        const response = await fetch(
+          window.location.pathname.replace("/index.jsp", "") + "/api/products"
+        );
+        if (!response.ok) {
+          throw new Error("Không thể tải sản phẩm");
+        }
+
+        const products = await response.json();
+
+        // Xóa tin nhắn loading
+        this.removeLastMessage();
+
+        if (products.length === 0) {
+          this.addMessage("Không có sản phẩm nào để hiển thị.", false);
+          return;
+        }
+
+        // Giả lập dữ liệu bán chạy (trong thực tế sẽ lấy từ database)
+        const topSellingProducts = this.simulateTopSellingProducts(products);
+
+        // Hiển thị top sản phẩm bán chạy
+        this.displayTopSellingProducts(topSellingProducts);
+      } catch (error) {
+        console.error("Lỗi khi tải top sản phẩm bán chạy:", error);
+        this.removeLastMessage();
+        this.addMessage(
+          "Xin lỗi, không thể tải top sản phẩm bán chạy. Vui lòng thử lại sau.",
+          false
+        );
+      }
+    }
+
+    // Giả lập dữ liệu sản phẩm bán chạy (trong thực tế sẽ lấy từ database)
+    simulateTopSellingProducts(products) {
+      // Sắp xếp theo giá (giả sử sản phẩm giá trung bình bán chạy hơn)
+      const sortedProducts = [...products].sort((a, b) => {
+        const avgPrice =
+          products.reduce((sum, p) => sum + p.price, 0) / products.length;
+        const aScore = Math.abs(a.price - avgPrice);
+        const bScore = Math.abs(b.price - avgPrice);
+        return aScore - bScore;
+      });
+
+      // Lấy top 5
+      return sortedProducts.slice(0, 5).map((product, index) => ({
+        ...product,
+        rank: index + 1,
+        salesCount: Math.floor(Math.random() * 100) + 50, // Giả lập số lượng bán
+        rating: (Math.random() * 2 + 3).toFixed(1), // Giả lập đánh giá 3-5 sao
+      }));
+    }
+
+    // Hiển thị top sản phẩm bán chạy
+    displayTopSellingProducts(topProducts) {
+      if (!this.chatBody || !topProducts || topProducts.length === 0) {
+        this.addMessage("Không có sản phẩm nào để hiển thị.", false);
+        return;
+      }
+
+      const productsDiv = document.createElement("div");
+      productsDiv.style.display = "flex";
+      productsDiv.style.width = "100%";
+      productsDiv.style.marginBottom = "0.5rem";
+      productsDiv.style.justifyContent = "flex-start";
+
+      const productsContainer = document.createElement("div");
+      productsContainer.className =
+        "bg-orange-50 rounded-lg p-3 max-w-full border border-orange-200";
+      productsContainer.style.maxHeight = "450px";
+      productsContainer.style.overflowY = "auto";
+
+      // Tiêu đề
+      const headerDiv = document.createElement("div");
+      headerDiv.className = "mb-3";
+
+      const title = document.createElement("h3");
+      title.className = "text-sm font-semibold text-orange-800";
+      title.textContent = "🔥 Top 5 Sản Phẩm Bán Chạy Nhất";
+
+      const subtitle = document.createElement("p");
+      subtitle.className = "text-xs text-orange-700 mt-1";
+      subtitle.textContent =
+        "Dựa trên số lượng đơn hàng và đánh giá của khách hàng";
+
+      headerDiv.appendChild(title);
+      headerDiv.appendChild(subtitle);
+      productsContainer.appendChild(headerDiv);
+
+      // Danh sách top sản phẩm
+      const productsList = document.createElement("div");
+      productsList.className = "space-y-3";
+
+      topProducts.forEach((product) => {
+        const productItem = this.createTopSellingItem(product);
+        productsList.appendChild(productItem);
+      });
+
+      productsContainer.appendChild(productsList);
+      productsDiv.appendChild(productsContainer);
+      this.chatBody.appendChild(productsDiv);
+      this.scrollToBottom();
+    }
+
+    // Tạo item top sản phẩm bán chạy
+    createTopSellingItem(product) {
+      const item = document.createElement("div");
+      item.className =
+        "bg-white rounded-lg p-3 border border-orange-200 hover:shadow-md transition-shadow cursor-pointer";
+      item.onclick = () => this.showProductDetail(product);
+
+      const mainDiv = document.createElement("div");
+      mainDiv.className = "flex items-center gap-3";
+
+      // Rank badge với icon lửa
+      const rankBadge = document.createElement("div");
+      rankBadge.className =
+        "flex-shrink-0 w-10 h-10 bg-gradient-to-br from-orange-400 to-red-500 text-white rounded-full flex items-center justify-center text-sm font-bold relative";
+      rankBadge.innerHTML =
+        product.rank + '<div class="absolute -top-1 -right-1 text-xs">🔥</div>';
+
+      // Ảnh sản phẩm
+      const image = document.createElement("img");
+      image.src =
+        product.imageUrl ||
+        window.location.pathname.replace("/index.jsp", "") +
+          "/public/assets/images/product-placeholder.svg";
+      image.alt = product.name;
+      image.className = "w-16 h-16 object-cover rounded-md flex-shrink-0";
+
+      // Thông tin sản phẩm
+      const infoDiv = document.createElement("div");
+      infoDiv.className = "flex-1 min-w-0";
+
+      const name = document.createElement("div");
+      name.className = "text-sm font-semibold text-gray-800 mb-1 line-clamp-2";
+      name.textContent = product.name;
+      name.style.display = "-webkit-box";
+      name.style.webkitLineClamp = "2";
+      name.style.webkitBoxOrient = "vertical";
+      name.style.overflow = "hidden";
+
+      const price = document.createElement("div");
+      price.className = "text-sm font-bold text-orange-600 mb-1";
+      price.textContent =
+        product.formattedPrice || this.formatPrice(product.price) + "đ";
+
+      // Thông tin bán chạy
+      const statsDiv = document.createElement("div");
+      statsDiv.className = "flex items-center gap-3 text-xs text-gray-600 mb-2";
+
+      const salesCount = document.createElement("span");
+      salesCount.className = "flex items-center gap-1";
+      salesCount.innerHTML = `📦 ${product.salesCount} đã bán`;
+
+      const rating = document.createElement("span");
+      rating.className = "flex items-center gap-1";
+      rating.innerHTML = `⭐ ${product.rating}/5`;
+
+      statsDiv.appendChild(salesCount);
+      statsDiv.appendChild(rating);
+
+      const viewButton = document.createElement("button");
+      viewButton.className =
+        "px-3 py-1 bg-orange-500 text-white text-xs rounded hover:bg-orange-600 transition-colors";
+      viewButton.textContent = "Xem chi tiết";
+      viewButton.onclick = (e) => {
+        e.stopPropagation();
+        this.showProductDetail(product);
+      };
+
+      infoDiv.appendChild(name);
+      infoDiv.appendChild(price);
+      infoDiv.appendChild(statsDiv);
+      infoDiv.appendChild(viewButton);
+
+      mainDiv.appendChild(rankBadge);
+      mainDiv.appendChild(image);
+      mainDiv.appendChild(infoDiv);
+
+      item.appendChild(mainDiv);
+      return item;
     }
 
     // Hiển thị thông tin liên hệ
@@ -627,6 +1215,48 @@
         "px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium";
       button.textContent = "💰 Tìm sản phẩm giá rẻ";
       button.onclick = () => this.showCheapProducts();
+
+      buttonDiv.appendChild(button);
+      this.chatBody.appendChild(buttonDiv);
+      this.scrollToBottom();
+    }
+
+    // Thêm button "Top sản phẩm bán chạy"
+    addTopSellingButton() {
+      if (!this.chatBody) return;
+
+      const buttonDiv = document.createElement("div");
+      buttonDiv.style.display = "flex";
+      buttonDiv.style.width = "100%";
+      buttonDiv.style.marginBottom = "0.5rem";
+      buttonDiv.style.justifyContent = "flex-start";
+
+      const button = document.createElement("button");
+      button.className =
+        "px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm font-medium";
+      button.textContent = "🔥 Xem top sản phẩm bán chạy";
+      button.onclick = () => this.showTopSellingProducts();
+
+      buttonDiv.appendChild(button);
+      this.chatBody.appendChild(buttonDiv);
+      this.scrollToBottom();
+    }
+
+    // Thêm button "Tìm kiếm sản phẩm"
+    addSearchButton() {
+      if (!this.chatBody) return;
+
+      const buttonDiv = document.createElement("div");
+      buttonDiv.style.display = "flex";
+      buttonDiv.style.width = "100%";
+      buttonDiv.style.marginBottom = "0.5rem";
+      buttonDiv.style.justifyContent = "flex-start";
+
+      const button = document.createElement("button");
+      button.className =
+        "px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium";
+      button.textContent = "🔍 Tìm kiếm sản phẩm";
+      button.onclick = () => this.showSearchOption();
 
       buttonDiv.appendChild(button);
       this.chatBody.appendChild(buttonDiv);
@@ -941,12 +1571,23 @@
       detailContainer.className =
         "bg-blue-50 rounded-lg p-3 max-w-full border border-blue-200";
 
+      // Tạo HTML content một cách an toàn
+      const imageSrc =
+        product.imageUrl ||
+        window.location.pathname.replace("/index.jsp", "") +
+          "/public/assets/images/product-placeholder.svg";
+      const productUrl =
+        window.location.pathname.replace("/index.jsp", "") +
+        "product?id=" +
+        product.id;
+      const productPrice =
+        product.formattedPrice || this.formatPrice(product.price) + "đ";
+      const productDesc = product.description || "Không có mô tả";
+
       detailContainer.innerHTML =
         '<div class="flex items-start gap-3">' +
         '<img src="' +
-        (product.imageUrl ||
-          window.location.pathname.replace("/index.jsp", "") +
-            "/public/assets/images/product-placeholder.svg") +
+        imageSrc +
         '" ' +
         'alt="' +
         product.name +
@@ -957,15 +1598,13 @@
         product.name +
         "</h4>" +
         '<p class="text-xs text-gray-600 mb-2 line-clamp-2">' +
-        (product.description || "Không có mô tả") +
+        productDesc +
         "</p>" +
         '<div class="text-sm font-bold text-primary mb-2">' +
-        (product.formattedPrice || this.formatPrice(product.price) + "đ") +
+        productPrice +
         "</div>" +
         "<button onclick=\"window.open('" +
-        window.location.pathname.replace("/index.jsp", "") +
-        "product?id=" +
-        product.id +
+        productUrl +
         "', '_blank')\" " +
         'class="px-3 py-1 bg-primary text-white text-xs rounded hover:bg-primary/90 transition-colors">' +
         "Xem chi tiết" +
