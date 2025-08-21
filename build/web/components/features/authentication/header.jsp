@@ -2,7 +2,7 @@
 <div class="p-4 w-full border-b border-muted flex items-center justify-between gap-4 fixed bg-background z-50">
     <div class="flex-1">
         <a href="${pageContext.request.contextPath}">
-            <img class="w-56" src="./public/assets/images/logo/logo.svg" alt="Logo"/>
+            <img class="w-10" src="${pageContext.request.contextPath}/public/assets/images/logo/logo.svg" alt="Logo"/>
         </a>
     </div>
     <div class="flex-1 flex justify-end items-center gap-4">

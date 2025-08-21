@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/logo-lovely.ico">
+        <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/icon-title.ico">
         <title>Giỏ Hàng</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/public/assets/styles/globals.css">
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>

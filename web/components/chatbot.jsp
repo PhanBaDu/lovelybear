@@ -3,15 +3,16 @@
 <!-- Button mở chat -->
 <button
   id="chatbot"
-  class="fixed bottom-5 left-5 px-4 py-2 cursor-pointer bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80 inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-all bg-gradient-to-r from-sky-500 from-10% via-red-300 via-30% to-primary to-90%"
+  class="fixed text-background bottom-10 left-5 px-4 py-2 cursor-pointer bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80 inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-all bg-foreground shadow-4xl shadow-red-500"
 >
-  Bạn cần hỗ trợ gì nào ?
+    <svg xmlns="http://www.w3.org/2000/svg"  width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-brain-icon lucide-brain"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
+    <span class="text-foreground font-bold">Trợ lý của shop</span>
 </button>
 
 <!-- Popup Chatbot -->
 <div
   id="modal-chatbot"
-  class="modal fixed bottom-20 w-[600px] h-[700px] left-5 bg-white rounded-lg shadow-lg hidden flex-col justify-between z-40"
+  class="modal fixed bottom-28 w-[600px] h-[700px] left-5 bg-white rounded-lg shadow-lg hidden flex-col justify-between z-40"
 >
   <!-- Header -->
   <div

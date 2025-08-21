@@ -7,7 +7,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="icon" type="image/x-icon" href="logo-lovely.ico">
+        <link rel="icon" type="image/x-icon" href="icon-title.ico">
         <link rel="stylesheet" href="./public/assets/styles/globals.css">
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
         <title>Trang quản lý sản phẩm</title>

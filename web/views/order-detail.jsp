@@ -15,7 +15,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi Tiết Đơn Hàng</title>
-    <link rel="icon" type="image/x-icon" href="logo-lovely.ico">
+    <link rel="icon" type="image/x-icon" href="icon-title.ico">
     <link rel="stylesheet" href="./public/assets/styles/globals.css">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>

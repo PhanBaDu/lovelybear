@@ -5,7 +5,7 @@
     <!-- Logo Section -->
     <div class="flex-1">
         <a href="${pageContext.request.contextPath}">
-            <img class="w-56" src="${pageContext.request.contextPath}/public/assets/images/logo/logo.svg" alt="Logo"/>
+            <img class="w-10" src="${pageContext.request.contextPath}/public/assets/images/logo/logo.svg" alt="Logo"/>
         </a>
     </div>
 
@@ -24,41 +24,8 @@
                     class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex h-9 w-full min-w-0 rounded-md border bg-transparent pl-10 pr-10 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" 
                     autocomplete="off"
                 />
-                <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 hover:bg-muted/50 rounded transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-muted-foreground">
-                        <path d="m21 21-4.34-4.34"/>
-                        <circle cx="11" cy="11" r="8"/>
-                    </svg>
-                </button>
             </div>
         </form>
-        
-        <!-- Search Suggestions Dropdown -->
-        <div id="searchSuggestions" class="hidden absolute top-full left-0 right-0 mt-1 bg-background border border-input rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
-            <div class="p-2">
-                <div class="text-xs text-muted-foreground mb-2 px-2">Gợi ý tìm kiếm:</div>
-                <div class="space-y-1">
-                    <button type="button" class="w-full text-left px-2 py-1 text-sm hover:bg-muted/50 rounded transition-colors" onclick="searchFor('gấu')">
-                        <span class="text-foreground">🐻 gấu</span>
-                    </button>
-                    <button type="button" class="w-full text-left px-2 py-1 text-sm hover:bg-muted/50 rounded transition-colors" onclick="searchFor('thú bông')">
-                        <span class="text-foreground">🧸 thú bông</span>
-                    </button>
-                    <button type="button" class="w-full text-left px-2 py-1 text-sm hover:bg-muted/50 rounded transition-colors" onclick="searchFor('gối ôm')">
-                        <span class="text-foreground">🛏️ gối ôm</span>
-                    </button>
-                    <button type="button" class="w-full text-left px-2 py-1 text-sm hover:bg-muted/50 rounded transition-colors" onclick="searchFor('mèo')">
-                        <span class="text-foreground">🐱 mèo</span>
-                    </button>
-                    <button type="button" class="w-full text-left px-2 py-1 text-sm hover:bg-muted/50 rounded transition-colors" onclick="searchFor('chó')">
-                        <span class="text-foreground">🐕 chó</span>
-                    </button>
-                    <button type="button" class="w-full text-left px-2 py-1 text-sm hover:bg-muted/50 rounded transition-colors" onclick="searchFor('thỏ')">
-                        <span class="text-foreground">🐰 thỏ</span>
-                    </button>
-                </div>
-            </div>
-        </div>
     </div>
     
     <!-- User Section - Conditional Rendering -->
