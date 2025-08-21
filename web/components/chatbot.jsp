@@ -52,7 +52,12 @@
 <!-- Popup Chatbot -->
 <div
   id="modal-chatbot"
-  class="modal fixed bottom-28 w-[600px] h-[700px] left-5 bg-white rounded-lg shadow-lg hidden flex-col justify-between z-40"
+  class="modal fixed bottom-28 w-[600px] h-[700px] left-5 bg-white rounded-lg shadow-lg hidden flex-col justify-between z-40"style="
+        background-image: url('./public/assets/images/background.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      "
 >
   <!-- Header -->
   <div
@@ -150,7 +155,7 @@
   </div>
 
   <!-- Input -->
-  <div class="p-4 flex gap-4 bg-white">
+  <div class="p-4 flex gap-4">
     <textarea
       type="text"
       id="chat-input"
@@ -168,9 +173,9 @@
   </div>
 
   <!-- Footer thông tin -->
-  <div class="text-xs text-gray-500 px-4 py-4 border-t border-t-red-100">
+  <div class="text-xs text-background px-4 py-4 border-t border-t-red-100">
     <span id="message-count">0 tin nhắn</span> •
-    <button id="export-btn" class="text-primary hover:underline">
+    <button id="export-btn" class="text-primary font-bold hover:underline">
       Xuất hội thoại
     </button>
   </div>

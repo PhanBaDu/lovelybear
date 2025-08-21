@@ -21,312 +21,441 @@
         background-position: center;
         background-repeat: no-repeat;
       ">
-                <div class="max-w-6xl mx-auto flex flex-col gap-10">
-                    <div class="bg-card p-5 rounded-xl">
-                        <h1 class="text-2xl font-bold text-foreground mb-6">Thêm Sản Phẩm Mới</h1>
+                <div class="max-w-7xl mx-auto flex flex-col gap-6">
+                    
+                    <!-- Navigation Tabs -->
+                    <div class="bg-card rounded-xl p-1 shadow-sm">
+                        <div class="flex gap-1">
+                            <button onclick="showTab('add-product')" id="tab-add-product" class="flex-1 px-4 py-3 text-sm font-medium rounded-lg transition-all bg-primary text-primary-foreground">
+                                <span class="flex items-center justify-center gap-2">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 5v14m-7-7h14"/>
+                                    </svg>
+                                    Thêm Sản Phẩm
+                                </span>
+                            </button>
+                            <button onclick="showTab('product-list')" id="tab-product-list" class="flex-1 px-4 py-3 text-sm font-medium rounded-lg transition-all text-muted-foreground hover:text-foreground hover:bg-muted/50">
+                                <span class="flex items-center justify-center gap-2">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+                                        <path d="m3.3 7 8.7 5 8.7-5"/>
+                                        <path d="M12 22V12"/>
+                                    </svg>
+                                    Quản Lý Sản Phẩm
+                                </span>
+                            </button>
+                            <button onclick="showTab('order-list')" id="tab-order-list" class="flex-1 px-4 py-3 text-sm font-medium rounded-lg transition-all text-muted-foreground hover:text-foreground hover:bg-muted/50">
+                                <span class="flex items-center justify-center gap-2">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+                                        <path d="m9 14 2 2 4-4"/>
+                                    </svg>
+                                    Quản Lý Đơn Hàng
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Alert Messages -->
+                    <% 
+                    String successMessage = request.getParameter("success");
+                    String errorMessage = request.getParameter("error");
+                    %>
+                    
+                    <script>
+                        // Hiển thị alert message khi load trang
+                        <%
+                        if (successMessage != null && !successMessage.trim().isEmpty()) {
+                        %>
+                            alert('<%= java.net.URLDecoder.decode(successMessage, "UTF-8") %>');
+                        <%
+                        }
                         
-                                                 <!-- Hiển thị message từ URL parameters -->
-                         <% 
-                         String successMessage = request.getParameter("success");
-                         String errorMessage = request.getParameter("error");
-                         %>
-                         
-                         <script>
-                             // Hiển thị alert message khi load trang
-                             <%
-                             if (successMessage != null && !successMessage.trim().isEmpty()) {
-                             %>
-                                 alert('<%= java.net.URLDecoder.decode(successMessage, "UTF-8") %>');
-                             <%
-                             }
-                             
-                             if (errorMessage != null && !errorMessage.trim().isEmpty()) {
-                             %>
-                                 alert('<%= java.net.URLDecoder.decode(errorMessage, "UTF-8") %>');
-                             <%
-                             }
-                             %>
-                         </script>
-                        
-                        <!-- Đổi enctype từ multipart/form-data thành application/x-www-form-urlencoded -->
-                        <form method="post" action="add-product" enctype="multipart/form-data" class="space-y-6">
+                        if (errorMessage != null && !errorMessage.trim().isEmpty()) {
+                        %>
+                            alert('<%= java.net.URLDecoder.decode(errorMessage, "UTF-8") %>');
+                        <%
+                        }
+                        %>
+                    </script>
+
+                    <!-- Tab 1: Add Product Form -->
+                    <div id="content-add-product" class="tab-content">
+                        <div class="bg-card p-6 rounded-xl shadow-sm">
+                            <div class="flex items-center gap-3 mb-6">
+                                <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                        <path d="M12 5v14m-7-7h14"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h1 class="text-2xl font-bold text-foreground">Thêm Sản Phẩm Mới</h1>
+                                    <p class="text-sm text-muted-foreground">Điền thông tin chi tiết để thêm sản phẩm vào hệ thống</p>
+                                </div>
+                            </div>
                             
-                            <!-- Tên sản phẩm -->
-                            <div class="flex flex-col gap-2">
-                                <label for="productName" class="text-sm font-medium text-foreground">
-                                    Tên sản phẩm <span class="text-red-500">*</span>
-                                </label>
-                                <input
-                                    name="productName"
-                                    id="productName"
-                                    type="text"
-                                    placeholder="Nhập tên sản phẩm..."
-                                    required
-                                    class="w-full h-10 px-3 py-2 text-sm bg-background border border-input rounded-md placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
-                                />
-                            </div>
-
-                            <!-- Mô tả sản phẩm -->
-                            <div class="flex flex-col gap-2">
-                                <label for="description" class="text-sm font-medium text-foreground">
-                                    Mô tả sản phẩm
-                                </label>
-                                <textarea
-                                    name="description"
-                                    id="description"
-                                    rows="6"
-                                    placeholder="Nhập mô tả chi tiết về sản phẩm..."
-                                    class="w-full px-3 py-2 text-sm bg-background border-input placeholder:text-muted-foreground  flex field-sizing-content min-h-16 w-full rounded-md border bg-transparent px-3 py-2 text-base shadow-xs transition-[color,box-shadow] outline-none md:text-sm"                                ></textarea>
-                            </div>
-
-                            <!-- Giá sản phẩm -->
-                            <div class="flex flex-col gap-2">
-                                <label for="price" class="text-sm font-medium text-foreground">
-                                    Giá sản phẩm (VNĐ) <span class="text-red-500">*</span>
-                                </label>
-                                <input
-                                    name="price"
-                                    id="price"
-                                    type="text"
-                                    min="0"
-                                    step="1000"
-                                    placeholder="0"
-                                    required
-                                    class="w-full h-10 px-3 py-2 text-sm bg-background border border-input rounded-md placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
-                                />
-                            </div>
-
-                            <!-- Upload nhiều ảnh -->
-                            <div class="flex flex-col gap-2">
-                                <label class="text-sm font-medium text-foreground">
-                                    Hình ảnh sản phẩm <span class="text-red-500">*</span>
-                                </label>
+                            <form method="post" action="add-product" enctype="multipart/form-data" class="space-y-6">
                                 
-                                <!-- Khu vực hiển thị ảnh đã chọn -->
-                                <div id="imagePreviewContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4 hidden">
-                                    <!-- Preview images will be inserted here -->
+                                <!-- Product Name & Price Row -->
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    <!-- Tên sản phẩm -->
+                                    <div class="flex flex-col gap-2">
+                                        <label for="productName" class="text-sm font-medium text-foreground">
+                                            Tên sản phẩm <span class="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            name="productName"
+                                            id="productName"
+                                            type="text"
+                                            placeholder="Nhập tên sản phẩm..."
+                                            required
+                                            class="w-full h-12 px-4 py-3 text-sm bg-background border border-input rounded-lg placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
+                                        />
+                                    </div>
+
+                                    <!-- Giá sản phẩm -->
+                                    <div class="flex flex-col gap-2">
+                                        <label for="price" class="text-sm font-medium text-foreground">
+                                            Giá sản phẩm (VNĐ) <span class="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            name="price"
+                                            id="price"
+                                            type="text"
+                                            min="0"
+                                            step="1000"
+                                            placeholder="0"
+                                            required
+                                            class="w-full h-12 px-4 py-3 text-sm bg-background border border-input rounded-lg placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all"
+                                        />
+                                    </div>
                                 </div>
 
-                                <!-- Upload area -->
-                                <label
-                                    for="image"
-                                    id="uploadLabel"
-                                    class="w-full h-44 flex flex-col justify-center items-center text-sm font-medium text-center rounded-md border-2 border-input border-dashed cursor-pointer bg-background hover:bg-muted/50 transition-all group"
-                                >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="48"
-                                        height="48"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.5"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="text-muted-foreground mb-3 group-hover:text-foreground transition-colors"
+                                <!-- Mô tả sản phẩm -->
+                                <div class="flex flex-col gap-2">
+                                    <label for="description" class="text-sm font-medium text-foreground">
+                                        Mô tả sản phẩm
+                                    </label>
+                                    <textarea
+                                        name="description"
+                                        id="description"
+                                        rows="4"
+                                        placeholder="Nhập mô tả chi tiết về sản phẩm..."
+                                        class="w-full px-4 py-3 text-sm bg-background border border-input rounded-lg placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent transition-all resize-none"
+                                    ></textarea>
+                                </div>
+
+                                <!-- Upload nhiều ảnh -->
+                                <div class="flex flex-col gap-2">
+                                    <label class="text-sm font-medium text-foreground">
+                                        Hình ảnh sản phẩm <span class="text-red-500">*</span>
+                                    </label>
+                                    
+                                    <!-- Khu vực hiển thị ảnh đã chọn -->
+                                    <div id="imagePreviewContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4 hidden">
+                                        <!-- Preview images will be inserted here -->
+                                    </div>
+
+                                    <!-- Upload area -->
+                                    <label
+                                        for="image"
+                                        id="uploadLabel"
+                                        class="w-full h-48 flex flex-col justify-center items-center text-sm font-medium text-center rounded-lg border-2 border-input border-dashed cursor-pointer bg-background hover:bg-muted/50 transition-all group"
                                     >
-                                        <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
-                                        <circle cx="12" cy="13" r="3"/>
-                                    </svg>
-                                    <p class="text-foreground group-hover:text-foreground transition-colors font-medium mb-1">
-                                        Click để chọn nhiều ảnh
-                                    </p>
-                                    <p class="text-xs text-muted-foreground">
-                                        Hoặc kéo thả file vào đây
-                                    </p>
-                                    <p class="text-xs text-muted-foreground mt-1">
-                                        Hỗ trợ: JPG, PNG, GIF, WebP (Tối đa 5MB mỗi file)
-                                    </p>
-                                </label>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="48"
+                                            height="48"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.5"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="text-muted-foreground mb-4 group-hover:text-foreground transition-colors"
+                                        >
+                                            <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+                                            <circle cx="12" cy="13" r="3"/>
+                                        </svg>
+                                        <p class="text-foreground group-hover:text-foreground transition-colors font-medium mb-2">
+                                            Click để chọn nhiều ảnh
+                                        </p>
+                                        <p class="text-xs text-muted-foreground">
+                                            Hoặc kéo thả file vào đây
+                                        </p>
+                                        <p class="text-xs text-muted-foreground mt-1">
+                                            Hỗ trợ: JPG, PNG, GIF, WebP (Tối đa 5MB mỗi file)
+                                        </p>
+                                    </label>
 
-                                <!-- File input cho nhiều ảnh -->
-                                <input
-                                    name="image"
-                                    id="image"
-                                    type="file"
-                                    multiple
-                                    accept=".jpg,.jpeg,.png,.gif,.webp,image/*"
-                                    class="hidden"
-                                    required
-                                />
-                            </div>
+                                    <!-- File input cho nhiều ảnh -->
+                                    <input
+                                        name="image"
+                                        id="image"
+                                        type="file"
+                                        multiple
+                                        accept=".jpg,.jpeg,.png,.gif,.webp,image/*"
+                                        class="hidden"
+                                        required
+                                    />
+                                </div>
 
-                            <!-- Submit button -->
-                            <div class="flex gap-4 pt-6">
-                                <button
-                                    type="submit"
-                                    id="submitButton"
-                                    class="flex-1 text-sm px-6 py-3 cursor-pointer bg-primary text-primary-foreground rounded-md font-medium hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring transition-all"
-                                >
-                                    Thêm Sản Phẩm
-                                </button>
-                                <button
-                                    type="button"
-                                    onclick="resetForm()"
-                                    class="text-sm px-6 cursor-pointer py-3 bg-secondary text-secondary-foreground rounded-md font-medium hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-ring transition-all"
-                                >
-                                    Làm Mới
-                                </button>
-                            </div>
-                        </form>
+                                <!-- Submit buttons -->
+                                <div class="flex gap-4 pt-6">
+                                    <button
+                                        type="submit"
+                                        id="submitButton"
+                                        class="flex-1 lg:flex-none lg:px-8 text-sm px-6 py-3 cursor-pointer bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring transition-all"
+                                    >
+                                        Thêm Sản Phẩm
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onclick="resetForm()"
+                                        class="text-sm px-6 cursor-pointer py-3 bg-secondary text-secondary-foreground rounded-lg font-medium hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-ring transition-all"
+                                    >
+                                        Làm Mới
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <!-- Card 2: Hiển thị toàn bộ sản phẩm -->
-                    <div class="bg-card p-5 rounded-xl mb-6">
-                        <h2 class="text-xl font-bold text-foreground mb-4">Danh Sách Sản Phẩm</h2>
-                        <%
-                        @SuppressWarnings("unchecked")
-                        List<Product> products = (List<Product>) request.getAttribute("products");
 
-                        if (products == null || products.isEmpty()) {
-                        %>
-                            <h1 class="text-2xl font-bold text-foreground mb-6">Chưa có sản phẩm nào</h1>
-                        <%
-                        } else {
-                        %>
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-sm">
-                                    <thead>
-                                        <tr class="border-b border-input">
-                                            <th class="text-left py-3 px-4 font-medium text-foreground">ID</th>
-                                            <th class="text-left py-3 px-4 font-medium text-foreground">Tên Sản Phẩm</th>
-                                            <th class="text-left py-3 px-4 font-medium text-foreground">Mô Tả</th>
-                                            <th class="text-left py-3 px-4 font-medium text-foreground">Giá (VNĐ)</th>
-                                            <th class="text-left py-3 px-4 font-medium text-foreground">Thao Tác</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <%
-                                        for (Product product : products) {
-                                        %>
-                                            <tr class="border-b border-input hover:bg-muted/50">
-                                                <td class="py-3 px-4 text-foreground"><%= product.getId() %></td>
-                                                <td class="py-3 px-4 text-foreground font-medium"><%= product.getName() %></td>
-                                                <td class="py-3 px-4 text-foreground">
-                                                    <div class="max-w-xs truncate" title="<%= product.getDescription() != null ? product.getDescription() : "" %>">
-                                                        <%= product.getDescription() != null ? product.getDescription() : "Không có mô tả" %>
-                                                    </div>
-                                                </td>
-                                                <td class="py-3 px-4 text-foreground">
-                                                    <%= String.format("%,.0f", product.getPrice()) %>k
-                                                </td>
-                                                                                             <td class="py-3 px-4">
-                                                     <button onclick="deleteProduct(<%= product.getId() %>)" 
-                                                             class="px-3 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600 transition-colors">
-                                                         Xóa
-                                                     </button>
-                                                 </td>
+                    <!-- Tab 2: Product List -->
+                    <div id="content-product-list" class="tab-content hidden">
+                        <div class="bg-card p-6 rounded-xl shadow-sm">
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                            <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+                                            <path d="m3.3 7 8.7 5 8.7-5"/>
+                                            <path d="M12 22V12"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-2xl font-bold text-foreground">Quản Lý Sản Phẩm</h2>
+                                        <p class="text-sm text-muted-foreground">Danh sách tất cả sản phẩm trong hệ thống</p>
+                                    </div>
+                                </div>
+                                <%
+                                @SuppressWarnings("unchecked")
+                                List<Product> products = (List<Product>) request.getAttribute("products");
+                                int productCount = (products != null) ? products.size() : 0;
+                                %>
+                                <div class="bg-primary/10 px-4 py-2 rounded-lg">
+                                    <span class="text-sm font-medium text-primary">Tổng: <%= productCount %> sản phẩm</span>
+                                </div>
+                            </div>
+                            
+                            <%
+                            if (products == null || products.isEmpty()) {
+                            %>
+                                <div class="text-center py-12">
+                                    <div class="w-16 h-16 bg-muted/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-muted-foreground">
+                                            <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-lg font-medium text-foreground mb-2">Chưa có sản phẩm nào</h3>
+                                    <p class="text-muted-foreground mb-6">Hãy thêm sản phẩm đầu tiên của bạn</p>
+                                    <button onclick="showTab('add-product')" class="px-6 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-all">
+                                        Thêm Sản Phẩm Ngay
+                                    </button>
+                                </div>
+                            <%
+                            } else {
+                            %>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm">
+                                        <thead>
+                                            <tr class="border-b border-input">
+                                                <th class="text-left py-4 px-4 font-semibold text-foreground">ID</th>
+                                                <th class="text-left py-4 px-4 font-semibold text-foreground">Tên Sản Phẩm</th>
+                                                <th class="text-left py-4 px-4 font-semibold text-foreground">Mô Tả</th>
+                                                <th class="text-left py-4 px-4 font-semibold text-foreground">Giá (VNĐ)</th>
+                                                <th class="text-center py-4 px-4 font-semibold text-foreground">Thao Tác</th>
                                             </tr>
-                                        <%
-                                        }
-                                        %>
-                                    </tbody>
-                                </table>
-                            </div>
-                        <%
-                        }
-                        %>
-                    </div>
-                     <!-- Card 3: Hiển thị danh sách đơn hàng -->
-                    <div class="bg-card p-5 rounded-xl mb-6">
-                        <h1 class="text-2xl font-bold text-foreground mb-6">Danh Sách Đơn Hàng</h1>
-                        <%
-                        @SuppressWarnings("unchecked")
-                        List<Order> orders = (List<Order>) request.getAttribute("orders");
-
-                        if (orders == null || orders.isEmpty()) {
-                        %>
-                            <div class="text-center py-8">
-                                <p class="text-muted-foreground">Chưa có đơn hàng nào</p>
-                            </div>
-                        <%
-                        } else {
-                        %>
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-sm">
-                                    <thead>
-                                        <tr class="border-b border-input">
-                                            <th class="text-left py-3 px-4 font-medium text-foreground">ID</th>
-                                            <th class="text-left py-3 px-4 font-medium text-foreground">Email Khách Hàng</th>
-                                            <th class="text-left py-3 px-4 font-medium text-foreground">Ngày Đặt</th>
-                                            <th class="text-left py-3 px-4 font-medium text-foreground">Số Lượng</th>
-                                            <th class="text-left py-3 px-4 font-medium text-foreground">Tổng Tiền</th>
-                                            <th class="text-left py-3 px-4 font-medium text-foreground">Trạng Thái</th>
-                                            <th class="text-left py-3 px-4 font-medium text-foreground">Thao Tác</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <%
-                                        for (Order order : orders) {
-                                            String statusColor = "";
-                                            String statusText = "";
-
-                                            switch (order.getStatus()) {
-                                                case "PENDING":
-                                                    statusColor = "bg-yellow-100 text-yellow-800";
-                                                    statusText = "Chờ xử lý";
-                                                    break;
-                                                case "CONFIRMED":
-                                                    statusColor = "bg-blue-100 text-blue-800";
-                                                    statusText = "Đã xác nhận";
-                                                    break;
-                                                case "SHIPPING":
-                                                    statusColor = "bg-purple-100 text-purple-800";
-                                                    statusText = "Đang giao";
-                                                    break;
-                                                case "DELIVERED":
-                                                    statusColor = "bg-green-100 text-green-800";
-                                                    statusText = "Đã giao";
-                                                    break;
-                                                case "CANCELLED":
-                                                    statusColor = "bg-red-100 text-red-800";
-                                                    statusText = "Đã hủy";
-                                                    break;
-                                                default:
-                                                    statusColor = "bg-gray-100 text-gray-800";
-                                                    statusText = order.getStatus();
+                                        </thead>
+                                        <tbody>
+                                            <%
+                                            for (Product product : products) {
+                                            %>
+                                                <tr class="border-b border-input hover:bg-muted/30 transition-colors">
+                                                    <td class="py-4 px-4 text-foreground font-mono text-xs bg-muted/20 rounded">
+                                                        #<%= product.getId() %>
+                                                    </td>
+                                                    <td class="py-4 px-4 text-foreground font-medium">
+                                                        <%= product.getName() %>
+                                                    </td>
+                                                    <td class="py-4 px-4 text-foreground">
+                                                        <div class="max-w-xs truncate" title="<%= product.getDescription() != null ? product.getDescription() : "" %>">
+                                                            <%= product.getDescription() != null ? product.getDescription() : "Không có mô tả" %>
+                                                        </div>
+                                                    </td>
+                                                    <td class="py-4 px-4 text-foreground font-semibold">
+                                                        <span class="text-green-600">
+                                                            <%= String.format("%,.0f", product.getPrice()) %>k
+                                                        </span>
+                                                    </td>
+                                                    <td class="py-4 px-4 text-center">
+                                                        <button onclick="deleteProduct(<%= product.getId() %>)" 
+                                                                class="px-4 py-2 text-xs bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium">
+                                                            Xóa
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            <%
                                             }
-                                        %>
-                                            <tr class="border-b border-input hover:bg-muted/50">
-                                                <td class="py-3 px-4 text-foreground"><%= order.getId() %></td>
-                                                <td class="py-3 px-4 text-foreground"><%= order.getUserEmail() %></td>
-                                                <td class="py-3 px-4 text-foreground">
-                                                    <%= new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(order.getOrderDate()) %>
-                                                </td>
-                                                <td class="py-3 px-4 text-foreground"><%= order.getTotalQuantity() %></td>
-                                                <td class="py-3 px-4 text-foreground font-medium">
-                                                    <%= String.format("%,.0f", order.getTotalAmount()) %>k
-                                                </td>
-                                                <td class="py-3 px-4">
-                                                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium <%= statusColor %>">
-                                                        <%= statusText %>
-                                                    </span>
-                                                </td>
-                                                                                             <td class="py-3 px-4">
-                                                     <%
-                                                     if ("PENDING".equals(order.getStatus())) {
-                                                     %>
-                                                         <button onclick="updateOrderStatus(<%= order.getId() %>, 'CONFIRMED')" 
-                                                                 class="px-3 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600 transition-colors">
-                                                             Xác nhận
-                                                         </button>
-                                                     <%
-                                                     } else {
-                                                     %>
-                                                         <span class="text-sm text-gray-500">Đã xác nhận</span>
-                                                     <%
-                                                     }
-                                                     %>
-                                                 </td>
-                                            </tr>
-                                        <%
-                                        }
-                                        %>
-                                    </tbody>
-                                </table>
+                                            %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            <%
+                            }
+                            %>
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: Order List -->
+                    <div id="content-order-list" class="tab-content hidden">
+                        <div class="bg-card p-6 rounded-xl shadow-sm">
+                            <div class="flex items-center justify-between mb-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-primary">
+                                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+                                            <path d="m9 14 2 2 4-4"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h1 class="text-2xl font-bold text-foreground">Quản Lý Đơn Hàng</h1>
+                                        <p class="text-sm text-muted-foreground">Theo dõi và xử lý đơn hàng từ khách hàng</p>
+                                    </div>
+                                </div>
+                                <%
+                                @SuppressWarnings("unchecked")
+                                List<Order> orders = (List<Order>) request.getAttribute("orders");
+                                int orderCount = (orders != null) ? orders.size() : 0;
+                                %>
+                                <div class="bg-primary/10 px-4 py-2 rounded-lg">
+                                    <span class="text-sm font-medium text-primary">Tổng: <%= orderCount %> đơn hàng</span>
+                                </div>
                             </div>
-                        <%
-                        }
-                        %>
+
+                            <%
+                            if (orders == null || orders.isEmpty()) {
+                            %>
+                                <div class="text-center py-12">
+                                    <div class="w-16 h-16 bg-muted/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-muted-foreground">
+                                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+                                        </svg>
+                                    </div>
+                                    <h3 class="text-lg font-medium text-foreground mb-2">Chưa có đơn hàng nào</h3>
+                                    <p class="text-muted-foreground">Các đơn hàng mới sẽ xuất hiện ở đây</p>
+                                </div>
+                            <%
+                            } else {
+                            %>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-sm">
+                                        <thead>
+                                            <tr class="border-b border-input">
+                                                <th class="text-left py-4 px-4 font-semibold text-foreground">ID</th>
+                                                <th class="text-left py-4 px-4 font-semibold text-foreground">Email Khách Hàng</th>
+                                                <th class="text-left py-4 px-4 font-semibold text-foreground">Ngày Đặt</th>
+                                                <th class="text-center py-4 px-4 font-semibold text-foreground">Số Lượng</th>
+                                                <th class="text-left py-4 px-4 font-semibold text-foreground">Tổng Tiền</th>
+                                                <th class="text-center py-4 px-4 font-semibold text-foreground">Trạng Thái</th>
+                                                <th class="text-center py-4 px-4 font-semibold text-foreground">Thao Tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%
+                                            for (Order order : orders) {
+                                                String statusColor = "";
+                                                String statusText = "";
+
+                                                switch (order.getStatus()) {
+                                                    case "PENDING":
+                                                        statusColor = "bg-yellow-100 text-yellow-800";
+                                                        statusText = "Chờ xử lý";
+                                                        break;
+                                                    case "CONFIRMED":
+                                                        statusColor = "bg-blue-100 text-blue-800";
+                                                        statusText = "Đã xác nhận";
+                                                        break;
+                                                    case "SHIPPING":
+                                                        statusColor = "bg-purple-100 text-purple-800";
+                                                        statusText = "Đang giao";
+                                                        break;
+                                                    case "DELIVERED":
+                                                        statusColor = "bg-green-100 text-green-800";
+                                                        statusText = "Đã giao";
+                                                        break;
+                                                    case "CANCELLED":
+                                                        statusColor = "bg-red-100 text-red-800";
+                                                        statusText = "Đã hủy";
+                                                        break;
+                                                    default:
+                                                        statusColor = "bg-gray-100 text-gray-800";
+                                                        statusText = order.getStatus();
+                                                }
+                                            %>
+                                                <tr class="border-b border-input hover:bg-muted/30 transition-colors">
+                                                    <td class="py-4 px-4 text-foreground font-mono text-xs bg-muted/20 rounded">
+                                                        #<%= order.getId() %>
+                                                    </td>
+                                                    <td class="py-4 px-4 text-foreground"><%= order.getUserEmail() %></td>
+                                                    <td class="py-4 px-4 text-foreground">
+                                                        <%= new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(order.getOrderDate()) %>
+                                                    </td>
+                                                    <td class="py-4 px-4 text-center">
+                                                        <span class="bg-muted/50 px-2 py-1 rounded text-foreground font-medium">
+                                                            <%= order.getTotalQuantity() %>
+                                                        </span>
+                                                    </td>
+                                                    <td class="py-4 px-4 text-foreground font-semibold">
+                                                        <span class="text-green-600">
+                                                            <%= String.format("%,.0f", order.getTotalAmount()) %>k
+                                                        </span>
+                                                    </td>
+                                                    <td class="py-4 px-4 text-center">
+                                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium <%= statusColor %>">
+                                                            <%= statusText %>
+                                                        </span>
+                                                    </td>
+                                                    <td class="py-4 px-4 text-center">
+                                                        <%
+                                                        if ("PENDING".equals(order.getStatus())) {
+                                                        %>
+                                                            <button onclick="updateOrderStatus(<%= order.getId() %>, 'CONFIRMED')" 
+                                                                    class="px-4 py-2 text-xs bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors font-medium">
+                                                                Xác nhận
+                                                            </button>
+                                                        <%
+                                                        } else {
+                                                        %>
+                                                            <span class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-lg">Đã xử lý</span>
+                                                        <%
+                                                        }
+                                                        %>
+                                                    </td>
+                                                </tr>
+                                            <%
+                                            }
+                                            %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            <%
+                            }
+                            %>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -334,6 +463,33 @@
         </div>
 
         <script>
+            // Tab Management
+            function showTab(tabName) {
+                // Hide all tab contents
+                const tabContents = document.querySelectorAll('.tab-content');
+                tabContents.forEach(content => {
+                    content.classList.add('hidden');
+                });
+
+                // Remove active class from all tab buttons
+                const tabButtons = document.querySelectorAll('[id^="tab-"]');
+                tabButtons.forEach(button => {
+                    button.className = "flex-1 px-4 py-3 text-sm font-medium rounded-lg transition-all text-muted-foreground hover:text-foreground hover:bg-muted/50";
+                });
+
+                // Show selected tab content
+                const selectedContent = document.getElementById('content-' + tabName);
+                if (selectedContent) {
+                    selectedContent.classList.remove('hidden');
+                }
+
+                // Add active class to selected tab button
+                const selectedButton = document.getElementById('tab-' + tabName);
+                if (selectedButton) {
+                    selectedButton.className = "flex-1 px-4 py-3 text-sm font-medium rounded-lg transition-all bg-primary text-primary-foreground";
+                }
+            }
+
             document.addEventListener("DOMContentLoaded", function () {
                 const fileInput = document.getElementById("image");
                 const uploadLabel = document.getElementById("uploadLabel");
@@ -413,7 +569,7 @@
                         // Tạo img element
                         const imgElement = document.createElement('img');
                         imgElement.alt = file.name;
-                        imgElement.className = "w-full h-32 object-cover rounded-md border border-input";
+                        imgElement.className = "w-full h-32 object-cover rounded-lg border border-input";
                         imgElement.src = e.target.result;
                         
                         // Tạo button xóa với absolute positioning
@@ -509,7 +665,7 @@
                     }
                 });
 
-                // Form submit validation - FIXED
+                // Form submit validation
                 document.querySelector('form').addEventListener('submit', function(e) {
                     console.log('=== FORM SUBMIT DEBUG ===');
                     
@@ -608,30 +764,31 @@
                     closeMessage('errorMessage');
                 }, 8000);
             }
+
+            // Admin Functions JavaScript
+            // Product Management Functions
+            function deleteProduct(productId) {
+                if (confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
+                    // Redirect đến servlet xóa sản phẩm
+                    window.location.href = 'delete-product?productId=' + productId;
+                }
+            }
+            
+            // Order Management Functions
+            function updateOrderStatus(orderId, newStatus) {
+                if (confirm('Bạn có chắc muốn xác nhận đơn hàng này?')) {
+                    // Redirect đến servlet cập nhật trạng thái đơn hàng
+                    window.location.href = 'update-order-status?orderId=' + orderId + '&status=' + newStatus;
+                }
+            }
+            
+            // Refresh page after successful operations
+            function refreshPage() {
+                location.reload();
+            }
+
+            // Initialize default tab
+            showTab('add-product');
         </script>
-        
-                 <!-- Admin Functions JavaScript -->
-         <script>
-             // Product Management Functions
-             function deleteProduct(productId) {
-                 if (confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
-                     // Redirect đến servlet xóa sản phẩm
-                     window.location.href = 'delete-product?productId=' + productId;
-                 }
-             }
-             
-             // Order Management Functions
-             function updateOrderStatus(orderId, newStatus) {
-                 if (confirm('Bạn có chắc muốn xác nhận đơn hàng này?')) {
-                     // Redirect đến servlet cập nhật trạng thái đơn hàng
-                     window.location.href = 'update-order-status?orderId=' + orderId + '&status=' + newStatus;
-                 }
-             }
-             
-             // Refresh page after successful operations
-             function refreshPage() {
-                 location.reload();
-             }
-         </script>
     </body>
 </html>
