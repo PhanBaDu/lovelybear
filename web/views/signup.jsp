@@ -11,7 +11,13 @@
   <body>
     <jsp:include page="../components/features/authentication/header.jsp" />
     <div
-      class="w-full min-h-screen flex justify-center items-center p-4 bg-muted"
+      class="w-full min-h-screen flex justify-center items-center p-4"
+      style="
+        background-image: url('./public/assets/images/background.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+      "
     >
       <form
         class="p-6 bg-card rounded-lg flex flex-col gap-4"

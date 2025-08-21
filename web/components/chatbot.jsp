@@ -2,11 +2,51 @@
 
 <!-- Button mở chat -->
 <button
-  id="chatbot"
-  class="fixed text-background bottom-10 left-5 px-4 py-2 cursor-pointer bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80 inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-all bg-foreground shadow-4xl shadow-red-500"
+  class="fixed text-background bottom-10 left-5 cursor-pointer text-secondary-foreground shadow-xs hover:bg-secondary/80 inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-all bg-primary"
 >
-    <svg xmlns="http://www.w3.org/2000/svg"  width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-brain-icon lucide-brain"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg>
-    <span class="text-foreground font-bold">Trợ lý của shop</span>
+  <svg
+    id="chatbot"
+    data-logo="logo"
+    class="w-12 h-12 p-2 overflow-hidden"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 51 41"
+  >
+    <g id="logogram" transform="translate(0, 0) rotate(0) ">
+      <path
+        d="M13.0832 0.429993L23.4173 9.25886C24.0309 9.78301 24.3845 10.5522 24.3845 11.3623V18.0162L14.0503 9.18733C13.4368 8.66319 13.0832 7.894 13.0832 7.08386V0.429993Z"
+        fill="#fff"
+      />
+      <path
+        d="M13.0832 40.43L23.4173 31.6011C24.0309 31.077 24.3845 30.3078 24.3845 29.4977V22.8438L14.0503 31.6727C13.4368 32.1968 13.0832 32.966 13.0832 33.7761V40.43Z"
+        fill="#fff"
+      />
+      <path
+        d="M0.754395 9.74034L10.948 18.4005C11.4422 18.8204 12.0681 19.0507 12.7147 19.0507H20.9354L10.7669 10.3925C10.2723 9.9714 9.64557 9.74034 8.99786 9.74034H0.754395Z"
+        fill="#fff"
+      />
+      <path
+        d="M0.754395 31.1196L10.8853 22.4645C11.3804 22.0415 12.0086 21.8093 12.6578 21.8093H20.9599L10.7663 30.4694C10.2721 30.8893 9.64625 31.1196 8.99957 31.1196H0.754395Z"
+        fill="#fff"
+      />
+      <path
+        d="M38.4256 0.429993L28.0914 9.25886C27.4779 9.78301 27.1243 10.5522 27.1243 11.3623V18.0162L37.4584 9.18733C38.072 8.66319 38.4256 7.894 38.4256 7.08386V0.429993Z"
+        fill="#fff"
+      />
+      <path
+        d="M38.4256 40.43L28.0914 31.6011C27.4779 31.077 27.1243 30.3078 27.1243 29.4977V22.8438L37.4584 31.6727C38.072 32.1968 38.4256 32.966 38.4256 33.7761V40.43Z"
+        fill="#fff"
+      />
+      <path
+        d="M50.7544 9.74034L40.5608 18.4005C40.0666 18.8204 39.4407 19.0507 38.7941 19.0507H30.5733L40.7419 10.3925C41.2364 9.9714 41.8632 9.74034 42.5109 9.74034H50.7544Z"
+        fill="#fff"
+      />
+      <path
+        d="M50.7544 31.1196L40.6235 22.4645C40.1284 22.0415 39.5002 21.8093 38.851 21.8093H30.5489L40.7425 30.4694C41.2367 30.8893 41.8625 31.1196 42.5092 31.1196H50.7544Z"
+        fill="#fff"
+      />
+    </g>
+    <g id="logotype" transform="translate(51, 20.5)"></g>
+  </svg>
 </button>
 
 <!-- Popup Chatbot -->
