@@ -28,8 +28,7 @@
       ">
             <jsp:include page="./components/chatbot.jsp" />
             <jsp:include page="./components/header.jsp" />
-            <div class="pt-24 px-5 w-full pb-32">
-                <jsp:include page="./components/banner.jsp" />
+            <div class="pt-28 px-5 w-full pb-32">
                 <div class="max-w-6xl mx-auto">
                     <!-- Hiển thị thông báo lỗi (nếu có) -->
                     <%
